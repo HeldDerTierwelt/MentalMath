@@ -1,4 +1,4 @@
-package com.ag.kopfrechner.ui.component
+package com.ag.kopfrechner.ui.component.game
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -11,13 +11,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.TextUnit
 import androidx.navigation.NavController
+import com.ag.kopfrechner.viewmodel.GameViewModel
 import kotlinx.coroutines.delay
 
 @Composable
 fun CountdownTimer(
     initialTimeInSeconds: Int,
     fontSize: TextUnit,
-    navController: NavController
+    navController: NavController,
+    gameViewModel: GameViewModel
 ) {
     var timeLeftInSeconds by remember { mutableIntStateOf(initialTimeInSeconds) }
     var formattedTime by remember { mutableStateOf(formatTime(timeLeftInSeconds)) }
@@ -25,13 +27,17 @@ fun CountdownTimer(
     LaunchedEffect(timeLeftInSeconds) {
         while (timeLeftInSeconds > 0) {
             delay(1000)
+            gameViewModel.addTime()
             timeLeftInSeconds -= 1
             formattedTime = formatTime(timeLeftInSeconds)
         }
-        navController.navigate("settings")
+        //TODO: Navigation to StatisticsScreen
+        navController.navigate("settings"){
+            popUpTo("game") { inclusive = true }
+            popUpTo("settings") { inclusive = true }
+        }
     }
 
-    // Text für die Countdown-Anzeige
     Text(
         text = formattedTime,
         color = MaterialTheme.colorScheme.onPrimary,

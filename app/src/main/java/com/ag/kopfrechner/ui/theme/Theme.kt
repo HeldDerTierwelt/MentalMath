@@ -40,11 +40,11 @@ private val LightColorScheme = lightColorScheme(
 )
 
 val yellow = Color(0xFFFBC02D)
-val green = Color(0xFF388E3C)
+val green = Color(0xFF39A241)
 val blue = Color(0xFF1976D2)
-val red = Color(0xFFD32F2F)
+val red = Color(0xFFD34747)
 
-val softYellow = Color(0xFFFDEA6E)
+val softYellow = Color(0xFFFFEC76)
 val softGreen = Color(0xFF81C784)
 val softBlue = Color(0xFF64B5F6)
 val softRed = Color(0xFFE57373)

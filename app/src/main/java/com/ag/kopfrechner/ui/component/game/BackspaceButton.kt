@@ -1,0 +1,43 @@
+package com.ag.kopfrechner.ui.component.game
+
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.ag.kopfrechner.R
+import com.ag.kopfrechner.ui.theme.red
+import com.ag.kopfrechner.ui.theme.softRed
+
+@Composable
+fun BackspaceButton(
+    onClick: () -> Unit,
+    iconSize: Dp,
+    size: Dp,
+) {
+
+    Button(
+        onClick = onClick,
+        shape = CircleShape,
+        modifier = Modifier.size(size),
+        contentPadding = PaddingValues(0.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (isSystemInDarkTheme()) softRed else red,
+            contentColor = MaterialTheme.colorScheme.primary
+        )
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.round_backspace_24),
+            contentDescription = "Backspace",
+            modifier = Modifier.size(iconSize),
+        )
+    }
+}

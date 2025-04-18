@@ -1,4 +1,4 @@
-package com.ag.kopfrechner.ui.component
+package com.ag.kopfrechner.ui.component.settings
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text

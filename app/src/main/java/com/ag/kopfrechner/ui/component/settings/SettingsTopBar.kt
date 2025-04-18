@@ -1,4 +1,4 @@
-package com.ag.kopfrechner.ui.component
+package com.ag.kopfrechner.ui.component.settings
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.ExperimentalMaterial3Api

@@ -1,4 +1,4 @@
-package com.ag.kopfrechner.ui.component
+package com.ag.kopfrechner.ui.component.settings
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,23 +17,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import com.ag.kopfrechner.ui.theme.green
-import com.ag.kopfrechner.viewmodel.SettingsUiState
+import com.ag.kopfrechner.viewmodel.SettingsViewModel
 
 @Composable
 fun StartButton(
     buttonTextId: Int,
     icon: ImageVector,
-    state: SettingsUiState,
+    settingsViewModel: SettingsViewModel,
     onClick: () -> Unit,
     iconSize: Dp,
     size: Dp,
     fontSize: TextUnit
 ) {
 
-    val isEnabled: Boolean = state.isPlusEnabled ||
-            state.isMinusEnabled ||
-            state.isMultiplyEnabled ||
-            state.isDivideEnabled
+    val settingsState = settingsViewModel.settingsState.value
+    val isEnabled: Boolean = settingsState.isPlusEnabled ||
+            settingsState.isMinusEnabled ||
+            settingsState.isMultiplyEnabled ||
+            settingsState.isDivideEnabled
 
     Button(
         enabled = isEnabled,

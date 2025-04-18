@@ -21,13 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ag.kopfrechner.R
-import com.ag.kopfrechner.ui.component.CustomRangeSlider
-import com.ag.kopfrechner.ui.component.CustomSlider
-import com.ag.kopfrechner.ui.component.ModeButton
-import com.ag.kopfrechner.ui.component.OperatorButton
-import com.ag.kopfrechner.ui.component.SettingsTopBar
-import com.ag.kopfrechner.ui.component.StartButton
-import com.ag.kopfrechner.ui.component.TextLabel
+import com.ag.kopfrechner.ui.component.settings.CustomRangeSlider
+import com.ag.kopfrechner.ui.component.settings.CustomSlider
+import com.ag.kopfrechner.ui.component.settings.ModeButton
+import com.ag.kopfrechner.ui.component.settings.OperatorButton
+import com.ag.kopfrechner.ui.component.settings.SettingsTopBar
+import com.ag.kopfrechner.ui.component.settings.StartButton
+import com.ag.kopfrechner.ui.component.settings.TextLabel
 import com.ag.kopfrechner.ui.theme.blue
 import com.ag.kopfrechner.ui.theme.green
 import com.ag.kopfrechner.ui.theme.red
@@ -36,15 +36,17 @@ import com.ag.kopfrechner.ui.theme.softGreen
 import com.ag.kopfrechner.ui.theme.softRed
 import com.ag.kopfrechner.ui.theme.softYellow
 import com.ag.kopfrechner.ui.theme.yellow
+import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
 
 @Composable
 fun SettingsScreen(
     navController: NavController,
-    viewModel: SettingsViewModel,
+    gameViewModel: GameViewModel,
+    settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val state = viewModel.uiState.value
+    val settingsState = settingsViewModel.settingsState.value
     val valueRangeOperators = 1f..9f
 
     // Calculate sizes based on screen height
@@ -89,17 +91,17 @@ fun SettingsScreen(
                         ModeButton(
                             iconId1 = R.drawable.tag,
                             iconId2 = R.drawable.round_hourglass_bottom_24,
-                            isToggled = state.isModeEnabled,
-                            onClick = { viewModel.toggleMode() },
+                            isToggled = settingsState.isModeEnabled,
+                            onClick = { settingsViewModel.toggleMode() },
                             iconSize = iconMode,
                             size = roundButtonSize
                         )
                         Spacer(Modifier.padding(8.dp))
                         CustomSlider(
-                            value = state.limit,
-                            onValueChange = { viewModel.updateLimit(it) },
+                            value = settingsState.limit,
+                            onValueChange = { settingsViewModel.updateLimit(it) },
                             valueRange = 1f..10f,
-                            isToggled = state.isModeEnabled,
+                            isToggled = settingsState.isModeEnabled,
                             size = sliderSize,
                             activeTrackColor = MaterialTheme.colorScheme.onSurface
                         )
@@ -115,18 +117,18 @@ fun SettingsScreen(
                         OperatorButton(
                             buttonTextId = R.string.add,
                             textColor = green,
-                            isSelected = state.isPlusEnabled,
-                            onClick = { viewModel.togglePlus() },
+                            isSelected = settingsState.isPlusEnabled,
+                            onClick = { settingsViewModel.togglePlus() },
                             size = roundButtonSize,
                             fontSize = operatorButtonFontSize,
                         )
                         Spacer(Modifier.padding(8.dp))
                         CustomRangeSlider(
                             valueRange = valueRangeOperators,
-                            value = state.plusRange,
+                            value = settingsState.plusRange,
                             activeTrackColor = if (isSystemInDarkTheme()) softGreen else green,
-                            isEnabled = state.isPlusEnabled,
-                            onValueChange = { viewModel.updatePlusRange(it) },
+                            isEnabled = settingsState.isPlusEnabled,
+                            onValueChange = { settingsViewModel.updatePlusRange(it) },
                             size = sliderSize
                         )
                     }
@@ -137,18 +139,18 @@ fun SettingsScreen(
                         OperatorButton(
                             buttonTextId = R.string.subtract,
                             textColor = red,
-                            isSelected = state.isMinusEnabled,
-                            onClick = { viewModel.toggleMinus() },
+                            isSelected = settingsState.isMinusEnabled,
+                            onClick = { settingsViewModel.toggleMinus() },
                             size = roundButtonSize,
                             fontSize = operatorButtonFontSize
                         )
                         Spacer(Modifier.padding(8.dp))
                         CustomRangeSlider(
                             valueRange = valueRangeOperators,
-                            value = state.minusRange,
+                            value = settingsState.minusRange,
                             activeTrackColor = if (isSystemInDarkTheme()) softRed else red,
-                            isEnabled = state.isMinusEnabled,
-                            onValueChange = { viewModel.updateMinusRange(it) },
+                            isEnabled = settingsState.isMinusEnabled,
+                            onValueChange = { settingsViewModel.updateMinusRange(it) },
                             size = sliderSize
                         )
                     }
@@ -159,18 +161,18 @@ fun SettingsScreen(
                         OperatorButton(
                             buttonTextId = R.string.multiply,
                             textColor = yellow,
-                            isSelected = state.isMultiplyEnabled,
-                            onClick = { viewModel.toggleMultiply() },
+                            isSelected = settingsState.isMultiplyEnabled,
+                            onClick = { settingsViewModel.toggleMultiply() },
                             size = roundButtonSize,
                             fontSize = operatorButtonFontSize
                         )
                         Spacer(Modifier.padding(8.dp))
                         CustomRangeSlider(
                             valueRange = valueRangeOperators,
-                            value = state.multiplyRange,
+                            value = settingsState.multiplyRange,
                             activeTrackColor = if (isSystemInDarkTheme()) softYellow else yellow,
-                            isEnabled = state.isMultiplyEnabled,
-                            onValueChange = { viewModel.updateMultiplyRange(it) },
+                            isEnabled = settingsState.isMultiplyEnabled,
+                            onValueChange = { settingsViewModel.updateMultiplyRange(it) },
                             size = sliderSize
                         )
                     }
@@ -181,26 +183,29 @@ fun SettingsScreen(
                         OperatorButton(
                             buttonTextId = R.string.divide,
                             textColor = blue,
-                            isSelected = state.isDivideEnabled,
-                            onClick = { viewModel.toggleDivide() },
+                            isSelected = settingsState.isDivideEnabled,
+                            onClick = { settingsViewModel.toggleDivide() },
                             size = roundButtonSize,
                             fontSize = operatorButtonFontSize
                         )
                         Spacer(Modifier.padding(8.dp))
                         CustomRangeSlider(
                             valueRange = valueRangeOperators,
-                            value = state.divideRange,
+                            value = settingsState.divideRange,
                             activeTrackColor = if (isSystemInDarkTheme()) softBlue else blue,
-                            isEnabled = state.isDivideEnabled,
-                            onValueChange = { viewModel.updateDivideRange(it) },
+                            isEnabled = settingsState.isDivideEnabled,
+                            onValueChange = { settingsViewModel.updateDivideRange(it) },
                             size = sliderSize
                         )
                     }
                     StartButton(
                         buttonTextId = R.string.start,
                         icon = Icons.Rounded.PlayArrow,
-                        state = state,
-                        onClick = { navController.navigate("game") },
+                        settingsViewModel = settingsViewModel,
+                        onClick = {
+                            gameViewModel.resetGame()
+                            navController.navigate("game")
+                        },
                         size = roundButtonSize,
                         fontSize = startButtonFontSize,
                         iconSize = iconStart

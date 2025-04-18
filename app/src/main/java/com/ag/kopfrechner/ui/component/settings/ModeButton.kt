@@ -1,4 +1,4 @@
-package com.ag.kopfrechner.ui.component
+package com.ag.kopfrechner.ui.component.settings
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
@@ -30,7 +30,7 @@ fun ModeButton(
     ) {
         Icon(
             painter = painterResource(icon),
-            contentDescription = "Description",
+            contentDescription = "Mode",
             modifier = Modifier.size(iconSize)
         )
     }

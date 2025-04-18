@@ -6,46 +6,46 @@ import androidx.lifecycle.ViewModel
 
 class SettingsViewModel : ViewModel() {
 
-    private val _uiState = mutableStateOf(SettingsUiState())
-    val uiState: State<SettingsUiState> = _uiState
+    private val _settingsState = mutableStateOf(SettingsState())
+    val settingsState: State<SettingsState> = _settingsState
 
     fun updateLimit(value: Float) {
-        _uiState.value = _uiState.value.copy(limit = value)
+        _settingsState.value = _settingsState.value.copy(limit = value)
     }
 
     fun updatePlusRange(plusRange:  ClosedFloatingPointRange<Float>) {
-        _uiState.value = _uiState.value.copy(plusRange = plusRange)
+        _settingsState.value = _settingsState.value.copy(plusRange = plusRange)
     }
 
     fun updateMinusRange(minusRange:  ClosedFloatingPointRange<Float>) {
-        _uiState.value = _uiState.value.copy(minusRange = minusRange)
+        _settingsState.value = _settingsState.value.copy(minusRange = minusRange)
     }
 
     fun updateMultiplyRange(multiplyRange:  ClosedFloatingPointRange<Float>) {
-        _uiState.value = _uiState.value.copy(multiplyRange = multiplyRange)
+        _settingsState.value = _settingsState.value.copy(multiplyRange = multiplyRange)
     }
 
     fun updateDivideRange(divideRange:  ClosedFloatingPointRange<Float>) {
-        _uiState.value = _uiState.value.copy(divideRange = divideRange)
+        _settingsState.value = _settingsState.value.copy(divideRange = divideRange)
     }
 
     fun toggleMode() {
-        _uiState.value = _uiState.value.copy(isModeEnabled = !_uiState.value.isModeEnabled)
+        _settingsState.value = _settingsState.value.copy(isModeEnabled = !_settingsState.value.isModeEnabled)
     }
 
     fun togglePlus() {
-        _uiState.value = _uiState.value.copy(isPlusEnabled = !_uiState.value.isPlusEnabled)
+        _settingsState.value = _settingsState.value.copy(isPlusEnabled = !_settingsState.value.isPlusEnabled)
     }
 
     fun toggleMinus() {
-        _uiState.value = _uiState.value.copy(isMinusEnabled = !_uiState.value.isMinusEnabled)
+        _settingsState.value = _settingsState.value.copy(isMinusEnabled = !_settingsState.value.isMinusEnabled)
     }
 
     fun toggleMultiply() {
-        _uiState.value = _uiState.value.copy(isMultiplyEnabled = !_uiState.value.isMultiplyEnabled)
+        _settingsState.value = _settingsState.value.copy(isMultiplyEnabled = !_settingsState.value.isMultiplyEnabled)
     }
 
     fun toggleDivide() {
-        _uiState.value = _uiState.value.copy(isDivideEnabled = !_uiState.value.isDivideEnabled)
+        _settingsState.value = _settingsState.value.copy(isDivideEnabled = !_settingsState.value.isDivideEnabled)
     }
 }

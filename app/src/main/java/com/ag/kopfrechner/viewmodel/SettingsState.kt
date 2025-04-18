@@ -1,6 +1,6 @@
 package com.ag.kopfrechner.viewmodel
 
-data class SettingsUiState(
+data class SettingsState(
     val isModeEnabled: Boolean = true,
     val limit: Float = 5f,
 
