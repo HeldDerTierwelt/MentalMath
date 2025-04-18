@@ -22,7 +22,6 @@ import com.ag.kopfrechner.ui.theme.red
 import com.ag.kopfrechner.ui.theme.softRed
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
-import kotlin.math.min
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,8 +36,7 @@ fun GameTopBar(
 
     val limit = settingsViewModel.settingsState.value.limit
     val totalTasks = (limit * 10).roundToInt()
-    val answeredTasks = min(gameViewModel.gamesState.value.totalAnswers + 1, totalTasks)
-
+    val answeredTasks = gameViewModel.gamesState.value.totalAnswers
     TopAppBar(
 
         title = {

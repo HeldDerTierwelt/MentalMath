@@ -1,18 +1,22 @@
 package com.ag.kopfrechner.ui.screen
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,6 +27,8 @@ import com.ag.kopfrechner.ui.component.game.EnterButton
 import com.ag.kopfrechner.ui.component.game.GameTopBar
 import com.ag.kopfrechner.ui.component.game.MathTaskDisplay
 import com.ag.kopfrechner.ui.component.game.NumberButton
+import com.ag.kopfrechner.ui.theme.blue
+import com.ag.kopfrechner.ui.theme.softBlue
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
 import kotlin.math.roundToInt
@@ -52,13 +58,31 @@ fun GameScreen(
 
     Scaffold(
         topBar = {
-            GameTopBar(
-                navController = navController,
-                settingsViewModel = settingsViewModel,
-                gameViewModel = gameViewModel,
-                iconSize = iconSizeClose,
-                fontSize = numberFontSize
-            )
+            Column {
+                GameTopBar(
+                    navController = navController,
+                    settingsViewModel = settingsViewModel,
+                    gameViewModel = gameViewModel,
+                    iconSize = iconSizeClose,
+                    fontSize = numberFontSize
+                )
+                LinearProgressIndicator(
+                    progress = {
+                        if (settingsState.isModeEnabled) {
+                            gameState.totalAnswers / (settingsState.limit * 10).toFloat()
+                        } else {
+                            gameState.activeTime / (settingsState.limit * 60)
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(4.dp),
+                    color = if (isSystemInDarkTheme()) softBlue else blue,
+                    trackColor = MaterialTheme.colorScheme.background,
+                    drawStopIndicator = {},
+                    strokeCap = StrokeCap.Butt
+                )
+            }
         },
         content = { padding ->
             Surface(
