@@ -52,7 +52,7 @@ fun SettingsScreen(
     // Calculate sizes based on screen height
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-    val roundButtonSize = (0.085f * screenHeight.value).dp
+    val roundButtonSize = (0.09f * screenHeight.value).dp
     val sliderSize = (0.05f * screenHeight.value).dp
     val operatorButtonFontSize = (0.057f * screenHeight.value).sp
     val startButtonFontSize = (0.038f * screenHeight.value).sp
@@ -204,6 +204,7 @@ fun SettingsScreen(
                         settingsViewModel = settingsViewModel,
                         onClick = {
                             gameViewModel.resetGame()
+                            gameViewModel.setEnabledOperators(settingsViewModel)
                             navController.navigate("game")
                         },
                         size = roundButtonSize,

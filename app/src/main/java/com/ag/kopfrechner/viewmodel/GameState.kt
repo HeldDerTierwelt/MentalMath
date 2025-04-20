@@ -8,6 +8,8 @@ data class GameState(
     val operator: Int = R.string.add,
     val input: String = "",
     val tasks: List<TaskResult> = emptyList(),
+    val enabledOperators: List<Pair<Int, ClosedFloatingPointRange<Float>>> = emptyList(),
+    val isCorrect: Boolean? = null,
 
     val correctAnswers: Int = 0,
     val wrongAnswers: Int = 0,

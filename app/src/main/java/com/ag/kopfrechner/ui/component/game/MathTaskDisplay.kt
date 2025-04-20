@@ -1,5 +1,6 @@
 package com.ag.kopfrechner.ui.component.game
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import com.ag.kopfrechner.ui.theme.green
+import com.ag.kopfrechner.ui.theme.red
+import com.ag.kopfrechner.ui.theme.softGreen
+import com.ag.kopfrechner.ui.theme.softRed
 
 @Composable
 fun MathTaskDisplay(
@@ -25,8 +30,10 @@ fun MathTaskDisplay(
     operator: Int,
     input: String,
     fontSize: TextUnit,
-    width: Dp
+    width: Dp,
+    isCorrect: Boolean?
 ) {
+
     val operatorString = stringResource(operator)
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -37,10 +44,10 @@ fun MathTaskDisplay(
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height((0.5*fontSize.value).dp))
+        Spacer(modifier = Modifier.height((0.5 * fontSize.value).dp))
 
         Box(
-            modifier = Modifier.width(width+(1.1*fontSize.value).dp),
+            modifier = Modifier.width(width + (1.2 * fontSize.value).dp),
             contentAlignment = Alignment.CenterStart
         ) {
             Text(
@@ -64,10 +71,16 @@ fun MathTaskDisplay(
                     },
                 contentAlignment = Alignment.CenterStart
             ) {
+                val textColor = if (isSystemInDarkTheme()) {
+                    if (isCorrect==true) softGreen else if (isCorrect==false) softRed else MaterialTheme.colorScheme.onPrimary
+                } else {
+                    if (isCorrect==true) green else if (isCorrect==false) red else MaterialTheme.colorScheme.onPrimary
+                }
                 Text(
                     text = input,
                     fontSize = fontSize,
                     modifier = Modifier.align(Alignment.Center),
+                    color = textColor
                 )
             }
         }

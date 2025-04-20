@@ -2,17 +2,18 @@ package com.ag.kopfrechner.ui.screen
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
 
 @Composable
-fun MyApp() {
-    val settingsViewModel = SettingsViewModel()
-    val gameViewModel = GameViewModel()
-    val navController = rememberNavController()
+fun MyApp(
+    settingsViewModel: SettingsViewModel,
+    gameViewModel: GameViewModel,
+    navController: NavHostController
+) {
     NavHost(
         navController = navController,
         startDestination = "settings",

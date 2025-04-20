@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.ag.kopfrechner.R
+import kotlin.random.Random
 
 class GameViewModel : ViewModel() {
 
@@ -11,7 +12,7 @@ class GameViewModel : ViewModel() {
     val gamesState: State<GameState> = _gameState
 
     fun appendToInput(number: Int) {
-        if (_gameState.value.input.length < 9) {
+        if (_gameState.value.input.length < 7) {
             if (_gameState.value.input == "0") {
                 clearInput()
             }
@@ -37,17 +38,20 @@ class GameViewModel : ViewModel() {
         if (userInput == null) {
             _gameState.value =_gameState.value.copy(
                 skippedAnswers = _gameState.value.skippedAnswers + 1,
-                totalAnswers = _gameState.value.totalAnswers + 1
+                totalAnswers = _gameState.value.totalAnswers + 1,
+                isCorrect = null
             )
         } else if (userInput == correctResult) {
             _gameState.value =_gameState.value.copy(
                 correctAnswers = _gameState.value.correctAnswers + 1,
-                totalAnswers = _gameState.value.totalAnswers + 1
+                totalAnswers = _gameState.value.totalAnswers + 1,
+                isCorrect = true
             )
         } else {
             _gameState.value =_gameState.value.copy(
                 wrongAnswers = _gameState.value.wrongAnswers + 1,
-                totalAnswers = _gameState.value.totalAnswers + 1
+                totalAnswers = _gameState.value.totalAnswers + 1,
+                isCorrect = false
             )
         }
     }
@@ -87,31 +91,36 @@ class GameViewModel : ViewModel() {
         )
     }
 
-    fun generateNewTask() {
-        val op1 = (0..100).random()
-        val op2 = (0..100).random()
-        val operator = listOf(R.string.add, R.string.subtract, R.string.multiply, R.string.divide).random()
+    fun setEnabledOperators(settingsViewModel: SettingsViewModel) {
+        val enabledOperators = mutableListOf<Pair<Int, ClosedFloatingPointRange<Float>>>()
 
-        _gameState.value = _gameState.value.copy(
-            operand1 = op1,
-            operand2 = op2,
-            operator = operator,
-            input = ""
-        )
+        val settingsState = settingsViewModel.settingsState.value
+        if (settingsState.isPlusEnabled) {
+            enabledOperators.add(R.string.add to settingsViewModel.settingsState.value.plusRange)
+        }
+        if (settingsState.isMinusEnabled) {
+            enabledOperators.add(R.string.subtract to settingsViewModel.settingsState.value.minusRange)
+        }
+        if (settingsState.isMultiplyEnabled) {
+            enabledOperators.add(R.string.multiply to settingsViewModel.settingsState.value.multiplyRange)
+        }
+        if (settingsState.isDivideEnabled) {
+            enabledOperators.add(R.string.divide to settingsViewModel.settingsState.value.divideRange)
+        }
+
+        _gameState.value = _gameState.value.copy(enabledOperators = enabledOperators)
     }
 
-/*
+    fun generateNewTask() {
+        val operator = _gameState.value.enabledOperators.random()
+        val difficulty = Random.nextInt( operator.second.start.toInt(), operator.second.endInclusive.toInt() + 1)
 
-    private fun generateNewTask(previousState: GameUiState): GameUiState {
-        val op1 = Random.nextInt(10, 100)
-        val op2 = Random.nextInt(10, 100)
-        val operator = listOf('+', '-', '*').random()
-
-        return previousState.copy(
-            operand1 = op1,
-            operand2 = op2,
-            operator = operator,
-            input = ""
+        _gameState.value = _gameState.value.copy(
+            operand1 = difficulty,
+            operand2 = difficulty,
+            operator = operator.first,
+            input = "",
+            isCorrect = null
         )
-    }*/
+    }
 }

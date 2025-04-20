@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
@@ -42,6 +43,7 @@ fun GameScreen(
 ) {
     val settingsState = settingsViewModel.settingsState.value
     val gameState = gameViewModel.gamesState.value
+    val coroutineScope = rememberCoroutineScope()
 
     // Calculate sizes based on screen height
     val configuration = LocalConfiguration.current
@@ -50,11 +52,11 @@ fun GameScreen(
     val roundButtonSize = (0.10f * screenHeight.value).dp
     val numberFontSize = (0.040f * screenHeight.value).sp
     val taskFontSize = (0.057f * screenHeight.value).sp
-    val iconSizeClose = (0.048f * screenHeight.value).dp
+    val iconSizeClose = (0.057f * screenHeight.value).dp
     val iconSizeDoubleArrow = (0.052f * screenHeight.value).dp
     val iconSizeBackSpace = (0.038f * screenHeight.value).dp
     val columnPadding = (0.028f * screenHeight.value).dp
-    val resultLineWidth = (0.32f * screenHeight.value).dp
+    val resultLineWidth = (0.30f * screenHeight.value).dp
 
     Scaffold(
         topBar = {
@@ -110,7 +112,8 @@ fun GameScreen(
                             operator = gameState.operator,
                             input = gameState.input,
                             fontSize = taskFontSize,
-                            width = resultLineWidth
+                            width = resultLineWidth,
+                            isCorrect = gameState.isCorrect
                         )
                     }
                     Row(
@@ -174,16 +177,20 @@ fun GameScreen(
                             onClick = {
                                 gameViewModel.addTaskResultToList()
                                 gameViewModel.checkAnswer()
-                                val totalAnswers = gameViewModel.gamesState.value.totalAnswers
-                                val totalTasks = (settingsState.limit * 10).roundToInt()
-                                if (settingsState.isModeEnabled && totalAnswers == totalTasks) {
-                                    navController.navigate("settings") {
-                                        popUpTo("game") { inclusive = true }
-                                        popUpTo("settings") { inclusive = true }
+                                // TODO
+                                // coroutineScope.launch {
+                                    //delay(50)
+                                    val totalAnswers = gameViewModel.gamesState.value.totalAnswers
+                                    val totalTasks = (settingsState.limit * 10).roundToInt()
+                                    if (settingsState.isModeEnabled && totalAnswers == totalTasks) {
+                                        navController.navigate("settings") {
+                                            popUpTo("game") { inclusive = true }
+                                            popUpTo("settings") { inclusive = true }
+                                        }
+                                    } else {
+                                        gameViewModel.generateNewTask()
                                     }
-                                } else {
-                                    gameViewModel.generateNewTask()
-                                }
+                               // }
                             },
                             isToggled = gameState.input.isEmpty(),
                             size = roundButtonSize,
