@@ -33,10 +33,6 @@ fun GameTopBar(
     iconSize: Dp,
     fontSize: TextUnit
 ) {
-
-    val limit = settingsViewModel.settingsState.value.limit
-    val totalTasks = (limit * 10).roundToInt()
-    val answeredTasks = gameViewModel.gamesState.value.totalAnswers
     TopAppBar(
 
         title = {
@@ -48,6 +44,8 @@ fun GameTopBar(
         navigationIcon = {
             IconButton(
                 onClick = {
+                    gameViewModel.pauseTimer()
+                    gameViewModel.setEndTimestamp()
                     navController.navigate("settings") {
                         popUpTo("game") { inclusive = true }
                         popUpTo("settings") { inclusive = true }
@@ -64,6 +62,8 @@ fun GameTopBar(
         },
         actions = {
             if (settingsViewModel.settingsState.value.isModeEnabled) {
+                val totalTasks = (settingsViewModel.settingsState.value.limit * 10).roundToInt()
+                val answeredTasks = gameViewModel.gamesState.value.totalAnswers
                 Text(
                     text = "$answeredTasks/$totalTasks",
                     color = MaterialTheme.colorScheme.onPrimary,
@@ -72,9 +72,9 @@ fun GameTopBar(
                 )
             } else {
                 CountdownTimer(
-                    initialTimeInSeconds = (limit * 60).toInt(),
                     fontSize = fontSize,
                     navController = navController,
+                    settingsViewModel = settingsViewModel,
                     gameViewModel = gameViewModel
                 )
             }

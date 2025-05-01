@@ -9,17 +9,18 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.TextUnit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsTopBar(titleId: Int) {
+fun SettingsTopBar(titleId: Int, titleFontSize: TextUnit) {
 
     TopAppBar(
         title = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(text = stringResource(id = titleId))
+                Text(text = stringResource(id = titleId), fontSize = titleFontSize)
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

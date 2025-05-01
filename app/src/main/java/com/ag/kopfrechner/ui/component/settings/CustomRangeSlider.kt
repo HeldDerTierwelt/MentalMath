@@ -35,7 +35,7 @@ import java.util.Locale
 @Composable
 fun CustomRangeSlider(
     valueRange: ClosedFloatingPointRange<Float>,
-    value: ClosedFloatingPointRange<Float>,
+    value: Pair<Float, Float>,
     activeTrackColor: Color,
     isEnabled: Boolean,
     onValueChange: (ClosedFloatingPointRange<Float>) -> Unit,
@@ -47,6 +47,7 @@ fun CustomRangeSlider(
     val isDraggingEnd by endInteractionSource.collectIsDraggedAsState()
     var sliderWidth by remember { mutableIntStateOf(0) }
     var sliderHeight by remember { mutableIntStateOf(0) }
+    var value = value.first..value.second
 
     Box(
         modifier = Modifier

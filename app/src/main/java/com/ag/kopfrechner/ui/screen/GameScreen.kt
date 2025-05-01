@@ -1,5 +1,7 @@
 package com.ag.kopfrechner.ui.screen
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +16,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
@@ -28,10 +35,13 @@ import com.ag.kopfrechner.ui.component.game.EnterButton
 import com.ag.kopfrechner.ui.component.game.GameTopBar
 import com.ag.kopfrechner.ui.component.game.MathTaskDisplay
 import com.ag.kopfrechner.ui.component.game.NumberButton
+import com.ag.kopfrechner.ui.component.game.QuitGamePopUp
 import com.ag.kopfrechner.ui.theme.blue
 import com.ag.kopfrechner.ui.theme.softBlue
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
@@ -48,8 +58,9 @@ fun GameScreen(
     // Calculate sizes based on screen height
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
-
     val roundButtonSize = (0.10f * screenHeight.value).dp
+    val titleFontSize = (0.032f * screenHeight.value).sp
+    val textLabelFontSize = (0.0180f * screenHeight.value).sp
     val numberFontSize = (0.040f * screenHeight.value).sp
     val taskFontSize = (0.057f * screenHeight.value).sp
     val iconSizeClose = (0.057f * screenHeight.value).dp
@@ -176,13 +187,13 @@ fun GameScreen(
                         EnterButton(
                             onClick = {
                                 gameViewModel.addTaskResultToList()
-                                gameViewModel.checkAnswer()
-                                // TODO
-                                // coroutineScope.launch {
-                                    //delay(50)
+                                gameViewModel.checkAnswerAndCount()
+                                coroutineScope.launch {
+                                    delay(50)
                                     val totalAnswers = gameViewModel.gamesState.value.totalAnswers
                                     val totalTasks = (settingsState.limit * 10).roundToInt()
                                     if (settingsState.isModeEnabled && totalAnswers == totalTasks) {
+                                        gameViewModel.setEndTimestamp()
                                         navController.navigate("settings") {
                                             popUpTo("game") { inclusive = true }
                                             popUpTo("settings") { inclusive = true }
@@ -190,7 +201,8 @@ fun GameScreen(
                                     } else {
                                         gameViewModel.generateNewTask()
                                     }
-                               // }
+
+                                }
                             },
                             isToggled = gameState.input.isEmpty(),
                             size = roundButtonSize,
@@ -203,4 +215,38 @@ fun GameScreen(
             }
         }
     )
+
+    val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    var showDialog by remember { mutableStateOf(false) }
+
+    DisposableEffect (Unit) {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                    showDialog = true
+            }
+        }
+        backPressedDispatcher?.addCallback(callback)
+
+        onDispose {
+            callback.remove()
+        }
+    }
+
+    if (showDialog) {
+        QuitGamePopUp(
+            onDismissRequest = {},
+            onConfirm = {
+                showDialog = false
+                gameViewModel.pauseTimer()
+                gameViewModel.setEndTimestamp()
+                navController.navigate("settings") {
+                    popUpTo("game") { inclusive = true }
+                    popUpTo("settings") { inclusive = true }
+                }
+            },
+            onCancel = { showDialog = false },
+            titleSize = titleFontSize,
+            descriptionSize = textLabelFontSize
+        )
+    }
 }

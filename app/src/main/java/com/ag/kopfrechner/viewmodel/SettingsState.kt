@@ -1,15 +1,18 @@
 package com.ag.kopfrechner.viewmodel
 
+import android.os.Parcelable
 import com.ag.kopfrechner.R
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class SettingsState(
     val isModeEnabled: Boolean = true,
     val limit: Float = 5f,
 
-    val plusRange: ClosedFloatingPointRange<Float> = 2f..5f,
-    val minusRange: ClosedFloatingPointRange<Float> = 2f..5f,
-    val multiplyRange: ClosedFloatingPointRange<Float> = 2f..5f,
-    val divideRange: ClosedFloatingPointRange<Float> = 2f..5f,
+    val plusRange: Pair<Float, Float> = 2f to 5f,
+    val minusRange:  Pair<Float, Float> = 2f to 5f,
+    val multiplyRange:  Pair<Float, Float> = 2f to 5f,
+    val divideRange:  Pair<Float, Float> = 2f to 5f,
 
     val isPlusEnabled: Boolean = true,
     val isMinusEnabled: Boolean = true,
@@ -22,4 +25,4 @@ data class SettingsState(
         R.string.multiply,
         R.string.divide
     )
-)
+) : Parcelable

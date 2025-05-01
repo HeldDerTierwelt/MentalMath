@@ -56,6 +56,7 @@ fun SettingsScreen(
     val sliderSize = (0.05f * screenHeight.value).dp
     val operatorButtonFontSize = (0.057f * screenHeight.value).sp
     val startButtonFontSize = (0.038f * screenHeight.value).sp
+    val titleFontSize = (0.031f * screenHeight.value).sp
     val textLabelFontSize = (0.024f * screenHeight.value).sp
     val iconStart = (0.057f * screenHeight.value).dp
     val iconMode = (0.048f * screenHeight.value).dp
@@ -63,7 +64,7 @@ fun SettingsScreen(
 
     Scaffold(
         topBar = {
-            SettingsTopBar(R.string.app_name)
+            SettingsTopBar(R.string.app_name, titleFontSize)
         },
         content = { padding ->
             Surface(
@@ -205,6 +206,9 @@ fun SettingsScreen(
                         onClick = {
                             gameViewModel.resetGame()
                             gameViewModel.setEnabledOperators(settingsViewModel)
+                            gameViewModel.generateNewTask()
+                            gameViewModel.setStartTimestamp()
+                            gameViewModel.startTimer()
                             navController.navigate("game")
                         },
                         size = roundButtonSize,

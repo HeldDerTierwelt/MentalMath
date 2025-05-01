@@ -5,36 +5,34 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.TextUnit
 import androidx.navigation.NavController
 import com.ag.kopfrechner.viewmodel.GameViewModel
-import kotlinx.coroutines.delay
+import com.ag.kopfrechner.viewmodel.SettingsViewModel
 
 @Composable
 fun CountdownTimer(
-    initialTimeInSeconds: Int,
     fontSize: TextUnit,
     navController: NavController,
+    settingsViewModel: SettingsViewModel,
     gameViewModel: GameViewModel
 ) {
-    var timeLeftInSeconds by remember { mutableIntStateOf(initialTimeInSeconds) }
+
+    var timeLeftInSeconds = settingsViewModel.settingsState.value.limit.toInt() * 60 - gameViewModel.gamesState.value.activeTime
     var formattedTime by remember { mutableStateOf(formatTime(timeLeftInSeconds)) }
 
-    LaunchedEffect(timeLeftInSeconds) {
-        while (timeLeftInSeconds > 0) {
-            delay(1000)
-            gameViewModel.addTime()
-            timeLeftInSeconds -= 1
-            formattedTime = formatTime(timeLeftInSeconds)
-        }
-        //TODO: Navigation to StatisticsScreen
-        navController.navigate("settings"){
-            popUpTo("game") { inclusive = true }
-            popUpTo("settings") { inclusive = true }
+    LaunchedEffect(gameViewModel.gamesState.value.activeTime) {
+        val updatedTimeLeft = settingsViewModel.settingsState.value.limit.toInt() * 60 - gameViewModel.gamesState.value.activeTime
+        formattedTime = formatTime(updatedTimeLeft)
+        if (updatedTimeLeft <= 0) {
+            gameViewModel.setEndTimestamp()
+            navController.navigate("settings") {
+                popUpTo("game") { inclusive = true }
+                popUpTo("settings") { inclusive = true }
+            }
         }
     }
 
