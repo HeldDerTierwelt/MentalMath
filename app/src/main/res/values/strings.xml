@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Mental Arithmetic</string>
     <string name="action_settings">Settings</string>
+    <string name="game_result">"Result"</string>
     <string name="start">Start</string>
     <string name="add">"&#43;"</string>
     <string name="subtract">"&#8722;"</string>
@@ -8,4 +9,5 @@
     <string name="divide">"&#247;"</string>
     <string name="mode_instruction">"Choose mode and limit!"</string>
     <string name="operator_instruction">"Choose operators and difficulty!"</string>
+    <string name="done">Done</string>
 </resources>

@@ -1,0 +1,31 @@
+package com.ag.kopfrechner.ui.component.statistics
+
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.TextUnit
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun StatisticsTopBar(titleId: Int, titleFontSize: TextUnit) {
+
+    TopAppBar(
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = stringResource(id = titleId), fontSize = titleFontSize)
+            }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+        ),
+    )
+}

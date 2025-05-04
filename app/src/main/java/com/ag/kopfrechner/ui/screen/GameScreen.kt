@@ -194,7 +194,7 @@ fun GameScreen(
                                     val totalTasks = (settingsState.limit * 10).roundToInt()
                                     if (settingsState.isModeEnabled && totalAnswers == totalTasks) {
                                         gameViewModel.setEndTimestamp()
-                                        navController.navigate("settings") {
+                                        navController.navigate("statistics") {
                                             popUpTo("game") { inclusive = true }
                                             popUpTo("settings") { inclusive = true }
                                         }

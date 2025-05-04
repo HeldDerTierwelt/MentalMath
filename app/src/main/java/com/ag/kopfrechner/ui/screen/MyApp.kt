@@ -27,8 +27,8 @@ fun MyApp(
                 gameViewModel = gameViewModel,
                 navController = navController
             )
-
         }
+
         composable(
             route = "game",
             enterTransition = { fadeIn() }
@@ -36,6 +36,17 @@ fun MyApp(
             GameScreen(
                 gameViewModel = gameViewModel,
                 settingsViewModel = settingsViewModel,
+                navController = navController
+            )
+        }
+
+        composable(
+            route = "statistics",
+            enterTransition = { fadeIn() },
+        ) {
+            StatisticsScreen(
+                settingsViewModel = settingsViewModel,
+                gameViewModel = gameViewModel,
                 navController = navController
             )
         }

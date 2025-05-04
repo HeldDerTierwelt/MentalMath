@@ -90,6 +90,7 @@ class GameViewModel(
 
     fun addTaskResultToList() {
         val taskResult = TaskResult(
+            taskNumber = _gameState.value.tasks.size + 1,
             operand1 = _gameState.value.operand1,
             operand2 = _gameState.value.operand2,
             operator = _gameState.value.operator,

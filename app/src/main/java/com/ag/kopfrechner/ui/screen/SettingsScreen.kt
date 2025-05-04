@@ -58,8 +58,8 @@ fun SettingsScreen(
     val startButtonFontSize = (0.038f * screenHeight.value).sp
     val titleFontSize = (0.031f * screenHeight.value).sp
     val textLabelFontSize = (0.024f * screenHeight.value).sp
-    val iconStart = (0.057f * screenHeight.value).dp
-    val iconMode = (0.048f * screenHeight.value).dp
+    val startIconSize = (0.057f * screenHeight.value).dp
+    val modeIconSize = (0.048f * screenHeight.value).dp
     val columnPadding = (0.028f * screenHeight.value).dp
 
     Scaffold(
@@ -81,7 +81,6 @@ fun SettingsScreen(
                     horizontalAlignment = Alignment.Start
                 ) {
                     TextLabel(
-                        // text= configuration.screenWidthDp.dp.value.toString(),
                         text = "Choose mode and limit!",
                         fontSize = textLabelFontSize
                     )
@@ -94,7 +93,7 @@ fun SettingsScreen(
                             iconId2 = R.drawable.round_hourglass_bottom_24,
                             isToggled = settingsState.isModeEnabled,
                             onClick = { settingsViewModel.toggleMode() },
-                            iconSize = iconMode,
+                            iconSize = modeIconSize,
                             size = roundButtonSize
                         )
                         Spacer(Modifier.padding(8.dp))
@@ -209,11 +208,13 @@ fun SettingsScreen(
                             gameViewModel.generateNewTask()
                             gameViewModel.setStartTimestamp()
                             gameViewModel.startTimer()
-                            navController.navigate("game")
+                            navController.navigate("game") {
+                                popUpTo("settings") { inclusive = true }
+                            }
                         },
                         size = roundButtonSize,
                         fontSize = startButtonFontSize,
-                        iconSize = iconStart
+                        iconSize = startIconSize
                     )
                 }
             }

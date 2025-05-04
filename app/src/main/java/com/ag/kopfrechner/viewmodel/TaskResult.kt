@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TaskResult(
+    val taskNumber: Int,
     val operand1: Int,
     val operand2: Int,
     val operator: Int,
