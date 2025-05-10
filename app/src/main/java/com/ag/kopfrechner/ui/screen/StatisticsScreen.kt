@@ -1,10 +1,10 @@
 package com.ag.kopfrechner.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -36,9 +36,6 @@ fun StatisticsScreen(
     settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier
 ) {
-    val settingsState = settingsViewModel.settingsState.value
-    val gameState = gameViewModel.gamesState.value
-
     // Calculate sizes based on screen size
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
@@ -55,7 +52,6 @@ fun StatisticsScreen(
     val modeIconSize = (0.048f * screenHeight.value).dp
     val columnPadding = (0.028f * screenHeight.value).dp
 
-
     Scaffold(
         topBar = {
             StatisticsTopBar(R.string.game_result, titleFontSize)
@@ -68,7 +64,7 @@ fun StatisticsScreen(
                 color = MaterialTheme.colorScheme.background
             ) {
 
-                Box(
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(columnPadding),
@@ -76,8 +72,9 @@ fun StatisticsScreen(
                     Column(
                         modifier = Modifier
                             .verticalScroll(rememberScrollState())
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.SpaceBetween,
+                            .fillMaxWidth()
+                            .weight(1f),
+                        verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.Start
                     ) {
                         SettingsAndStatsCard(
@@ -94,12 +91,13 @@ fun StatisticsScreen(
                             iconSize = taskIconSize
                         )
                     }
+                    Spacer(modifier = Modifier.height(columnPadding))
                     DoneButton(
                         buttonTextId = R.string.done,
                         icon = Icons.Rounded.Check,
                         onClick = {
-                            gameViewModel.resetGame()
                             navController.navigate("settings") {
+                                popUpTo("statistics") { inclusive = true }
                                 popUpTo("settings") { inclusive = true }
                                 popUpTo("game") { inclusive = true }
                             }
@@ -107,7 +105,7 @@ fun StatisticsScreen(
                         size = roundButtonSize,
                         fontSize = doneButtonFontSize,
                         iconSize = doneIconSize,
-                        modifier = Modifier.align(Alignment.BottomCenter)
+                        modifier = Modifier
                     )
                 }
             }

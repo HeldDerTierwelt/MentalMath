@@ -1,5 +1,6 @@
 package com.ag.kopfrechner.ui.component.statistics
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -33,75 +38,95 @@ fun TaskCard(
     resultFontSize: androidx.compose.ui.unit.TextUnit,
     iconSize: androidx.compose.ui.unit.Dp
 ) {
+    var isExpanded by remember { mutableStateOf(false) }
     Card(
         shape = RoundedCornerShape(32.dp),
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp),
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
         ),
     ) {
         Spacer(modifier = Modifier.height(12.dp))
-        gameViewModel.gamesState.value.tasks.forEach { task ->
-            Row(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp, 4.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = stringResource(R.string.exercises),
+                fontSize = resultFontSize
+            )
+            Icon(
+                painter = painterResource(if (isExpanded) R.drawable.round_expand_less_24 else R.drawable.round_expand_more_24),
+                contentDescription = "Expand",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp, 4.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                val exercise = String.format(
-                    Locale.getDefault(),
-                    "%d %s %d = %d",
-                    task.operand1,
-                    stringResource(task.operator),
-                    task.operand2,
-                    task.correctResult
-                )
-                Text(
-                    text = exercise,
-                    fontSize = resultFontSize
-                )
-
-                val isCorrect =
-                    if (!task.userInput.isEmpty()) task.correctResult == task.userInput.toInt() else null
-                when (isCorrect) {
-
-                    true -> Icon(
-                        painter = painterResource(R.drawable.round_check_circle_24),
-                        contentDescription = "Correct",
-                        modifier = Modifier
-                            .size(iconSize)
-                            .align(Alignment.CenterVertically),
-                        tint = green
+                    .size(iconSize)
+                    .clickable { isExpanded = !isExpanded }
+            )
+        }
+        if (isExpanded) {
+            gameViewModel.gamesState.value.tasks.forEach { task ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp, 4.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    val exercise = String.format(
+                        Locale.getDefault(),
+                        "%d %s %d = %d",
+                        task.operand1,
+                        stringResource(task.operator),
+                        task.operand2,
+                        task.correctResult
+                    )
+                    Text(
+                        text = exercise,
+                        fontSize = resultFontSize
                     )
 
-                    false -> Row(horizontalArrangement = Arrangement.End) {
-                        Text(
-                            text = task.userInput,
-                            color = red,
-                            fontSize = resultFontSize
+                    val isCorrect =
+                        if (!task.userInput.isEmpty()) task.correctResult == task.userInput.toInt() else null
+                    when (isCorrect) {
+
+                        true -> Icon(
+                            painter = painterResource(R.drawable.round_check_circle_24),
+                            contentDescription = "Correct",
+                            modifier = Modifier
+                                .size(iconSize)
+                                .align(Alignment.CenterVertically),
+                            tint = green
                         )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Icon(
+
+                        false -> Row(horizontalArrangement = Arrangement.End) {
+                            Text(
+                                text = task.userInput,
+                                color = red,
+                                fontSize = resultFontSize
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Icon(
+                                painter = painterResource(R.drawable.round_cancel_24),
+                                contentDescription = "Skipped",
+                                modifier = Modifier
+                                    .size(iconSize)
+                                    .align(Alignment.CenterVertically),
+                                tint = red
+                            )
+                        }
+
+                        null -> Icon(
                             painter = painterResource(R.drawable.round_cancel_24),
                             contentDescription = "Skipped",
                             modifier = Modifier
                                 .size(iconSize)
                                 .align(Alignment.CenterVertically),
-                            tint = red
+                            tint = yellow
                         )
                     }
-
-                    null -> Icon(
-                        painter = painterResource(R.drawable.round_cancel_24),
-                        contentDescription = "Skipped",
-                        modifier = Modifier
-                            .size(iconSize)
-                            .align(Alignment.CenterVertically),
-                        tint = yellow
-                    )
                 }
             }
         }
