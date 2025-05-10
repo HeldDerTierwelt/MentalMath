@@ -29,6 +29,7 @@ fun CountdownTimer(
         formattedTime = formatTime(updatedTimeLeft)
         if (updatedTimeLeft <= 0) {
             gameViewModel.setEndTimestamp()
+            gameViewModel.pauseTimer()
             navController.navigate("statistics") {
                 popUpTo("game") { inclusive = true }
                 popUpTo("settings") { inclusive = true }

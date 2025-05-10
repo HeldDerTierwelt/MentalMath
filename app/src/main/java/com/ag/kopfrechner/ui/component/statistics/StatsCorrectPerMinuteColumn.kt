@@ -1,51 +1,59 @@
 package com.ag.kopfrechner.ui.component.statistics
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import com.ag.kopfrechner.R
 
 @Composable
-fun SettingsModeColumn(
-    modeEnabled: Boolean,
-    fontSize: TextUnit,
+fun StatsCorrectPerMinuteColumn(
+    iconId: Int,
     iconSize: Dp,
-    limit: Int
+    iconColor: Color,
+    iconText: String,
+    iconFontSize: TextUnit,
+    text: String,
+    fontSize: TextUnit
 ) {
 
     Column(
-        modifier = Modifier.fillMaxHeight(),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var iconId = R.drawable.tag
-        var limitText = String.format("%sex", (limit * 10).toString())
-        if (!modeEnabled) {
-            iconId = R.drawable.round_hourglass_bottom_24
-            limitText =
-                String.format("%smin", limit)
-        }
         Spacer(modifier = Modifier.height(8.dp))
-        Icon(
-            painter = painterResource(iconId),
-            contentDescription = "modeIcon",
-            modifier = Modifier.size(iconSize)
-        )
+        Box(
+            contentAlignment = Alignment.BottomEnd,
+        ) {
+            Icon(
+                painter = painterResource(iconId),
+                contentDescription = "modeIcon",
+                modifier = Modifier.size(iconSize),
+                tint = iconColor
+            )
+            Text(
+                text = iconText,
+                fontSize = iconFontSize,
+                modifier = Modifier
+                    .padding(bottom = 0.dp)
+                    .padding(end = 4.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = limitText,
+            text = text,
             fontSize = fontSize,
         )
         Spacer(modifier = Modifier.height(8.dp))

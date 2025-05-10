@@ -29,10 +29,10 @@ import java.util.Locale
 
 @Composable
 fun TaskCard(
-    gameViewModel : GameViewModel,
-    resultFontSize : androidx.compose.ui.unit.TextUnit,
-    iconSize : androidx.compose.ui.unit.Dp
-){
+    gameViewModel: GameViewModel,
+    resultFontSize: androidx.compose.ui.unit.TextUnit,
+    iconSize: androidx.compose.ui.unit.Dp
+) {
     Card(
         shape = RoundedCornerShape(32.dp),
         modifier = Modifier
@@ -46,11 +46,13 @@ fun TaskCard(
         Spacer(modifier = Modifier.height(12.dp))
         gameViewModel.gamesState.value.tasks.forEach { task ->
             Row(
-                modifier = Modifier.fillMaxWidth().padding(16.dp, 4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp, 4.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 val exercise = String.format(
-                    Locale.ROOT,
+                    Locale.getDefault(),
                     "%d %s %d = %d",
                     task.operand1,
                     stringResource(task.operator),

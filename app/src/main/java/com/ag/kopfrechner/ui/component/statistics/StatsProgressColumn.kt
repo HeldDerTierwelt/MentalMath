@@ -18,11 +18,12 @@ import androidx.compose.ui.unit.dp
 import com.ag.kopfrechner.R
 
 @Composable
-fun SettingsModeColumn(
+fun StatsProgressColumn(
     modeEnabled: Boolean,
     fontSize: TextUnit,
     iconSize: Dp,
-    limit: Int
+    totalAnswers: Int,
+    activeTime: Int,
 ) {
 
     Column(
@@ -30,24 +31,50 @@ fun SettingsModeColumn(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var iconId = R.drawable.tag
-        var limitText = String.format("%sex", (limit * 10).toString())
+        var iconId = R.drawable.rounded_timer_24
+        var progressText = formatTime(activeTime)
         if (!modeEnabled) {
-            iconId = R.drawable.round_hourglass_bottom_24
-            limitText =
-                String.format("%smin", limit)
+            iconId = R.drawable.tag
+            progressText = String.format("%sex", totalAnswers.toString())
         }
         Spacer(modifier = Modifier.height(8.dp))
         Icon(
             painter = painterResource(iconId),
-            contentDescription = "modeIcon",
+            contentDescription = "progressIcon",
             modifier = Modifier.size(iconSize)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = limitText,
+            text = progressText,
             fontSize = fontSize,
         )
         Spacer(modifier = Modifier.height(8.dp))
     }
+}
+
+fun formatTime(seconds: Int): String {
+    val days = seconds / (24 * 60 * 60)
+    val hours = (seconds % (24 * 60 * 60)) / 3600
+    val minutes = (seconds % 3600) / 60
+    val remainingSeconds = seconds % 60
+
+    val daysString = if (days > 0) "$days" else ""
+    val hoursString = if (hours > 0 || days > 0) {
+        if (hours < 10) "0$hours" else "$hours"
+    } else ""
+    val minutesString = if (minutes > 0 || hours > 0 || days > 0) {
+        if (minutes < 10) "0$minutes" else "$minutes"
+    } else ""
+    val secondsString = if (remainingSeconds > 0 || minutes > 0 || hours > 0 || days > 0) {
+        if (remainingSeconds < 10) "0$remainingSeconds" else "$remainingSeconds"
+    } else {
+        remainingSeconds.toString()
+    }
+
+    return buildString {
+        append(daysString)
+        if (hoursString.isNotEmpty()) append("$hoursString:")
+        if (minutesString.isNotEmpty()) append("$minutesString:")
+        append(secondsString)
+    }.trim()
 }

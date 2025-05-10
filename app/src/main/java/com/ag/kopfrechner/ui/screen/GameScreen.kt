@@ -193,7 +193,7 @@ fun GameScreen(
                                     val totalAnswers = gameViewModel.gamesState.value.totalAnswers
                                     val totalTasks = (settingsState.limit * 10).roundToInt()
                                     if (settingsState.isModeEnabled && totalAnswers == totalTasks) {
-                                        gameViewModel.setEndTimestamp()
+                                        gameViewModel.endGame()
                                         navController.navigate("statistics") {
                                             popUpTo("game") { inclusive = true }
                                             popUpTo("settings") { inclusive = true }
@@ -219,10 +219,10 @@ fun GameScreen(
     val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
     var showDialog by remember { mutableStateOf(false) }
 
-    DisposableEffect (Unit) {
+    DisposableEffect(Unit) {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                    showDialog = true
+                showDialog = true
             }
         }
         backPressedDispatcher?.addCallback(callback)
@@ -237,8 +237,7 @@ fun GameScreen(
             onDismissRequest = {},
             onConfirm = {
                 showDialog = false
-                gameViewModel.pauseTimer()
-                gameViewModel.setEndTimestamp()
+                gameViewModel.endGame()
                 navController.navigate("settings") {
                     popUpTo("game") { inclusive = true }
                     popUpTo("settings") { inclusive = true }

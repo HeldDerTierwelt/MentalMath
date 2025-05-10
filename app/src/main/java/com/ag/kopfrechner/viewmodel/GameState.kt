@@ -23,4 +23,5 @@ data class GameState(
     val activeTime: Int = 0,
     val startTimeStamp: Long = 0,
     val endTimeStamp: Long = Long.MAX_VALUE,
+    val isGameStarted: Boolean = false,
 ) : Parcelable

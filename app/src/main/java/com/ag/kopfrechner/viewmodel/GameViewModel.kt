@@ -36,7 +36,7 @@ class GameViewModel(
 
     fun removeLastDigit() {
         if (_gameState.value.input.isNotEmpty()) {
-            _gameState.value =   _gameState.value.copy(input = _gameState.value.input.dropLast(1))
+            _gameState.value = _gameState.value.copy(input = _gameState.value.input.dropLast(1))
             saveState()
         }
     }
@@ -53,7 +53,7 @@ class GameViewModel(
 
         if (userInput == null) {
             _gameState.value = _gameState.value.copy(
-                skippedAnswers =  _gameState.value.skippedAnswers + 1,
+                skippedAnswers = _gameState.value.skippedAnswers + 1,
                 totalAnswers = _gameState.value.totalAnswers + 1,
                 isCorrect = null
             )
@@ -81,6 +81,21 @@ class GameViewModel(
             R.string.divide -> if (_gameState.value.operand2 != 0) _gameState.value.operand1 / _gameState.value.operand2 else 0
             else -> 0
         }
+    }
+
+    fun startGame() {
+        _gameState.value = _gameState.value.copy(isGameStarted = true)
+        generateNewTask()
+        setStartTimestamp()
+        startTimer()
+        saveState()
+    }
+
+    fun endGame() {
+        _gameState.value = _gameState.value.copy(isGameStarted = false)
+        setEndTimestamp()
+        pauseTimer()
+        saveState()
     }
 
     fun resetGame() {
@@ -152,10 +167,9 @@ class GameViewModel(
     private var timerJob: Job? = null
 
     fun startTimer() {
-        if (_gameState.value.isTimerRunning) return
+        if (_gameState.value.isTimerRunning || !_gameState.value.isGameStarted) return
 
         timerJob?.cancel()
-
         _gameState.value = _gameState.value.copy(isTimerRunning = true)
         saveState()
         timerJob = viewModelScope.launch(Dispatchers.Default) {
@@ -164,12 +178,13 @@ class GameViewModel(
                 addTime(1)
             }
         }
+
     }
 
     fun pauseTimer() {
         _gameState.value = _gameState.value.copy(isTimerRunning = false)
         saveState()
-        timerJob?.cancel()  // Stoppt den laufenden Timer
+        timerJob?.cancel()
     }
 
     override fun onStart(owner: LifecycleOwner) {

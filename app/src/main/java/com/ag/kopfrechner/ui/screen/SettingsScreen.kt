@@ -205,9 +205,7 @@ fun SettingsScreen(
                         onClick = {
                             gameViewModel.resetGame()
                             gameViewModel.setEnabledOperators(settingsViewModel)
-                            gameViewModel.generateNewTask()
-                            gameViewModel.setStartTimestamp()
-                            gameViewModel.startTimer()
+                            gameViewModel.startGame()
                             navController.navigate("game") {
                                 popUpTo("settings") { inclusive = true }
                             }

@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ag.kopfrechner.R
 import com.ag.kopfrechner.ui.component.statistics.DoneButton
-import com.ag.kopfrechner.ui.component.statistics.SettingsCard
+import com.ag.kopfrechner.ui.component.statistics.SettingsAndStatsCard
 import com.ag.kopfrechner.ui.component.statistics.StatisticsTopBar
 import com.ag.kopfrechner.ui.component.statistics.TaskCard
 import com.ag.kopfrechner.viewmodel.GameViewModel
@@ -80,7 +80,8 @@ fun StatisticsScreen(
                         verticalArrangement = Arrangement.SpaceBetween,
                         horizontalAlignment = Alignment.Start
                     ) {
-                        SettingsCard(
+                        SettingsAndStatsCard(
+                            gameViewModel = gameViewModel,
                             settingsViewModel = settingsViewModel,
                             fontSize = resultFontSize,
                             operatorSize = operatorFontSize,

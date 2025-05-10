@@ -79,7 +79,7 @@ fun CustomRangeSlider(
                     shape = RoundedCornerShape(16.dp)
                 )
                 .padding(horizontal = 6.dp),
-            text = String.format(Locale.GERMAN, "%.0f", value.start),
+            text = String.format(Locale.getDefault(), "%.0f", value.start),
             color = MaterialTheme.colorScheme.onSecondary,
             fontSize = 12.sp
         )
@@ -98,7 +98,7 @@ fun CustomRangeSlider(
                     shape = RoundedCornerShape(16.dp)
                 )
                 .padding(horizontal = 6.dp),
-            text = String.format(Locale.GERMAN, "%.0f", value.endInclusive),
+            text = String.format(Locale.getDefault(), "%.0f", value.endInclusive),
             color = MaterialTheme.colorScheme.onSecondary,
             fontSize = 16.sp
         )

@@ -44,8 +44,8 @@ fun GameTopBar(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    gameViewModel.pauseTimer()
                     gameViewModel.setEndTimestamp()
+                    gameViewModel.pauseTimer()
                     navController.navigate("settings") {
                         popUpTo("game") { inclusive = true }
                         popUpTo("settings") { inclusive = true }

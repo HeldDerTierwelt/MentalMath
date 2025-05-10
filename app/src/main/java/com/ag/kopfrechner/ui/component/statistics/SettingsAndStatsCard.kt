@@ -1,0 +1,191 @@
+package com.ag.kopfrechner.ui.component.statistics
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
+import com.ag.kopfrechner.R
+import com.ag.kopfrechner.ui.theme.blue
+import com.ag.kopfrechner.ui.theme.green
+import com.ag.kopfrechner.ui.theme.red
+import com.ag.kopfrechner.ui.theme.yellow
+import com.ag.kopfrechner.viewmodel.GameViewModel
+import com.ag.kopfrechner.viewmodel.SettingsViewModel
+import java.util.Locale
+
+@Composable
+fun SettingsAndStatsCard(
+    gameViewModel: GameViewModel,
+    settingsViewModel: SettingsViewModel,
+    operatorSize: TextUnit,
+    fontSize: TextUnit,
+    iconSize: Dp
+) {
+    Card(
+        shape = RoundedCornerShape(32.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        ),
+    ) {
+        Column(
+            modifier = Modifier.fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp, 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                SettingsModeColumn(
+                    modeEnabled = settingsViewModel.settingsState.value.isModeEnabled,
+                    fontSize = fontSize,
+                    iconSize = iconSize,
+                    limit = settingsViewModel.settingsState.value.limit.toInt()
+                )
+                SettingsOperatorColumn(
+                    operatorSize = operatorSize,
+                    fontSize = fontSize,
+                    operatorEnabled = settingsViewModel.settingsState.value.isPlusEnabled,
+                    difficultyRange = settingsViewModel.settingsState.value.plusRange,
+                    operatorId = R.string.add,
+                    operatorColor = green
+                )
+                SettingsOperatorColumn(
+                    operatorSize = operatorSize,
+                    fontSize = fontSize,
+                    operatorEnabled = settingsViewModel.settingsState.value.isMinusEnabled,
+                    difficultyRange = settingsViewModel.settingsState.value.minusRange,
+                    operatorId = R.string.subtract,
+                    operatorColor = red
+                )
+                SettingsOperatorColumn(
+                    operatorSize = operatorSize,
+                    fontSize = fontSize,
+                    operatorEnabled = settingsViewModel.settingsState.value.isMultiplyEnabled,
+                    difficultyRange = settingsViewModel.settingsState.value.multiplyRange,
+                    operatorId = R.string.multiply,
+                    operatorColor = yellow
+                )
+                SettingsOperatorColumn(
+                    operatorSize = operatorSize,
+                    fontSize = fontSize,
+                    operatorEnabled = settingsViewModel.settingsState.value.isDivideEnabled,
+                    difficultyRange = settingsViewModel.settingsState.value.divideRange,
+                    operatorId = R.string.divide,
+                    operatorColor = blue
+                )
+            }
+            HorizontalDivider(
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp, 16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                StatsProgressColumn(
+                    modeEnabled = settingsViewModel.settingsState.value.isModeEnabled,
+                    fontSize = fontSize,
+                    iconSize = iconSize,
+                    totalAnswers = gameViewModel.gamesState.value.totalAnswers,
+                    activeTime = gameViewModel.gamesState.value.activeTime
+                )
+                StatsColumn(
+                    fontSize = fontSize,
+                    statsText = gameViewModel.gamesState.value.correctAnswers.toString(),
+                    iconId = R.drawable.round_check_24,
+                    iconSize = iconSize,
+                    iconColor = green
+                )
+
+                val percentage = String.format(
+                    Locale.getDefault(),
+                    "%.1f",
+                    gameViewModel.gamesState.value.correctAnswers.toFloat() /
+                            gameViewModel.gamesState.value.totalAnswers.toFloat() * 100f
+                )
+                StatsColumn(
+                    fontSize = fontSize,
+                    statsText = percentage,
+                    iconId = R.drawable.round_percent_24,
+                    iconSize = iconSize,
+                    iconColor = green
+                )
+
+                val correctPerMinute = String.format(
+                    Locale.getDefault(),
+                    "%.1f",
+                    gameViewModel.gamesState.value.correctAnswers.toFloat() /
+                            (gameViewModel.gamesState.value.activeTime.toFloat() / 60f)
+                )
+                StatsCorrectPerMinuteColumn(
+                    iconId = R.drawable.round_check_24,
+                    iconSize = iconSize,
+                    iconColor = green,
+                    iconText = "min",
+                    iconFontSize = fontSize/2,
+                    fontSize = fontSize,
+                    text = correctPerMinute
+                )
+
+                val bruttoTime = gameViewModel.gamesState.value.endTimeStamp-
+                        gameViewModel.gamesState.value.startTimeStamp
+                StatsColumn(
+                    fontSize = fontSize,
+                    statsText = formatTime(bruttoTime),
+                    iconId = R.drawable.round_access_time_24,
+                    iconSize = iconSize,
+                    iconColor = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+    }
+}
+
+fun formatTime(seconds: Long): String {
+    val days = seconds / (24 * 60 * 60)
+    val hours = (seconds % (24 * 60 * 60)) / 3600
+    val minutes = (seconds % 3600) / 60
+    val remainingSeconds = seconds % 60
+
+    val daysString = if (days > 0) "$days" else ""
+    val hoursString = if (hours > 0 || days > 0) {
+        if (hours < 10) "0$hours" else "$hours"
+    } else ""
+    val minutesString = if (minutes > 0 || hours > 0 || days > 0) {
+        if (minutes < 10) "0$minutes" else "$minutes"
+    } else ""
+    val secondsString = if (remainingSeconds > 0 || minutes > 0 || hours > 0 || days > 0) {
+        if (remainingSeconds < 10) "0$remainingSeconds" else "$remainingSeconds"
+    } else {
+        remainingSeconds.toString()
+    }
+
+    return buildString {
+        append(daysString)
+        if (hoursString.isNotEmpty()) append("$hoursString:")
+        if (minutesString.isNotEmpty()) append("$minutesString:")
+        append(secondsString)
+    }.trim()
+}

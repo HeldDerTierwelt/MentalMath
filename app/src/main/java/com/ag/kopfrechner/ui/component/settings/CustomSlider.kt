@@ -73,7 +73,7 @@ fun CustomSlider(
                 )
                 .padding(horizontal = 6.dp),
             text = String.format(
-                Locale.GERMAN,
+                Locale.getDefault(),
                 if (isToggled) "${(value * 10).roundToInt()} ex" else "${value.toInt()} min",
                 value
             ),
