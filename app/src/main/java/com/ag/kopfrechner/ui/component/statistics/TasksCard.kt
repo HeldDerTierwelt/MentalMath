@@ -33,7 +33,7 @@ import com.ag.kopfrechner.viewmodel.GameViewModel
 import java.util.Locale
 
 @Composable
-fun TaskCard(
+fun TasksCard(
     gameViewModel: GameViewModel,
     resultFontSize: androidx.compose.ui.unit.TextUnit,
     iconSize: androidx.compose.ui.unit.Dp

@@ -13,5 +13,5 @@
     <string name="settings">"Settings"</string>
     <string name="exercises">"Exercises"</string>
     <string name="active_score">"Active"</string>
-    <string name="total_score">"TOTAL"</string>
+    <string name="total_score">"Total"</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.ag.kopfrechner.ui.component.game
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -8,7 +9,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
@@ -40,14 +43,20 @@ fun CountdownTimer(
     Text(
         text = formattedTime,
         color = MaterialTheme.colorScheme.onPrimary,
-        fontSize = fontSize
+        fontSize = fontSize,
+        modifier = Modifier.padding(end = 16.dp)
     )
 }
 
 fun formatTime(seconds: Int): String {
-    val minutes = seconds / 60
+    val minutes = (seconds % 3600) / 60
     val remainingSeconds = seconds % 60
-    val minutesString = if (minutes < 10) "0$minutes" else "$minutes"
-    val secondsString = if (remainingSeconds < 10) "0$remainingSeconds" else "$remainingSeconds"
-    return "$minutesString:$secondsString"
+    return buildString {
+        if (minutes > 0) {
+            append("$minutes:")
+            append(remainingSeconds.toString().padStart(2, '0'))
+        } else {
+            append("$remainingSeconds")
+        }
+    }
 }

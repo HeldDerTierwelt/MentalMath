@@ -32,7 +32,7 @@ fun StatsProgressColumn(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var iconId = R.drawable.rounded_timer_24
-        var progressText = formatTime(activeTime)
+        var progressText = formatTime(activeTime.toLong())
         if (!modeEnabled) {
             iconId = R.drawable.tag
             progressText = String.format("%sex", totalAnswers.toString())
@@ -52,29 +52,22 @@ fun StatsProgressColumn(
     }
 }
 
-fun formatTime(seconds: Int): String {
-    val days = seconds / (24 * 60 * 60)
-    val hours = (seconds % (24 * 60 * 60)) / 3600
+fun formatTime(seconds: Long): String {
+    val hours = seconds / 3600
     val minutes = (seconds % 3600) / 60
     val remainingSeconds = seconds % 60
 
-    val daysString = if (days > 0) "$days" else ""
-    val hoursString = if (hours > 0 || days > 0) {
-        if (hours < 10) "0$hours" else "$hours"
-    } else ""
-    val minutesString = if (minutes > 0 || hours > 0 || days > 0) {
-        if (minutes < 10) "0$minutes" else "$minutes"
-    } else ""
-    val secondsString = if (remainingSeconds > 0 || minutes > 0 || hours > 0 || days > 0) {
-        if (remainingSeconds < 10) "0$remainingSeconds" else "$remainingSeconds"
-    } else {
-        remainingSeconds.toString()
-    }
-
     return buildString {
-        append(daysString)
-        if (hoursString.isNotEmpty()) append("$hoursString:")
-        if (minutesString.isNotEmpty()) append("$minutesString:")
-        append(secondsString)
-    }.trim()
+        if (hours > 0) {
+            append("$hours:")
+            append(minutes.toString().padStart(2, '0'))
+            append(":")
+            append(remainingSeconds.toString().padStart(2, '0'))
+        } else if (minutes > 0) {
+            append("$minutes:")
+            append(remainingSeconds.toString().padStart(2, '0'))
+        } else {
+            append("${remainingSeconds}s")
+        }
+    }
 }

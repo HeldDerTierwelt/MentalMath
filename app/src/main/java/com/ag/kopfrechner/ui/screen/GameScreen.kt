@@ -201,7 +201,6 @@ fun GameScreen(
                                     } else {
                                         gameViewModel.generateNewTask()
                                     }
-
                                 }
                             },
                             isToggled = gameState.input.isEmpty(),

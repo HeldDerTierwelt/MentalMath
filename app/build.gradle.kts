@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.ag.kopfrechner"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.ag.kopfrechner"

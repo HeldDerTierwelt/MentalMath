@@ -44,11 +44,12 @@ fun SettingsAndStatsCard(
 ) {
     val gameState = gameViewModel.gamesState.value
     val totalTime = gameState.endTimeStamp - gameState.startTimeStamp
-    val percentage = String.format(
+    val percentage = gameState.correctAnswers.toFloat() /
+            gameState.totalAnswers.toFloat() * 100f
+    val percentageString = if (percentage.isNaN()) "-" else String.format(
         Locale.getDefault(),
         "%.1f",
-        gameState.correctAnswers.toFloat() /
-                gameState.totalAnswers.toFloat() * 100f
+        percentage
     )
     val correctPerMinute = String.format(
         Locale.getDefault(),
@@ -56,14 +57,14 @@ fun SettingsAndStatsCard(
         gameState.correctAnswers.toFloat() /
                 (gameState.activeTime.toFloat() / 60f)
     )
-    val activeScoreValue = gameState.correctAnswers.toFloat()
-        .pow(2f) / (gameState.activeTime.toFloat() * (gameState.totalAnswers.toFloat() / 60f))
+    val activeScoreValue = gameState.correctAnswers.toFloat().pow(2f) /
+            ((gameState.activeTime.toFloat() / 60f) * maxOf(1f,gameState.totalAnswers.toFloat()))
     val activeScore = String.format(
         Locale.getDefault(), "%s:  %.2f", stringResource(R.string.active_score),
         activeScoreValue
     )
-    val totalScoreValue = gameState.correctAnswers.toFloat()
-        .pow(2f) / (totalTime.toFloat() * (gameState.totalAnswers.toFloat() / 60f))
+    val totalScoreValue = gameState.correctAnswers.toFloat().pow(2f) /
+            ((totalTime.toFloat() / 60f) * maxOf(1f,gameState.totalAnswers.toFloat()))
     val totalScore = String.format(
         Locale.getDefault(), "%s:  %.2f", stringResource(R.string.total_score),
         totalScoreValue
@@ -155,7 +156,7 @@ fun SettingsAndStatsCard(
 
                 StatsColumn(
                     fontSize = fontSize,
-                    statsText = percentage,
+                    statsText = percentageString,
                     iconId = R.drawable.round_percent_24,
                     iconSize = iconSize,
                     iconColor = green
@@ -215,7 +216,7 @@ fun SettingsAndStatsCard(
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
                 Icon(
-                    painter = painterResource(R.drawable.round_verified_24),
+                    painter = painterResource(R.drawable.round_star_24),
                     contentDescription = "totalScoreIcon",
                     modifier = Modifier.size(iconSize),
                     tint = green
@@ -224,31 +225,4 @@ fun SettingsAndStatsCard(
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
-}
-
-fun formatTime(seconds: Long): String {
-    val days = seconds / (24 * 60 * 60)
-    val hours = (seconds % (24 * 60 * 60)) / 3600
-    val minutes = (seconds % 3600) / 60
-    val remainingSeconds = seconds % 60
-
-    val daysString = if (days > 0) "$days" else ""
-    val hoursString = if (hours > 0 || days > 0) {
-        if (hours < 10) "0$hours" else "$hours"
-    } else ""
-    val minutesString = if (minutes > 0 || hours > 0 || days > 0) {
-        if (minutes < 10) "0$minutes" else "$minutes"
-    } else ""
-    val secondsString = if (remainingSeconds > 0 || minutes > 0 || hours > 0 || days > 0) {
-        if (remainingSeconds < 10) "0$remainingSeconds" else "$remainingSeconds"
-    } else {
-        remainingSeconds.toString()
-    }
-
-    return buildString {
-        append(daysString)
-        if (hoursString.isNotEmpty()) append("$hoursString:")
-        if (minutesString.isNotEmpty()) append("$minutesString:")
-        append(secondsString)
-    }.trim()
 }
