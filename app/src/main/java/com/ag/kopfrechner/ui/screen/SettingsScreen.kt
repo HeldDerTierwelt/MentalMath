@@ -1,5 +1,6 @@
 package com.ag.kopfrechner.ui.screen
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -46,6 +48,8 @@ fun SettingsScreen(
     settingsViewModel: SettingsViewModel,
     modifier: Modifier = Modifier
 ) {
+
+    val context = LocalContext.current
     val settingsState = settingsViewModel.settingsState.value
     val valueRangeOperators = 1f..9f
 
@@ -218,4 +222,7 @@ fun SettingsScreen(
             }
         }
     )
+    BackHandler {
+        (context as? android.app.Activity)?.moveTaskToBack(true)
+    }
 }
