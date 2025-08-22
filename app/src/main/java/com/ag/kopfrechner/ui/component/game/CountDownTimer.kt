@@ -14,25 +14,23 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ag.kopfrechner.viewmodel.GameViewModel
-import com.ag.kopfrechner.viewmodel.SettingsViewModel
+import kotlin.math.ceil
 
 @Composable
 fun CountdownTimer(
     fontSize: TextUnit,
     navController: NavController,
-    settingsViewModel: SettingsViewModel,
+    time: Long,
     gameViewModel: GameViewModel
 ) {
 
-    var timeLeftInSeconds = settingsViewModel.settingsState.value.limit.toInt() * 60 - gameViewModel.gamesState.value.activeTime
-    var formattedTime by remember { mutableStateOf(formatTime(timeLeftInSeconds)) }
+    var timeLeft = time - gameViewModel.gamesState.value.activeTime
+    var formattedTime by remember { mutableStateOf(formatTime(timeLeft)) }
 
-    LaunchedEffect(gameViewModel.gamesState.value.activeTime) {
-        val updatedTimeLeft = settingsViewModel.settingsState.value.limit.toInt() * 60 - gameViewModel.gamesState.value.activeTime
-        formattedTime = formatTime(updatedTimeLeft)
-        if (updatedTimeLeft <= 0) {
-            gameViewModel.setEndTimestamp()
-            gameViewModel.pauseTimer()
+    LaunchedEffect(timeLeft) {
+        formattedTime = formatTime(timeLeft)
+        if (timeLeft <= 0) {
+            gameViewModel.endGame()
             navController.navigate("statistics") {
                 popUpTo("game") { inclusive = true }
                 popUpTo("settings") { inclusive = true }
@@ -48,7 +46,8 @@ fun CountdownTimer(
     )
 }
 
-fun formatTime(seconds: Int): String {
+fun formatTime(milliseconds: Long): String {
+    val seconds = ceil(milliseconds / 1000.0).toLong()
     val minutes = (seconds % 3600) / 60
     val remainingSeconds = seconds % 60
     return buildString {

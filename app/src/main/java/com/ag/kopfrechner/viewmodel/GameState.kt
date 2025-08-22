@@ -19,9 +19,11 @@ data class GameState(
     val skippedAnswers: Int = 0,
     val totalAnswers: Int = 0,
 
-    val isTimerRunning: Boolean = false,
-    val activeTime: Int = 0,
-    val startTimeStamp: Long = 0,
-    val endTimeStamp: Long = Long.MAX_VALUE,
     val isGameStarted: Boolean = false,
+    val isTimerRunning: Boolean = false,
+    val activeTime: Long = 0,
+    val totalTime: Long = 0,
+    val startTimeStamp: Long = 0,
+    val pausedAt: Long = Long.MAX_VALUE,
+    val totalPauseDuration: Long = 0L
 ) : Parcelable

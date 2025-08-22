@@ -44,7 +44,6 @@ fun GameTopBar(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    gameViewModel.setEndTimestamp()
                     gameViewModel.pauseTimer()
                     navController.navigate("settings") {
                         popUpTo("game") { inclusive = true }
@@ -74,7 +73,7 @@ fun GameTopBar(
                 CountdownTimer(
                     fontSize = fontSize,
                     navController = navController,
-                    settingsViewModel = settingsViewModel,
+                    time = settingsViewModel.settingsState.value.limit.toLong()*60000L,
                     gameViewModel = gameViewModel
                 )
             }

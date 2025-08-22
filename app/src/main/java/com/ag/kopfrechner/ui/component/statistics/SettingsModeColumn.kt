@@ -31,11 +31,11 @@ fun SettingsModeColumn(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var iconId = R.drawable.tag
-        var limitText = String.format("%sex", (limit * 10).toString())
+        var limitText = String.format("%s", (limit * 10).toString())
         if (!modeEnabled) {
             iconId = R.drawable.round_hourglass_bottom_24
             limitText =
-                String.format("%smin", limit)
+                String.format("%s:00", limit)
         }
         Spacer(modifier = Modifier.height(8.dp))
         Icon(

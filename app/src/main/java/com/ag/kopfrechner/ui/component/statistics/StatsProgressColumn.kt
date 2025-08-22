@@ -23,7 +23,7 @@ fun StatsProgressColumn(
     fontSize: TextUnit,
     iconSize: Dp,
     totalAnswers: Int,
-    activeTime: Int,
+    activeTime: Long,
 ) {
 
     Column(
@@ -32,7 +32,7 @@ fun StatsProgressColumn(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         var iconId = R.drawable.rounded_timer_24
-        var progressText = formatTime(activeTime.toLong())
+        var progressText = formatTime(activeTime)
         if (!modeEnabled) {
             iconId = R.drawable.tag
             progressText = String.format("%sex", totalAnswers.toString())
@@ -52,7 +52,8 @@ fun StatsProgressColumn(
     }
 }
 
-fun formatTime(seconds: Long): String {
+fun formatTime(ms: Long): String {
+    val seconds = ms / 1000
     val hours = seconds / 3600
     val minutes = (seconds % 3600) / 60
     val remainingSeconds = seconds % 60

@@ -43,7 +43,7 @@ fun SettingsAndStatsCard(
     iconSize: Dp
 ) {
     val gameState = gameViewModel.gamesState.value
-    val totalTime = gameState.endTimeStamp - gameState.startTimeStamp
+    val totalTime = gameState.totalTime
     val percentage = gameState.correctAnswers.toFloat() /
             gameState.totalAnswers.toFloat() * 100f
     val percentageString = if (percentage.isNaN()) "-" else String.format(
@@ -58,13 +58,13 @@ fun SettingsAndStatsCard(
                 (gameState.activeTime.toFloat() / 60f)
     )
     val activeScoreValue = gameState.correctAnswers.toFloat().pow(2f) /
-            ((gameState.activeTime.toFloat() / 60f) * maxOf(1f,gameState.totalAnswers.toFloat()))
+            ((gameState.activeTime.toFloat() / 60000f) * maxOf(1f,gameState.totalAnswers.toFloat()))
     val activeScore = String.format(
         Locale.getDefault(), "%s:  %.2f", stringResource(R.string.active_score),
         activeScoreValue
     )
     val totalScoreValue = gameState.correctAnswers.toFloat().pow(2f) /
-            ((totalTime.toFloat() / 60f) * maxOf(1f,gameState.totalAnswers.toFloat()))
+            ((totalTime.toFloat() / 60000f) * maxOf(1f,gameState.totalAnswers.toFloat()))
     val totalScore = String.format(
         Locale.getDefault(), "%s:  %.2f", stringResource(R.string.total_score),
         totalScoreValue

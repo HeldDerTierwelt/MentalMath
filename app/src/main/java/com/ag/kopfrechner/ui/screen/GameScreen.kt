@@ -84,7 +84,7 @@ fun GameScreen(
                         if (settingsState.isModeEnabled) {
                             gameState.totalAnswers / (settingsState.limit * 10).toFloat()
                         } else {
-                            gameState.activeTime / (settingsState.limit * 60)
+                            gameState.activeTime / (settingsState.limit * 60000L)
                         }
                     },
                     modifier = Modifier
