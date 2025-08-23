@@ -25,7 +25,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -56,8 +57,10 @@ fun GameScreen(
     val coroutineScope = rememberCoroutineScope()
 
     // Calculate sizes based on screen height
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
+    val containerSizePx = LocalWindowInfo.current.containerSize // IntSize in px
+    val density = LocalDensity.current
+    val screenHeight = with(density) { containerSizePx.height.toDp() }
+
     val roundButtonSize = (0.10f * screenHeight.value).dp
     val titleFontSize = (0.032f * screenHeight.value).sp
     val textLabelFontSize = (0.0180f * screenHeight.value).sp

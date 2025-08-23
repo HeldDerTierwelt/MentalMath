@@ -186,26 +186,21 @@ class GameViewModel(
 
     override fun onPause(owner: LifecycleOwner) {
         super.onPause(owner)
-        pauseTimer()
-    }
-
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-        pauseTimer()
+        if (_gameState.value.isGameStarted && _gameState.value.isTimerRunning) {
+            pauseTimer()
+        }
     }
 
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
-        val totalPauseDuration = _gameState.value.totalPauseDuration + (System.currentTimeMillis() - _gameState.value.pausedAt)
-        _gameState.value = _gameState.value.copy(totalPauseDuration = totalPauseDuration)
-        saveState()
-        startTimer()
+        if (_gameState.value.isGameStarted && !_gameState.value.isTimerRunning) {
+            val totalPauseDuration = _gameState.value.totalPauseDuration + (System.currentTimeMillis() - _gameState.value.pausedAt)
+            _gameState.value = _gameState.value.copy(totalPauseDuration = totalPauseDuration)
+            saveState()
+            startTimer()
+        }
     }
 
-    override fun onDestroy(owner: LifecycleOwner) {
-        super.onDestroy(owner)
-        pauseTimer()
-    }
 
     private fun saveState() {
         savedStateHandle["game_state"] = _gameState.value

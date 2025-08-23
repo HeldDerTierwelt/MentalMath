@@ -34,7 +34,6 @@ fun GameTopBar(
     fontSize: TextUnit
 ) {
     TopAppBar(
-
         title = {
         },
         colors = TopAppBarDefaults.topAppBarColors(
@@ -53,7 +52,7 @@ fun GameTopBar(
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Close,
-                    contentDescription = "",
+                    contentDescription = "close",
                     modifier = Modifier.size(iconSize),
                     tint = if (isSystemInDarkTheme()) softRed else red
                 )

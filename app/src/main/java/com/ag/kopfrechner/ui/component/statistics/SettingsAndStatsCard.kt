@@ -40,7 +40,8 @@ fun SettingsAndStatsCard(
     settingsViewModel: SettingsViewModel,
     operatorSize: TextUnit,
     fontSize: TextUnit,
-    iconSize: Dp
+    iconSize: Dp,
+    modifier: Modifier
 ) {
     val gameState = gameViewModel.gamesState.value
     val totalTime = gameState.totalTime
@@ -55,7 +56,7 @@ fun SettingsAndStatsCard(
         Locale.getDefault(),
         "%.1f",
         gameState.correctAnswers.toFloat() /
-                (gameState.activeTime.toFloat() / 60f)
+                (gameState.activeTime.toFloat() / 60000f)
     )
     val activeScoreValue = gameState.correctAnswers.toFloat().pow(2f) /
             ((gameState.activeTime.toFloat() / 60000f) * maxOf(1f,gameState.totalAnswers.toFloat()))
@@ -71,21 +72,20 @@ fun SettingsAndStatsCard(
     )
     Card(
         shape = RoundedCornerShape(32.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 16.dp),
+        modifier = modifier
+            .fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary
         ),
     ) {
         Column(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = modifier.fillMaxHeight(),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(16.dp, 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -134,7 +134,7 @@ fun SettingsAndStatsCard(
                 color = MaterialTheme.colorScheme.onPrimary
             )
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(16.dp, 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -184,9 +184,9 @@ fun SettingsAndStatsCard(
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.onPrimary
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = modifier.height(8.dp))
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(16.dp, 8.dp),
                 horizontalArrangement = Arrangement.Center,
@@ -195,16 +195,16 @@ fun SettingsAndStatsCard(
             Text(
                 text = activeScore,
                 fontSize = fontSize,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = modifier.padding(horizontal = 16.dp)
             )
                 Icon(
                     painter = painterResource(R.drawable.round_star_24),
                     contentDescription = "activeSoreIcon",
-                    modifier = Modifier.size(iconSize),
+                    modifier = modifier.size(iconSize),
                     tint = yellow
                 )}
             Row(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxWidth()
                     .padding(16.dp, 8.dp),
                 horizontalArrangement = Arrangement.Center,
@@ -213,16 +213,15 @@ fun SettingsAndStatsCard(
             Text(
                 text = totalScore,
                 fontSize = fontSize,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = modifier.padding(horizontal = 16.dp)
             )
                 Icon(
                     painter = painterResource(R.drawable.round_star_24),
                     contentDescription = "totalScoreIcon",
-                    modifier = Modifier.size(iconSize),
+                    modifier = modifier.size(iconSize),
                     tint = green
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }

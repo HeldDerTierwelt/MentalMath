@@ -17,8 +17,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -54,8 +55,10 @@ fun SettingsScreen(
     val valueRangeOperators = 1f..9f
 
     // Calculate sizes based on screen height
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
+    val containerSizePx = LocalWindowInfo.current.containerSize // IntSize in px
+    val density = LocalDensity.current
+    val screenHeight = with(density) { containerSizePx.height.toDp() }
+
     val roundButtonSize = (0.09f * screenHeight.value).dp
     val sliderSize = (0.05f * screenHeight.value).dp
     val operatorButtonFontSize = (0.057f * screenHeight.value).sp

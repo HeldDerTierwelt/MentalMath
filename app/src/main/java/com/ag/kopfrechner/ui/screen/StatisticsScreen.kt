@@ -1,5 +1,10 @@
 package com.ag.kopfrechner.ui.screen
 
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
+import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Arrangement
@@ -18,11 +23,23 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.FileProvider
+import androidx.core.view.drawToBitmap
 import androidx.navigation.NavController
 import com.ag.kopfrechner.R
 import com.ag.kopfrechner.ui.component.statistics.DoneButton
@@ -31,6 +48,8 @@ import com.ag.kopfrechner.ui.component.statistics.StatisticsTopBar
 import com.ag.kopfrechner.ui.component.statistics.TasksCard
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
+import java.io.File
+import java.io.FileOutputStream
 
 @Composable
 fun StatisticsScreen(
@@ -39,13 +58,16 @@ fun StatisticsScreen(
     settingsViewModel: SettingsViewModel,
 ) {
     // Calculate sizes based on screen size
-    val configuration = LocalConfiguration.current
-    val screenHeight = configuration.screenHeightDp.dp
-    val screenWidth = configuration.screenWidthDp.dp
+    val containerSizePx = LocalWindowInfo.current.containerSize // IntSize in px
+    val density = LocalDensity.current
+    val localView = LocalView.current
+    val screenWidth = with(density) { containerSizePx.width.toDp() }
+    val screenHeight = with(density) { containerSizePx.height.toDp() }
 
     val roundButtonSize = (0.09f * screenHeight.value).dp
     val doneButtonFontSize = (0.038f * screenHeight.value).sp
     val doneIconSize = (0.057f * screenHeight.value).dp
+    val shareIconSize = (0.038f * screenHeight.value).dp
 
     val titleFontSize = (0.032f * screenHeight.value).sp
     val resultFontSize = (0.057f * screenWidth.value).sp
@@ -55,9 +77,74 @@ fun StatisticsScreen(
     val columnPadding = (0.028f * screenHeight.value).dp
     val backPressedDispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
 
+    var statsCardCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+    var hasCapturedCoordinates by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    fun captureSettingsCardBitmap(): Bitmap? {
+        val coordinates = statsCardCoordinates ?: return null
+
+        val fullBitmap = localView.drawToBitmap()
+
+        val bounds = coordinates.boundsInWindow()
+
+        val left = bounds.left.toInt().coerceIn(0, fullBitmap.width)
+        val top = bounds.top.toInt().coerceIn(0, fullBitmap.height)
+        val width = bounds.width.toInt().coerceAtMost(fullBitmap.width - left)
+        val height = bounds.height.toInt().coerceAtMost(fullBitmap.height - top)
+
+        return Bitmap.createBitmap(fullBitmap, left, top, width, height)
+    }
+
+    // Speichern im Cache und URI holen
+    fun saveBitmapToCacheAndGetUri(context: Context, bitmap: Bitmap): Uri {
+        val cachePath = File(context.cacheDir, "images")
+        cachePath.mkdirs()
+        val file = File(cachePath, "shared_image.png")
+        FileOutputStream(file).use { stream ->
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        }
+        return FileProvider.getUriForFile(
+            context,
+            "${context.packageName}.fileprovider",
+            file
+        )
+    }
+
+    fun shareBitmap(context: Context, bitmap: Bitmap) {
+        try {
+            val imageUri = saveBitmapToCacheAndGetUri(context, bitmap)
+
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_STREAM, imageUri)
+                type = "image/png"
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+
+            context.startActivity(
+                Intent.createChooser(shareIntent, context.getString(R.string.share_score))
+            )
+        } catch (e: Exception) {
+            Log.e("StatisticsScreen", "Fehler beim Teilen des Bildes", e)
+        }
+    }
+
     Scaffold(
         topBar = {
-            StatisticsTopBar(R.string.game_result, titleFontSize)
+            StatisticsTopBar(
+                R.string.game_result,
+                titleFontSize,
+                shareIconSize,
+                onShareClick = {
+                    val bitmap = captureSettingsCardBitmap()
+                    if (bitmap != null) {
+                        shareBitmap(context, bitmap)
+                    } else {
+                        Log.e("StatisticsScreen", "Bitmap konnte nicht erstellt werden")
+                    }
+                }
+            )
         },
         content = { padding ->
             Surface(
@@ -86,8 +173,23 @@ fun StatisticsScreen(
                             fontSize = resultFontSize,
                             operatorSize = operatorFontSize,
                             iconSize = modeIconSize,
+                            modifier = Modifier
+                                .onGloballyPositioned { coords ->
+
+                                    if (!hasCapturedCoordinates) {
+                                        val size = coords.size
+                                        if (size.width > 50 && size.height > 50) {
+                                            statsCardCoordinates = coords
+                                            hasCapturedCoordinates = true
+                                            Log.d(
+                                                "StatsCard",
+                                                "Coordinates gespeichert mit Größe $size"
+                                            )
+                                        }
+                                    }
+                                }
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
                         TasksCard(
                             gameViewModel = gameViewModel,
                             resultFontSize = resultFontSize,
@@ -130,4 +232,5 @@ fun StatisticsScreen(
             callback.remove()
         }
     }
+
 }
