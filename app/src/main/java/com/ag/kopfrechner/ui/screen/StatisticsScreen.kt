@@ -115,10 +115,9 @@ fun StatisticsScreen(
         try {
             val imageUri = saveBitmapToCacheAndGetUri(context, bitmap)
 
-            val shareIntent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_STREAM, imageUri)
+            val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, imageUri)
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
 
@@ -126,7 +125,7 @@ fun StatisticsScreen(
                 Intent.createChooser(shareIntent, context.getString(R.string.share_score))
             )
         } catch (e: Exception) {
-            Log.e("StatisticsScreen", "Fehler beim Teilen des Bildes", e)
+            Log.e("StatisticsScreen", "Error when sharing score", e)
         }
     }
 

@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag.kopfrechner.R
+import com.ag.kopfrechner.data.MathTaskDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class GameViewModel(
-    private val savedStateHandle: SavedStateHandle
+    private val savedStateHandle: SavedStateHandle,
+    private val mathTaskDao: MathTaskDao // Dao hinzugefügt
 ) : ViewModel(), DefaultLifecycleObserver {
     private val _gameState = mutableStateOf(
         savedStateHandle.get<GameState>("game_state") ?: GameState()
@@ -48,18 +50,39 @@ class GameViewModel(
     }
 
     fun generateNewTask() {
-        val operator = _gameState.value.enabledOperators.random()
-        val difficulty =
-            Random.nextInt(operator.second.first.toInt(), operator.second.second.toInt() + 1)
+        viewModelScope.launch(Dispatchers.IO) {
+            val operatorSetting = _gameState.value.enabledOperators.random()
+            val operator = operatorSetting.first
+            val difficulty =
+                Random.nextInt(operatorSetting.second.first.toInt(), operatorSetting.second.second.toInt() + 1)
 
-        _gameState.value = _gameState.value.copy(
-            operand1 = difficulty,
-            operand2 = difficulty,
-            operator = operator.first,
-            input = "",
-            isCorrect = null
-        )
-        saveState()
+            val task = when (operator) {
+                R.string.add -> mathTaskDao.getPlusTasksByDifficulty(difficulty).randomOrNull()
+                R.string.subtract -> mathTaskDao.getMinusTasksByDifficulty(difficulty).randomOrNull()
+                R.string.multiply -> mathTaskDao.getMultiplyTasksByDifficulty(difficulty).randomOrNull()
+                R.string.divide -> mathTaskDao.getDivideTasksByDifficulty(difficulty).randomOrNull()
+                else -> null
+            }
+
+            if (task != null) {
+                _gameState.value = _gameState.value.copy(
+                    operand1 = task.operand1,
+                    operand2 = task.operand1,
+                    operator = operator,
+                    input = "",
+                    isCorrect = null
+                )
+            } else {
+                _gameState.value = _gameState.value.copy(
+                    operand1 = difficulty,
+                    operand2 = difficulty,
+                    operator = operator,
+                    input = "",
+                    isCorrect = null
+                )
+            }
+            saveState()
+        }
     }
 
     fun checkAnswerAndCount() {
