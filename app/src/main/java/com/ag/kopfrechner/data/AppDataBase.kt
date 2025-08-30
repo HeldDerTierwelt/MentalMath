@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [MathTask::class], version = 1)
+@Database(entities = [MathTask::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun mathTaskDao(): MathTaskDao
 
@@ -15,10 +15,10 @@ abstract class AppDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "math_task_database"
-                ).build()
+                                context.applicationContext,
+                                AppDatabase::class.java,
+                                "math_task_database"
+                            ).build()
                 INSTANCE = instance
                 instance
             }

@@ -13,15 +13,18 @@ interface MathTaskDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAll(tasks: List<MathTask>)
 
-    @Query("SELECT * FROM math_tasks WHERE difficultyMultiply = :difficulty")
-    suspend fun getMultiplyTasksByDifficulty(difficulty: Int): List<MathTask>
+    @Query("SELECT * FROM math_tasks WHERE difficultyAddition = :difficulty ORDER BY RANDOM() LIMIT 1")
+    suspend fun getAdditionTasksByDifficulty(difficulty: Int): List<MathTask>
 
-    @Query("SELECT * FROM math_tasks WHERE difficultyPlus = :difficulty")
-    suspend fun getPlusTasksByDifficulty(difficulty: Int): List<MathTask>
+    @Query("SELECT * FROM math_tasks WHERE difficultySubtraction = :difficulty ORDER BY RANDOM() LIMIT 1")
+    suspend fun getSubtractionTasksByDifficulty(difficulty: Int): List<MathTask>
 
-    @Query("SELECT * FROM math_tasks WHERE difficultyMinus = :difficulty")
-    suspend fun getMinusTasksByDifficulty(difficulty: Int): List<MathTask>
+    @Query("SELECT * FROM math_tasks WHERE difficultyMultiplication = :difficulty ORDER BY RANDOM() LIMIT 1")
+    suspend fun getMultiplicationTasksByDifficulty(difficulty: Int): List<MathTask>
 
-    @Query("SELECT * FROM math_tasks WHERE difficultyDivide = :difficulty")
-    suspend fun getDivideTasksByDifficulty(difficulty: Int): List<MathTask>
+    @Query("SELECT * FROM math_tasks WHERE difficultyDivision = :difficulty ORDER BY RANDOM() LIMIT 1")
+    suspend fun getDivisionTasksByDifficulty(difficulty: Int): List<MathTask>
+
+    @Query("SELECT COUNT(*) FROM math_tasks")
+    suspend fun getCount(): Int
 }

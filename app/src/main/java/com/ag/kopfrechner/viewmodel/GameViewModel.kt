@@ -17,7 +17,7 @@ import kotlin.random.Random
 
 class GameViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val mathTaskDao: MathTaskDao // Dao hinzugefügt
+    private val mathTaskDao: MathTaskDao
 ) : ViewModel(), DefaultLifecycleObserver {
     private val _gameState = mutableStateOf(
         savedStateHandle.get<GameState>("game_state") ?: GameState()
@@ -57,17 +57,17 @@ class GameViewModel(
                 Random.nextInt(operatorSetting.second.first.toInt(), operatorSetting.second.second.toInt() + 1)
 
             val task = when (operator) {
-                R.string.add -> mathTaskDao.getPlusTasksByDifficulty(difficulty).randomOrNull()
-                R.string.subtract -> mathTaskDao.getMinusTasksByDifficulty(difficulty).randomOrNull()
-                R.string.multiply -> mathTaskDao.getMultiplyTasksByDifficulty(difficulty).randomOrNull()
-                R.string.divide -> mathTaskDao.getDivideTasksByDifficulty(difficulty).randomOrNull()
+                R.string.add -> mathTaskDao.getAdditionTasksByDifficulty(difficulty).getOrNull(0)
+                R.string.subtract -> mathTaskDao.getSubtractionTasksByDifficulty(difficulty).getOrNull(0)
+                R.string.multiply -> mathTaskDao.getMultiplicationTasksByDifficulty(difficulty).getOrNull(0)
+                R.string.divide -> mathTaskDao.getDivisionTasksByDifficulty(difficulty).getOrNull(0)
                 else -> null
             }
 
             if (task != null) {
                 _gameState.value = _gameState.value.copy(
                     operand1 = task.operand1,
-                    operand2 = task.operand1,
+                    operand2 = task.operand2,
                     operator = operator,
                     input = "",
                     isCorrect = null
