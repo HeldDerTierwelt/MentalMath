@@ -2,6 +2,7 @@ package com.ag.kopfrechner.data
 
 import android.content.Context
 import androidx.room.Room
+import com.github.luben.zstd.ZstdInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -11,13 +12,14 @@ class DbImporter(private val context: Context) {
 
     fun importDb(): AppDatabase {
 
+        val zstAssetName = "math_tasks.db.zst"
         val gzAssetName = "math_tasks.db.bin"
         val dbFilePath = context.filesDir.absolutePath + "/math_tasks.db"
 
         val dbFile = context.getFileStreamPath("math_tasks.db")
         if (!dbFile.exists()) {
-            context.assets.open(gzAssetName).use { gzStream ->
-                decompressGzFile(gzStream, dbFilePath)
+            context.assets.open(zstAssetName).use { stream ->
+                decompressZstdFile(stream, dbFilePath)
             }
         }
 
@@ -39,6 +41,23 @@ class DbImporter(private val context: Context) {
                     var bytesRead: Int
                     while (gzip.read(buffer).also { bytesRead = it } != -1) {
                         fos.write(buffer, 0, bytesRead)
+                    }
+                }
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun decompressZstdFile(input: InputStream, outputFilePath: String) {
+        val buffer = ByteArray(8192)
+
+        try {
+            ZstdInputStream(input).use { zstd ->
+                FileOutputStream(outputFilePath).use { out ->
+                    var read: Int
+                    while (zstd.read(buffer).also { read = it } != -1) {
+                        out.write(buffer, 0, read)
                     }
                 }
             }
