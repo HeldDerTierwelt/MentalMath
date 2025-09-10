@@ -70,7 +70,7 @@ fun GameScreen(
     val iconSizeDoubleArrow = (0.052f * screenHeight.value).dp
     val iconSizeBackSpace = (0.038f * screenHeight.value).dp
     val columnPadding = (0.028f * screenHeight.value).dp
-    val resultLineWidth = (0.30f * screenHeight.value).dp
+    val resultLineWidth = (0.32f * screenHeight.value).dp
 
     Scaffold(
         topBar = {

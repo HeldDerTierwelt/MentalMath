@@ -13,7 +13,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.ag.kopfrechner.data.DbImporter
-import com.ag.kopfrechner.data.MathTaskDao
+import com.ag.kopfrechner.data.dao.AdditionTaskDao
+import com.ag.kopfrechner.data.dao.SubtractionTaskDao
+import com.ag.kopfrechner.data.dao.MultiplicationTaskDao
+import com.ag.kopfrechner.data.dao.DivisionTaskDao
 import com.ag.kopfrechner.ui.screen.MyApp
 import com.ag.kopfrechner.ui.theme.MyApplicationTheme
 import com.ag.kopfrechner.viewmodel.GameViewModel
@@ -29,16 +32,27 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             val context = applicationContext
             val dbImporter = DbImporter(context)
-            var mathDao by remember { mutableStateOf<MathTaskDao?>(null) }
+            var additionDao by remember { mutableStateOf<AdditionTaskDao?>(null) }
+            var subtractionDao by remember { mutableStateOf<SubtractionTaskDao?>(null) }
+            var multiplicationDao by remember { mutableStateOf<MultiplicationTaskDao?>(null) }
+            var divisionDao by remember { mutableStateOf<DivisionTaskDao?>(null) }
 
             LaunchedEffect(Unit) {
                 val db = dbImporter.importDb()
-                mathDao = db.mathTaskDao()
+                additionDao = db.additionTaskDao()
+                subtractionDao = db.subtractionTaskDao()
+                multiplicationDao = db.multiplicationTaskDao()
+                divisionDao = db.divisionTaskDao()
             }
 
-            if (mathDao != null) {
+            if (additionDao != null && subtractionDao != null && multiplicationDao != null && divisionDao != null) {
                 val gameViewModel: GameViewModel = viewModel(
-                    factory = GameViewModelFactory(mathDao!!)
+                    factory = GameViewModelFactory(
+                        additionDao!!,
+                        subtractionDao!!,
+                        multiplicationDao!!,
+                        divisionDao!!
+                    )
                 )
 
                 MyApplicationTheme {

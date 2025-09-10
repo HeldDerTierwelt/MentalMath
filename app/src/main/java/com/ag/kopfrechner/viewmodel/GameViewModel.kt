@@ -8,7 +8,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag.kopfrechner.R
-import com.ag.kopfrechner.data.MathTaskDao
+import com.ag.kopfrechner.data.MathTask
+import com.ag.kopfrechner.data.dao.AdditionTaskDao
+import com.ag.kopfrechner.data.dao.DivisionTaskDao
+import com.ag.kopfrechner.data.dao.MultiplicationTaskDao
+import com.ag.kopfrechner.data.dao.SubtractionTaskDao
+import com.ag.kopfrechner.data.entity.toMathTask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -17,7 +22,10 @@ import kotlin.random.Random
 
 class GameViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val mathTaskDao: MathTaskDao
+    private val additionTaskDao: AdditionTaskDao,
+    private val subtractionTaskDao: SubtractionTaskDao,
+    private val multiplicationTaskDao: MultiplicationTaskDao,
+    private val divisionTaskDao: DivisionTaskDao
 ) : ViewModel(), DefaultLifecycleObserver {
     private val _gameState = mutableStateOf(
         savedStateHandle.get<GameState>("game_state") ?: GameState()
@@ -27,7 +35,7 @@ class GameViewModel(
     val gamesState: State<GameState> = _gameState
 
     fun appendToInput(number: Int) {
-        if (_gameState.value.input.length < 7) {
+        if (_gameState.value.input.length < 8) {
             if (_gameState.value.input == "0") {
                 clearInput()
             }
@@ -56,18 +64,28 @@ class GameViewModel(
             val difficulty =
                 Random.nextInt(operatorSetting.second.first.toInt(), operatorSetting.second.second.toInt() + 1)
 
-            val task = when (operator) {
-                R.string.add -> mathTaskDao.getAdditionTasksByDifficulty(difficulty).getOrNull(0)
-                R.string.subtract -> mathTaskDao.getSubtractionTasksByDifficulty(difficulty).getOrNull(0)
-                R.string.multiply -> mathTaskDao.getMultiplicationTasksByDifficulty(difficulty).getOrNull(0)
-                R.string.divide -> mathTaskDao.getDivisionTasksByDifficulty(difficulty).getOrNull(0)
+            val mathTask: MathTask? = when (operator) {
+                R.string.add -> additionTaskDao.getAdditionTasksByDifficulty(difficulty).getOrNull(0)?.toMathTask()
+                R.string.subtract -> subtractionTaskDao.getSubtractionTasksByDifficulty(difficulty).getOrNull(0)?.toMathTask()
+                R.string.multiply -> multiplicationTaskDao.getMultiplicationTasksByDifficulty(difficulty).getOrNull(0)?.toMathTask()
+                R.string.divide -> divisionTaskDao.getDivisionTasksByDifficulty(difficulty).getOrNull(0)?.toMathTask()
                 else -> null
             }
 
-            if (task != null) {
+            if (mathTask != null) {
+                val operand1 = if (operator == R.string.divide) {
+                    mathTask.operand1*mathTask.operand2
+                } else {
+                    mathTask.operand1
+                }
+                val operand2 = if (operator == R.string.divide) {
+                    mathTask.operand1
+                } else {
+                    mathTask.operand2
+                }
                 _gameState.value = _gameState.value.copy(
-                    operand1 = task.operand1,
-                    operand2 = task.operand2,
+                    operand1 = operand1,
+                    operand2 = operand2,
                     operator = operator,
                     input = "",
                     isCorrect = null
