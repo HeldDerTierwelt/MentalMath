@@ -2,6 +2,7 @@ package com.ag.kopfrechner.ui.component.statistics
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,7 +57,9 @@ fun TasksCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = stringResource(R.string.exercises),
+                modifier = Modifier.weight(1f), // Der erste Text nimmt den verbleibenden Platz ein
+
+                        text = stringResource(R.string.exercises),
                 fontSize = resultFontSize
             )
             Icon(
@@ -69,7 +72,7 @@ fun TasksCard(
         }
         if (isExpanded) {
             gameViewModel.gamesState.value.tasks.forEach { task ->
-                Row(
+                FlowRow(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp, 4.dp),
@@ -85,7 +88,7 @@ fun TasksCard(
                     )
                     Text(
                         text = exercise,
-                        fontSize = resultFontSize
+                        fontSize = resultFontSize,
                     )
 
                     val isCorrect =
@@ -101,11 +104,13 @@ fun TasksCard(
                             tint = green
                         )
 
-                        false -> Row(horizontalArrangement = Arrangement.End) {
+                        false -> {
+                            Spacer(modifier = Modifier.weight(1f))
                             Text(
                                 text = task.userInput,
                                 color = red,
-                                fontSize = resultFontSize
+                                fontSize = resultFontSize,
+                                modifier = Modifier.align(Alignment.CenterVertically)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Icon(
@@ -117,6 +122,7 @@ fun TasksCard(
                                 tint = red
                             )
                         }
+
 
                         null -> Icon(
                             painter = painterResource(R.drawable.round_cancel_24),
