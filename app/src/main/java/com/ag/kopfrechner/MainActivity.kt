@@ -14,9 +14,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.ag.kopfrechner.data.DbImporter
 import com.ag.kopfrechner.data.dao.AdditionTaskDao
-import com.ag.kopfrechner.data.dao.SubtractionTaskDao
-import com.ag.kopfrechner.data.dao.MultiplicationTaskDao
 import com.ag.kopfrechner.data.dao.DivisionTaskDao
+import com.ag.kopfrechner.data.dao.MultiplicationTaskDao
+import com.ag.kopfrechner.data.dao.SubtractionTaskDao
 import com.ag.kopfrechner.ui.screen.MyApp
 import com.ag.kopfrechner.ui.theme.MyApplicationTheme
 import com.ag.kopfrechner.viewmodel.GameViewModel
@@ -54,7 +54,7 @@ class MainActivity : ComponentActivity() {
                         divisionDao!!
                     )
                 )
-
+                lifecycle.addObserver(gameViewModel)
                 MyApplicationTheme {
                     MyApp(
                         settingsViewModel = settingsViewModel,

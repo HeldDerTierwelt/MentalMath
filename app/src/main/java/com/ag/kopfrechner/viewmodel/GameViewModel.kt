@@ -58,6 +58,7 @@ class GameViewModel(
     }
 
     fun generateNewTask() {
+        clearInput()
         viewModelScope.launch(Dispatchers.IO) {
             val operatorSetting = _gameState.value.enabledOperators.random()
             val operator = operatorSetting.first
@@ -223,6 +224,10 @@ class GameViewModel(
         )
         saveState()
         timerJob?.cancel()
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
     }
 
     override fun onPause(owner: LifecycleOwner) {

@@ -140,7 +140,7 @@ fun StatisticsScreen(
                     if (bitmap != null) {
                         shareBitmap(context, bitmap)
                     } else {
-                        Log.e("StatisticsScreen", "Bitmap konnte nicht erstellt werden")
+                        Log.e("StatisticsScreen", "Bitmap could not be captured")
                     }
                 }
             )

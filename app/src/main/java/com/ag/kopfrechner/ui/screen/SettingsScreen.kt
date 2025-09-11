@@ -107,7 +107,7 @@ fun SettingsScreen(
                         CustomSlider(
                             value = settingsState.limit,
                             onValueChange = { settingsViewModel.updateLimit(it) },
-                            valueRange = 1f..10f,
+                            valueRange = 1f..5f,
                             isToggled = settingsState.isModeEnabled,
                             size = sliderSize,
                             activeTrackColor = MaterialTheme.colorScheme.onSurface

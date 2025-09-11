@@ -49,6 +49,7 @@ fun StatisticsTopBar(
                 Icon(
                     imageVector = Icons.Rounded.Share,
                     contentDescription = "share",
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(iconSize),
                 )
             }

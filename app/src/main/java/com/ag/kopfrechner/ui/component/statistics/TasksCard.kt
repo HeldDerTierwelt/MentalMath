@@ -38,7 +38,7 @@ fun TasksCard(
     resultFontSize: androidx.compose.ui.unit.TextUnit,
     iconSize: androidx.compose.ui.unit.Dp
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
+    var isExpanded by remember { mutableStateOf(true) }
     Card(
         shape = RoundedCornerShape(32.dp),
         modifier = Modifier

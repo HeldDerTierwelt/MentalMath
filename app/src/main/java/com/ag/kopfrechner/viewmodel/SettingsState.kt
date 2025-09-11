@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class SettingsState(
     val isModeEnabled: Boolean = true,
-    val limit: Float = 5f,
+    val limit: Float = 3f,
 
     val plusRange: Pair<Float, Float> = 2f to 5f,
     val minusRange:  Pair<Float, Float> = 2f to 5f,
