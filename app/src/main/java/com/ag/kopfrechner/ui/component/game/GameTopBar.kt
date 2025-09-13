@@ -43,8 +43,8 @@ fun GameTopBar(
                 onClick = {
                     gameViewModel.pauseTimer()
                     navController.navigate("settings") {
-                        popUpTo("game") { inclusive = true }
-                        popUpTo("settings") { inclusive = true }
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
                     }
                 }
             ) {

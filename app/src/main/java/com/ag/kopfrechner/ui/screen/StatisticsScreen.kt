@@ -200,9 +200,8 @@ fun StatisticsScreen(
                         icon = Icons.Rounded.Check,
                         onClick = {
                             navController.navigate("settings") {
-                                popUpTo("statistics") { inclusive = true }
-                                popUpTo("settings") { inclusive = true }
-                                popUpTo("game") { inclusive = true }
+                                popUpTo(0) { inclusive = true }
+                                launchSingleTop = true
                             }
                         },
                         size = roundButtonSize,
@@ -219,9 +218,8 @@ fun StatisticsScreen(
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 navController.navigate("settings") {
-                    popUpTo("statistics") { inclusive = true }
-                    popUpTo("settings") { inclusive = true }
-                    popUpTo("game") { inclusive = true }
+                    popUpTo(0) { inclusive = true }
+                    launchSingleTop = true
                 }
             }
         }

@@ -32,8 +32,8 @@ fun CountdownTimer(
         if (timeLeft <= 0) {
             gameViewModel.endGame()
             navController.navigate("statistics") {
-                popUpTo("game") { inclusive = true }
-                popUpTo("settings") { inclusive = true }
+                popUpTo(0) { inclusive = true }
+                launchSingleTop = true
             }
         }
     }

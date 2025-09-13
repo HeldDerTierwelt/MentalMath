@@ -196,8 +196,8 @@ fun GameScreen(
                                     if (settingsState.isModeEnabled && totalAnswers == totalTasks) {
                                         gameViewModel.endGame()
                                         navController.navigate("statistics") {
-                                            popUpTo("game") { inclusive = true }
-                                            popUpTo("settings") { inclusive = true }
+                                            popUpTo(0) { inclusive = true }
+                                            launchSingleTop = true
                                         }
                                     } else {
                                         gameViewModel.generateNewTask()
@@ -239,8 +239,8 @@ fun GameScreen(
                 showDialog = false
                 gameViewModel.endGame()
                 navController.navigate("settings") {
-                    popUpTo("game") { inclusive = true }
-                    popUpTo("settings") { inclusive = true }
+                    popUpTo(0) { inclusive = true }
+                    launchSingleTop = true
                 }
             },
             onCancel = { showDialog = false },

@@ -222,7 +222,8 @@ fun SettingsScreen(
                             gameViewModel.setEnabledOperators(settingsViewModel)
                             gameViewModel.startGame()
                             navController.navigate("game") {
-                                popUpTo("settings") { inclusive = true }
+                                popUpTo(0) { inclusive = true }
+                                launchSingleTop = true
                             }
                         },
                         size = roundButtonSize,
