@@ -96,7 +96,6 @@ fun StatisticsScreen(
         return Bitmap.createBitmap(fullBitmap, left, top, width, height)
     }
 
-    // Speichern im Cache und URI holen
     fun saveBitmapToCacheAndGetUri(context: Context, bitmap: Bitmap): Uri {
         val cachePath = File(context.cacheDir, "images")
         cachePath.mkdirs()
@@ -182,7 +181,7 @@ fun StatisticsScreen(
                                             hasCapturedCoordinates = true
                                             Log.d(
                                                 "StatsCard",
-                                                "Coordinates gespeichert mit Größe $size"
+                                                "Coordinates saved with size $size"
                                             )
                                         }
                                     }

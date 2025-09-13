@@ -63,7 +63,7 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             } else {
-                Text("Lade Aufgaben…")
+                Text("Load math exercise database")
             }
         }
     }

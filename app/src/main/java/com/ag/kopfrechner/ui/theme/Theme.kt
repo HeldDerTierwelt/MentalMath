@@ -45,11 +45,6 @@ val green = Color(0xFF39A241)
 val blue = Color(0xFF1976D2)
 val red = Color(0xFFD34747)
 
-val softYellow = Color(0xFFFFE965)
-val softGreen = Color(0xFF77CC7A)
-val softBlue = Color(0xFF64B5F6)
-val softRed = Color(0xFFE56F6F)
-
 @Composable
 fun MyApplicationTheme(
     themeMode: ThemeMode = ThemeMode.SYSTEM,

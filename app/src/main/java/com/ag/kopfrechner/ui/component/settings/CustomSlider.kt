@@ -23,7 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -44,7 +45,10 @@ fun CustomSlider(
     val isDragging by interactionSource.collectIsDraggedAsState()
     var sliderWidth by remember { mutableIntStateOf(0) }
     var sliderHeight by remember { mutableIntStateOf(0) }
-    val lastTickSpace = (0.084f * LocalConfiguration.current.screenWidthDp.dp.value).dp.value
+    val containerSizePx = LocalWindowInfo.current.containerSize // IntSize in px
+    val density = LocalDensity.current
+    val screenWidth = with(density) { containerSizePx.width.toDp() }
+    val lastTickSpace = (0.084f * screenWidth.value)
 
     Box(
         modifier = Modifier
@@ -74,7 +78,7 @@ fun CustomSlider(
                 .padding(horizontal = 6.dp),
             text = String.format(
                 Locale.getDefault(),
-                if (isToggled) "${(value * 10).roundToInt()} ex" else "${value.toInt()} min",
+                if (isToggled) "${(value * 10).roundToInt()}ex" else "${value.toInt()}min",
                 value
             ),
             color = MaterialTheme.colorScheme.onSecondary,

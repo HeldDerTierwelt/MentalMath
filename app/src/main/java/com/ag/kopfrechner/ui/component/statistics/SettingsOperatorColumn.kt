@@ -29,10 +29,10 @@ fun SettingsOperatorColumn(
     ) {
         var range = "-"
         if (operatorEnabled) {
-            if (difficultyRange.first == difficultyRange.second) {
-                range = difficultyRange.first.toInt().toString()
+            range = if (difficultyRange.first == difficultyRange.second) {
+                difficultyRange.first.toInt().toString()
             } else {
-                range = String.format(
+                String.format(
                     "%s-%s",
                     difficultyRange.first.toInt(),
                     difficultyRange.second.toInt()

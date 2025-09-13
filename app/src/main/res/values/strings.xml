@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Mental Math</string>
-    <string name="action_settings">Settings</string>
     <string name="game_result">"Result"</string>
     <string name="start">Start</string>
     <string name="add">"&#43;"</string>
@@ -10,7 +9,6 @@
     <string name="mode_instruction">"Select mode and limit!"</string>
     <string name="operator_instruction">"Select operations and difficulty!"</string>
     <string name="done">Done</string>
-    <string name="settings">"Settings"</string>
     <string name="exercises">"Exercises"</string>
     <string name="active_score">"Active"</string>
     <string name="total_score">"Total"</string>

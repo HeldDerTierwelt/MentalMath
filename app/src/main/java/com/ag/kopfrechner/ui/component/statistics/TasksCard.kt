@@ -57,7 +57,7 @@ fun TasksCard(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                modifier = Modifier.weight(1f), // Der erste Text nimmt den verbleibenden Platz ein
+                modifier = Modifier.weight(1f),
 
                 text = stringResource(R.string.exercises),
                 fontSize = resultFontSize
