@@ -1,31 +1,22 @@
 package com.ag.kopfrechner.ui.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,7 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -47,6 +38,7 @@ import com.ag.kopfrechner.ui.component.settings.CustomSlider
 import com.ag.kopfrechner.ui.component.settings.ModeButton
 import com.ag.kopfrechner.ui.component.settings.OperatorButton
 import com.ag.kopfrechner.ui.component.settings.SettingsTopBar
+import com.ag.kopfrechner.ui.component.settings.SideSheet
 import com.ag.kopfrechner.ui.component.settings.StartButton
 import com.ag.kopfrechner.ui.component.settings.TextLabel
 import com.ag.kopfrechner.ui.theme.blue
@@ -77,6 +69,7 @@ fun SettingsScreen(
     val containerSizePx = LocalWindowInfo.current.containerSize // IntSize in px
     val density = LocalDensity.current
     val screenHeight = with(density) { containerSizePx.height.toDp() }
+    val screenWidth = with(density) { containerSizePx.width.toDp() }
 
     val roundButtonSize = (0.09f * screenHeight.value).dp
     val sliderSize = (0.05f * screenHeight.value).dp
@@ -94,7 +87,7 @@ fun SettingsScreen(
             SettingsTopBar(
                 R.string.app_name,
                 titleFontSize,
-                onInfoClick = { isSheetOpen = true },
+                onInfoClick = { isSheetOpen = !isSheetOpen },
                 infoIconSize
             )
         },
@@ -247,48 +240,25 @@ fun SettingsScreen(
                         iconSize = startIconSize
                     )
                 }
+                SideSheet(
+                    isSheetOpen = isSheetOpen,
+                    screenWidth = screenWidth,
+                    sheetModifier = Modifier.pointerInput(Unit) {
+                        detectHorizontalDragGestures { change, dragAmount ->
+                            if (dragAmount > 20) {
+                                isSheetOpen = false
+                            }
+                        }
+                    },
+                    boxModifier = Modifier.clickable(
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() }
+                    ) { isSheetOpen=false }
+
+                )
             }
         }
     )
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        // Scrim
-        if (isSheetOpen) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Black.copy(alpha = 0.4f))
-                    .clickable { isSheetOpen = false }
-            )
-        }
-
-        // Side Sheet
-        AnimatedVisibility(
-            visible = isSheetOpen,
-            enter = slideInHorizontally(
-                initialOffsetX = { it },
-                animationSpec = tween(300)
-            ),
-            exit = slideOutHorizontally(
-                targetOffsetX = { it },
-                animationSpec = tween(300)
-            ),
-            modifier = Modifier.align(Alignment.TopEnd) // ← funktioniert jetzt!
-        ) {
-            // Statt Surface → Card oder Box
-            Card(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .width(300.dp),
-                elevation = CardDefaults.cardElevation(8.dp)
-            ) {
-                Column(Modifier.padding(16.dp)) {
-                    Text("Settings", style = MaterialTheme.typography.titleMedium)
-                    // Weitere Inhalte
-                }
-            }
-        }
-    }
 
     BackHandler {
         (context as? android.app.Activity)?.moveTaskToBack(true)
