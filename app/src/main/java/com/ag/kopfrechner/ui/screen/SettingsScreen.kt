@@ -1,9 +1,6 @@
 package com.ag.kopfrechner.ui.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -243,18 +239,7 @@ fun SettingsScreen(
                 SideSheet(
                     isSheetOpen = isSheetOpen,
                     screenWidth = screenWidth,
-                    sheetModifier = Modifier.pointerInput(Unit) {
-                        detectHorizontalDragGestures { change, dragAmount ->
-                            if (dragAmount > 20) {
-                                isSheetOpen = false
-                            }
-                        }
-                    },
-                    boxModifier = Modifier.clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() }
-                    ) { isSheetOpen=false }
-
+                    onDismissRequested = { isSheetOpen = false }
                 )
             }
         }
