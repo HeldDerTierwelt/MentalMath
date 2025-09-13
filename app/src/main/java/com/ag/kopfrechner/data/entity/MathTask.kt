@@ -1,4 +1,4 @@
-package com.ag.kopfrechner.data
+package com.ag.kopfrechner.data.entity
 
 data class MathTask(
     val operand1: Int,

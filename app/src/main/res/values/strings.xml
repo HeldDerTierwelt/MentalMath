@@ -7,8 +7,8 @@
     <string name="subtract">"&#8722;"</string>
     <string name="multiply">"&#215;"</string>
     <string name="divide">"&#247;"</string>
-    <string name="mode_instruction">"Choose mode and limit!"</string>
-    <string name="operator_instruction">"Choose operators and difficulty!"</string>
+    <string name="mode_instruction">"Select mode and limit!"</string>
+    <string name="operator_instruction">"Select operations and difficulty!"</string>
     <string name="done">Done</string>
     <string name="settings">"Settings"</string>
     <string name="exercises">"Exercises"</string>

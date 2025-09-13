@@ -8,7 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag.kopfrechner.R
-import com.ag.kopfrechner.data.MathTask
+import com.ag.kopfrechner.data.entity.MathTask
 import com.ag.kopfrechner.data.dao.AdditionTaskDao
 import com.ag.kopfrechner.data.dao.DivisionTaskDao
 import com.ag.kopfrechner.data.dao.MultiplicationTaskDao

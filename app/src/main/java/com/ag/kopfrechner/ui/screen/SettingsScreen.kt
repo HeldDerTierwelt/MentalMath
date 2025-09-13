@@ -1,25 +1,43 @@
 package com.ag.kopfrechner.ui.screen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -53,6 +71,7 @@ fun SettingsScreen(
     val context = LocalContext.current
     val settingsState = settingsViewModel.settingsState.value
     val valueRangeOperators = 1f..9f
+    var isSheetOpen by remember { mutableStateOf(false) }
 
     // Calculate sizes based on screen height
     val containerSizePx = LocalWindowInfo.current.containerSize // IntSize in px
@@ -68,10 +87,16 @@ fun SettingsScreen(
     val startIconSize = (0.057f * screenHeight.value).dp
     val modeIconSize = (0.048f * screenHeight.value).dp
     val columnPadding = (0.028f * screenHeight.value).dp
+    val infoIconSize = (0.038f * screenHeight.value).dp
 
     Scaffold(
         topBar = {
-            SettingsTopBar(R.string.app_name, titleFontSize)
+            SettingsTopBar(
+                R.string.app_name,
+                titleFontSize,
+                onInfoClick = { isSheetOpen = true },
+                infoIconSize
+            )
         },
         content = { padding ->
             Surface(
@@ -88,7 +113,7 @@ fun SettingsScreen(
                     horizontalAlignment = Alignment.Start
                 ) {
                     TextLabel(
-                        text = "Choose mode and limit!",
+                        text = stringResource(R.string.mode_instruction),
                         fontSize = textLabelFontSize
                     )
                     Row(
@@ -114,7 +139,7 @@ fun SettingsScreen(
                         )
                     }
                     TextLabel(
-                        text = "Choose operators and difficulty!",
+                        text = stringResource(R.string.operator_instruction),
                         fontSize = textLabelFontSize
                     )
                     Row(
@@ -225,6 +250,46 @@ fun SettingsScreen(
             }
         }
     )
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Scrim
+        if (isSheetOpen) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f))
+                    .clickable { isSheetOpen = false }
+            )
+        }
+
+        // Side Sheet
+        AnimatedVisibility(
+            visible = isSheetOpen,
+            enter = slideInHorizontally(
+                initialOffsetX = { it },
+                animationSpec = tween(300)
+            ),
+            exit = slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = tween(300)
+            ),
+            modifier = Modifier.align(Alignment.TopEnd) // ← funktioniert jetzt!
+        ) {
+            // Statt Surface → Card oder Box
+            Card(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(300.dp),
+                elevation = CardDefaults.cardElevation(8.dp)
+            ) {
+                Column(Modifier.padding(16.dp)) {
+                    Text("Settings", style = MaterialTheme.typography.titleMedium)
+                    // Weitere Inhalte
+                }
+            }
+        }
+    }
+
     BackHandler {
         (context as? android.app.Activity)?.moveTaskToBack(true)
     }
