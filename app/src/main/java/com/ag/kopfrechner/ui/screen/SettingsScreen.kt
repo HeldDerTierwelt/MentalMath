@@ -1,7 +1,6 @@
 package com.ag.kopfrechner.ui.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,10 +14,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -40,10 +35,6 @@ import com.ag.kopfrechner.ui.component.settings.TextLabel
 import com.ag.kopfrechner.ui.theme.blue
 import com.ag.kopfrechner.ui.theme.green
 import com.ag.kopfrechner.ui.theme.red
-import com.ag.kopfrechner.ui.theme.softBlue
-import com.ag.kopfrechner.ui.theme.softGreen
-import com.ag.kopfrechner.ui.theme.softRed
-import com.ag.kopfrechner.ui.theme.softYellow
 import com.ag.kopfrechner.ui.theme.yellow
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
@@ -59,7 +50,6 @@ fun SettingsScreen(
     val context = LocalContext.current
     val settingsState = settingsViewModel.settingsState.value
     val valueRangeOperators = 1f..9f
-    var isSheetOpen by remember { mutableStateOf(false) }
 
     // Calculate sizes based on screen height
     val containerSizePx = LocalWindowInfo.current.containerSize // IntSize in px
@@ -151,7 +141,7 @@ fun SettingsScreen(
                         CustomRangeSlider(
                             valueRange = valueRangeOperators,
                             value = settingsState.plusRange,
-                            activeTrackColor = if (isSystemInDarkTheme()) softGreen else green,
+                            activeTrackColor = green,
                             isEnabled = settingsState.isPlusEnabled,
                             onValueChange = { settingsViewModel.updatePlusRange(it) },
                             size = sliderSize
@@ -173,7 +163,7 @@ fun SettingsScreen(
                         CustomRangeSlider(
                             valueRange = valueRangeOperators,
                             value = settingsState.minusRange,
-                            activeTrackColor = if (isSystemInDarkTheme()) softRed else red,
+                            activeTrackColor = red,
                             isEnabled = settingsState.isMinusEnabled,
                             onValueChange = { settingsViewModel.updateMinusRange(it) },
                             size = sliderSize
@@ -195,7 +185,7 @@ fun SettingsScreen(
                         CustomRangeSlider(
                             valueRange = valueRangeOperators,
                             value = settingsState.multiplyRange,
-                            activeTrackColor = if (isSystemInDarkTheme()) softYellow else yellow,
+                            activeTrackColor = yellow,
                             isEnabled = settingsState.isMultiplyEnabled,
                             onValueChange = { settingsViewModel.updateMultiplyRange(it) },
                             size = sliderSize
@@ -217,7 +207,7 @@ fun SettingsScreen(
                         CustomRangeSlider(
                             valueRange = valueRangeOperators,
                             value = settingsState.divideRange,
-                            activeTrackColor = if (isSystemInDarkTheme()) softBlue else blue,
+                            activeTrackColor = blue,
                             isEnabled = settingsState.isDivideEnabled,
                             onValueChange = { settingsViewModel.updateDivideRange(it) },
                             size = sliderSize
@@ -243,7 +233,7 @@ fun SettingsScreen(
                 SideSheet(
                     isSheetOpen = settingsState.isSheetOpen,
                     screenWidth = screenWidth,
-                    onDismissRequested = { settingsViewModel.toggleSheetOpen()},
+                    onDismissRequested = { settingsViewModel.toggleSheetOpen() },
                     screenHeight = screenHeight,
                     appSymbolSize = appSymbolSizeSideSheet,
                     settingsViewModel = settingsViewModel

@@ -70,7 +70,7 @@ fun SideSheet(
 
     val fontSize = (0.018f * screenHeight.value).sp
     val iconSize = (0.032f * screenHeight.value).dp
-    val columnPadding = (0.028f * screenHeight.value).dp
+    (0.028f * screenHeight.value).dp
     val themeMode = settingsViewModel.settingsState.value.themeMode
 
     // Handle side sheet open/close animation
@@ -139,7 +139,8 @@ fun SideSheet(
             )
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.Center
             ) {

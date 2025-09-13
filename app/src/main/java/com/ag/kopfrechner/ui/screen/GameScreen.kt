@@ -2,7 +2,6 @@ package com.ag.kopfrechner.ui.screen
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,7 +37,6 @@ import com.ag.kopfrechner.ui.component.game.MathTaskDisplay
 import com.ag.kopfrechner.ui.component.game.NumberButton
 import com.ag.kopfrechner.ui.component.game.QuitGamePopUp
 import com.ag.kopfrechner.ui.theme.blue
-import com.ag.kopfrechner.ui.theme.softBlue
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
 import kotlinx.coroutines.delay
@@ -93,7 +91,7 @@ fun GameScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(4.dp),
-                    color = if (isSystemInDarkTheme()) softBlue else blue,
+                    color = blue,
                     trackColor = MaterialTheme.colorScheme.background,
                     drawStopIndicator = {},
                     strokeCap = StrokeCap.Butt

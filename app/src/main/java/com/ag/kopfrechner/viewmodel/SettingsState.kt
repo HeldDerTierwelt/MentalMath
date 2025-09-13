@@ -14,9 +14,9 @@ data class SettingsState(
     val limit: Float = 3f,
 
     val plusRange: Pair<Float, Float> = 2f to 5f,
-    val minusRange:  Pair<Float, Float> = 2f to 5f,
-    val multiplyRange:  Pair<Float, Float> = 2f to 5f,
-    val divideRange:  Pair<Float, Float> = 2f to 5f,
+    val minusRange: Pair<Float, Float> = 2f to 5f,
+    val multiplyRange: Pair<Float, Float> = 2f to 5f,
+    val divideRange: Pair<Float, Float> = 2f to 5f,
 
     val isPlusEnabled: Boolean = true,
     val isMinusEnabled: Boolean = true,
@@ -30,7 +30,7 @@ data class SettingsState(
         R.string.divide
     ),
 
-    val isSheetOpen : Boolean = false,
+    val isSheetOpen: Boolean = false,
 
     val themeMode: ThemeMode = ThemeMode.SYSTEM
 ) : Parcelable

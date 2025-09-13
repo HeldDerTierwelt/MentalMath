@@ -1,6 +1,5 @@
 package com.ag.kopfrechner.ui.component.game
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -14,8 +13,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ag.kopfrechner.ui.theme.green
-import com.ag.kopfrechner.ui.theme.softGreen
-import com.ag.kopfrechner.ui.theme.softYellow
 import com.ag.kopfrechner.ui.theme.yellow
 
 @Composable
@@ -28,8 +25,8 @@ fun EnterButton(
     size: Dp,
 ) {
 
-    val skipColor = if (isSystemInDarkTheme()) softYellow else yellow
-    val enterColor = if (isSystemInDarkTheme()) softGreen else green
+    val skipColor = yellow
+    val enterColor = green
     val icon = if (isToggled) iconId1 else iconId2
     val containerColor = if (isToggled) skipColor else enterColor
 

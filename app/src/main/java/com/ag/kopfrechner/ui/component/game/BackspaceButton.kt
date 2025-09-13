@@ -1,6 +1,5 @@
 package com.ag.kopfrechner.ui.component.game
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -15,7 +14,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.ag.kopfrechner.R
 import com.ag.kopfrechner.ui.theme.red
-import com.ag.kopfrechner.ui.theme.softRed
 
 @Composable
 fun BackspaceButton(
@@ -30,7 +28,7 @@ fun BackspaceButton(
         modifier = Modifier.size(size),
         contentPadding = PaddingValues(0.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isSystemInDarkTheme()) softRed else red,
+            containerColor = red,
             contentColor = MaterialTheme.colorScheme.primary
         )
     ) {

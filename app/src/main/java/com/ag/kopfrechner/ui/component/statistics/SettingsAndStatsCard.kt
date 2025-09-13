@@ -58,14 +58,17 @@ fun SettingsAndStatsCard(
         gameState.correctAnswers.toFloat() /
                 (gameState.activeTime.toFloat() / 60000f)
     )
-    val activeScoreValue = 10f*gameState.correctAnswers.toFloat().pow(2f) /
-            ((gameState.activeTime.toFloat() / 60000f) * maxOf(1f,gameState.totalAnswers.toFloat()))
+    val activeScoreValue = 10f * gameState.correctAnswers.toFloat().pow(2f) /
+            ((gameState.activeTime.toFloat() / 60000f) * maxOf(
+                1f,
+                gameState.totalAnswers.toFloat()
+            ))
     val activeScore = String.format(
         Locale.getDefault(), "%s:  %.2f", stringResource(R.string.active_score),
         activeScoreValue
     )
-    val totalScoreValue = 10f*gameState.correctAnswers.toFloat().pow(2f) /
-            ((totalTime.toFloat() / 60000f) * maxOf(1f,gameState.totalAnswers.toFloat()))
+    val totalScoreValue = 10f * gameState.correctAnswers.toFloat().pow(2f) /
+            ((totalTime.toFloat() / 60000f) * maxOf(1f, gameState.totalAnswers.toFloat()))
     val totalScore = String.format(
         Locale.getDefault(), "%s:  %.2f", stringResource(R.string.total_score),
         totalScoreValue
@@ -131,7 +134,8 @@ fun SettingsAndStatsCard(
             }
             HorizontalDivider(
                 thickness = 2.dp,
-                color = MaterialTheme.colorScheme.background            )
+                color = MaterialTheme.colorScheme.background
+            )
             Row(
                 modifier = modifier
                     .fillMaxWidth()
@@ -191,17 +195,18 @@ fun SettingsAndStatsCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-            Text(
-                text = activeScore,
-                fontSize = fontSize,
-                modifier = modifier.padding(horizontal = 16.dp)
-            )
+                Text(
+                    text = activeScore,
+                    fontSize = fontSize,
+                    modifier = modifier.padding(horizontal = 16.dp)
+                )
                 Icon(
                     painter = painterResource(R.drawable.round_star_24),
                     contentDescription = "activeSoreIcon",
                     modifier = modifier.size(iconSize),
                     tint = yellow
-                )}
+                )
+            }
             Row(
                 modifier = modifier
                     .fillMaxWidth()
@@ -209,11 +214,11 @@ fun SettingsAndStatsCard(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-            Text(
-                text = totalScore,
-                fontSize = fontSize,
-                modifier = modifier.padding(horizontal = 16.dp)
-            )
+                Text(
+                    text = totalScore,
+                    fontSize = fontSize,
+                    modifier = modifier.padding(horizontal = 16.dp)
+                )
                 Icon(
                     painter = painterResource(R.drawable.round_star_24),
                     contentDescription = "totalScoreIcon",

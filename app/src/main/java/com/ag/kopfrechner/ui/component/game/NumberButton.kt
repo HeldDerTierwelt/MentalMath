@@ -27,6 +27,7 @@ fun NumberButton(
     ) {
         Text(
             text = number.toString(),
-            fontSize = fontSize,)
+            fontSize = fontSize,
+        )
     }
 }

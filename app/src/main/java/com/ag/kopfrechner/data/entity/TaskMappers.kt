@@ -1,7 +1,5 @@
 package com.ag.kopfrechner.data.entity
 
-import com.ag.kopfrechner.data.entity.MathTask
-
 fun AdditionTask.toMathTask() = MathTask(
     operand1 = operand1,
     operand2 = operand2,

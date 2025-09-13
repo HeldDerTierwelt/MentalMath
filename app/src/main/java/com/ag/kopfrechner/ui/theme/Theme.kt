@@ -32,12 +32,12 @@ private val LightColorScheme = lightColorScheme(
     background = Color(0xFFE5E5E5),
     surface = Color(0xFFFFFFFF),
 
-    onPrimary = Color(0xFF1E1E1E),
+    onPrimary = Color(0xFF3C3F41),
     onSecondary = Color(0xFFF3F3F3),
-    onTertiary = Color(0xFFEDEDED),
+    onTertiary = Color(0xFF3C3F41),
 
-    onBackground = Color(0xFF1E1E1E),
-    onSurface = Color(0xFF343434)
+    onBackground = Color(0xFF3C3F41),
+    onSurface = Color(0xFF3C3F41),
 )
 
 val yellow = Color(0xFFFBC02D)

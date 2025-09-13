@@ -1,6 +1,5 @@
 package com.ag.kopfrechner.ui.component.game
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -19,7 +18,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.ag.kopfrechner.ui.theme.red
-import com.ag.kopfrechner.ui.theme.softRed
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
 import kotlin.math.roundToInt
@@ -54,7 +52,7 @@ fun GameTopBar(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = "close",
                     modifier = Modifier.size(iconSize),
-                    tint = if (isSystemInDarkTheme()) softRed else red
+                    tint = red
                 )
             }
         },
@@ -72,7 +70,7 @@ fun GameTopBar(
                 CountdownTimer(
                     fontSize = fontSize,
                     navController = navController,
-                    time = settingsViewModel.settingsState.value.limit.toLong()*60000L,
+                    time = settingsViewModel.settingsState.value.limit.toLong() * 60000L,
                     gameViewModel = gameViewModel
                 )
             }

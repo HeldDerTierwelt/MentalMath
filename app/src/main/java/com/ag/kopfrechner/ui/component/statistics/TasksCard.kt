@@ -59,7 +59,7 @@ fun TasksCard(
             Text(
                 modifier = Modifier.weight(1f), // Der erste Text nimmt den verbleibenden Platz ein
 
-                        text = stringResource(R.string.exercises),
+                text = stringResource(R.string.exercises),
                 fontSize = resultFontSize
             )
             Icon(

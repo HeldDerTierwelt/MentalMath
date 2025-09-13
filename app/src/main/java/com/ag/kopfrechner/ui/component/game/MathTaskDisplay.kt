@@ -1,6 +1,5 @@
 package com.ag.kopfrechner.ui.component.game
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,8 +19,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.ag.kopfrechner.ui.theme.green
 import com.ag.kopfrechner.ui.theme.red
-import com.ag.kopfrechner.ui.theme.softGreen
-import com.ag.kopfrechner.ui.theme.softRed
 
 @Composable
 fun MathTaskDisplay(
@@ -71,11 +68,9 @@ fun MathTaskDisplay(
                     },
                 contentAlignment = Alignment.CenterStart
             ) {
-                val textColor = if (isSystemInDarkTheme()) {
-                    if (isCorrect==true) softGreen else if (isCorrect==false) softRed else MaterialTheme.colorScheme.onPrimary
-                } else {
-                    if (isCorrect==true) green else if (isCorrect==false) red else MaterialTheme.colorScheme.onPrimary
-                }
+
+                val textColor =
+                    if (isCorrect == true) green else if (isCorrect == false) red else MaterialTheme.colorScheme.onPrimary
                 Text(
                     text = input,
                     fontSize = fontSize,

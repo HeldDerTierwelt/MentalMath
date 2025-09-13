@@ -1,7 +1,6 @@
 package com.ag.kopfrechner.ui.component.game
 
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -11,8 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.TextUnit
 import com.ag.kopfrechner.ui.theme.green
 import com.ag.kopfrechner.ui.theme.red
-import com.ag.kopfrechner.ui.theme.softGreen
-import com.ag.kopfrechner.ui.theme.softRed
 
 @Composable
 fun QuitGamePopUp(
@@ -22,8 +19,8 @@ fun QuitGamePopUp(
     titleSize: TextUnit,
     descriptionSize: TextUnit,
 ) {
-    val quitColor = if (isSystemInDarkTheme()) softRed else red
-    val continueColor = if (isSystemInDarkTheme()) softGreen else green
+    val quitColor = red
+    val continueColor = green
 
     AlertDialog(
         onDismissRequest = onDismissRequest,

@@ -13,7 +13,6 @@ class DbImporter(private val context: Context) {
     fun importDb(): AppDatabase {
 
         val zstAssetName = "math_tasks.db.zst"
-        val gzAssetName = "math_tasks.db.bin"
         val dbFilePath = context.filesDir.absolutePath + "/math_tasks.db"
 
         val dbFile = context.getFileStreamPath("math_tasks.db")
@@ -23,11 +22,11 @@ class DbImporter(private val context: Context) {
             }
         }
 
-        return  Room.databaseBuilder(
-                context.applicationContext,
-                AppDatabase::class.java,
-                dbFilePath
-            )
+        return Room.databaseBuilder(
+            context.applicationContext,
+            AppDatabase::class.java,
+            dbFilePath
+        )
             .createFromFile(dbFile)
             .build()
     }

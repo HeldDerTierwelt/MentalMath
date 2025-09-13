@@ -8,11 +8,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ag.kopfrechner.R
-import com.ag.kopfrechner.data.entity.MathTask
 import com.ag.kopfrechner.data.dao.AdditionTaskDao
 import com.ag.kopfrechner.data.dao.DivisionTaskDao
 import com.ag.kopfrechner.data.dao.MultiplicationTaskDao
 import com.ag.kopfrechner.data.dao.SubtractionTaskDao
+import com.ag.kopfrechner.data.entity.MathTask
 import com.ag.kopfrechner.data.entity.toMathTask
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -63,19 +63,31 @@ class GameViewModel(
             val operatorSetting = _gameState.value.enabledOperators.random()
             val operator = operatorSetting.first
             val difficulty =
-                Random.nextInt(operatorSetting.second.first.toInt(), operatorSetting.second.second.toInt() + 1)
+                Random.nextInt(
+                    operatorSetting.second.first.toInt(),
+                    operatorSetting.second.second.toInt() + 1
+                )
 
             val mathTask: MathTask? = when (operator) {
-                R.string.add -> additionTaskDao.getAdditionTasksByDifficulty(difficulty).getOrNull(0)?.toMathTask()
-                R.string.subtract -> subtractionTaskDao.getSubtractionTasksByDifficulty(difficulty).getOrNull(0)?.toMathTask()
-                R.string.multiply -> multiplicationTaskDao.getMultiplicationTasksByDifficulty(difficulty).getOrNull(0)?.toMathTask()
-                R.string.divide -> divisionTaskDao.getDivisionTasksByDifficulty(difficulty).getOrNull(0)?.toMathTask()
+                R.string.add -> additionTaskDao.getAdditionTasksByDifficulty(difficulty)
+                    .getOrNull(0)?.toMathTask()
+
+                R.string.subtract -> subtractionTaskDao.getSubtractionTasksByDifficulty(difficulty)
+                    .getOrNull(0)?.toMathTask()
+
+                R.string.multiply -> multiplicationTaskDao.getMultiplicationTasksByDifficulty(
+                    difficulty
+                ).getOrNull(0)?.toMathTask()
+
+                R.string.divide -> divisionTaskDao.getDivisionTasksByDifficulty(difficulty)
+                    .getOrNull(0)?.toMathTask()
+
                 else -> null
             }
 
             if (mathTask != null) {
                 val operand1 = if (operator == R.string.divide) {
-                    mathTask.operand1*mathTask.operand2
+                    mathTask.operand1 * mathTask.operand2
                 } else {
                     mathTask.operand1
                 }
@@ -209,7 +221,10 @@ class GameViewModel(
         timerJob = viewModelScope.launch(Dispatchers.Default) {
             while (_gameState.value.isTimerRunning) {
                 val elapsedTime = System.currentTimeMillis() - _gameState.value.startTimeStamp
-                _gameState.value = _gameState.value.copy(activeTime = elapsedTime - _gameState.value.totalPauseDuration, totalTime = elapsedTime)
+                _gameState.value = _gameState.value.copy(
+                    activeTime = elapsedTime - _gameState.value.totalPauseDuration,
+                    totalTime = elapsedTime
+                )
                 saveState()
                 delay(100)
             }
@@ -240,7 +255,8 @@ class GameViewModel(
     override fun onResume(owner: LifecycleOwner) {
         super.onResume(owner)
         if (_gameState.value.isGameStarted && !_gameState.value.isTimerRunning) {
-            val totalPauseDuration = _gameState.value.totalPauseDuration + (System.currentTimeMillis() - _gameState.value.pausedAt)
+            val totalPauseDuration =
+                _gameState.value.totalPauseDuration + (System.currentTimeMillis() - _gameState.value.pausedAt)
             _gameState.value = _gameState.value.copy(totalPauseDuration = totalPauseDuration)
             saveState()
             startTimer()

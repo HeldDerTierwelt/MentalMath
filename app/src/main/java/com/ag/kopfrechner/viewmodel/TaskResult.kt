@@ -11,4 +11,4 @@ data class TaskResult(
     val operator: Int,
     val correctResult: Int,
     val userInput: String,
-    ) : Parcelable
+) : Parcelable
