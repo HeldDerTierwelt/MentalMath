@@ -77,14 +77,18 @@ fun SettingsScreen(
     val modeIconSize = (0.048f * screenHeight.value).dp
     val columnPadding = (0.028f * screenHeight.value).dp
     val infoIconSize = (0.038f * screenHeight.value).dp
+    val appSymbolSizeTopBar = (0.024f * screenHeight.value).dp
+    val appSymbolSizeSideSheet = (0.2f * screenHeight.value).dp
+
 
     Scaffold(
         topBar = {
             SettingsTopBar(
                 R.string.app_name,
                 titleFontSize,
-                onInfoClick = { isSheetOpen = !isSheetOpen },
-                infoIconSize
+                onInfoClick = { settingsViewModel.toggleSheetOpen() },
+                infoIconSize,
+                appSymbolSizeTopBar
             )
         },
         content = { padding ->
@@ -103,7 +107,7 @@ fun SettingsScreen(
                 ) {
                     TextLabel(
                         text = stringResource(R.string.mode_instruction),
-                        fontSize = textLabelFontSize
+                        fontSize = textLabelFontSize,
                     )
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -237,9 +241,12 @@ fun SettingsScreen(
                     )
                 }
                 SideSheet(
-                    isSheetOpen = isSheetOpen,
+                    isSheetOpen = settingsState.isSheetOpen,
                     screenWidth = screenWidth,
-                    onDismissRequested = { isSheetOpen = false }
+                    onDismissRequested = { settingsViewModel.toggleSheetOpen()},
+                    screenHeight = screenHeight,
+                    appSymbolSize = appSymbolSizeSideSheet,
+                    settingsViewModel = settingsViewModel
                 )
             }
         }

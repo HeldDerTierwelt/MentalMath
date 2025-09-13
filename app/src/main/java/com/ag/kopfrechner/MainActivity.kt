@@ -22,6 +22,7 @@ import com.ag.kopfrechner.ui.theme.MyApplicationTheme
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.GameViewModelFactory
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
+import com.ag.kopfrechner.viewmodel.ThemeMode
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +56,7 @@ class MainActivity : ComponentActivity() {
                     )
                 )
                 lifecycle.addObserver(gameViewModel)
-                MyApplicationTheme {
+                MyApplicationTheme(themeMode = settingsViewModel.settingsState.value.themeMode) {
                     MyApp(
                         settingsViewModel = settingsViewModel,
                         gameViewModel = gameViewModel,

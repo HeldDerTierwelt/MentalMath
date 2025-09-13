@@ -4,6 +4,10 @@ import android.os.Parcelable
 import com.ag.kopfrechner.R
 import kotlinx.parcelize.Parcelize
 
+enum class ThemeMode {
+    SYSTEM, LIGHT, DARK
+}
+
 @Parcelize
 data class SettingsState(
     val isModeEnabled: Boolean = true,
@@ -24,5 +28,9 @@ data class SettingsState(
         R.string.subtract,
         R.string.multiply,
         R.string.divide
-    )
+    ),
+
+    val isSheetOpen : Boolean = false,
+
+    val themeMode: ThemeMode = ThemeMode.SYSTEM
 ) : Parcelable

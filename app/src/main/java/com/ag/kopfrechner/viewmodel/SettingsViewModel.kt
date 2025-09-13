@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import com.ag.kopfrechner.viewmodel.ThemeMode
 
 class SettingsViewModel(
     private val savedStateHandle: SavedStateHandle
@@ -64,8 +65,17 @@ class SettingsViewModel(
         saveState()
     }
 
+    fun toggleSheetOpen() {
+        _settingsState.value = _settingsState.value.copy(isSheetOpen = !_settingsState.value.isSheetOpen)
+        saveState()
+    }
+
+    fun setThemeMode(mode: ThemeMode) {
+        _settingsState.value = _settingsState.value.copy(themeMode = mode)
+        saveState()
+    }
+
     private fun saveState() {
         savedStateHandle["settings_state"] = _settingsState.value
     }
 }
-

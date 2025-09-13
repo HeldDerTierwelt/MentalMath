@@ -11,7 +11,7 @@ fun TextLabel(text: String, fontSize: TextUnit) {
     Text(
         text = text,
         fontSize = fontSize,
-        color = MaterialTheme.colorScheme.onBackground,
+        color = MaterialTheme.colorScheme.onPrimary,
         lineHeight = fontSize
     )
 }
