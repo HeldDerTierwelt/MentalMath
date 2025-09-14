@@ -37,16 +37,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.helddertierwelt.mentalmath.data.DbImporter
 import com.helddertierwelt.mentalmath.data.dao.AdditionTaskDao
 import com.helddertierwelt.mentalmath.data.dao.DivisionTaskDao
 import com.helddertierwelt.mentalmath.data.dao.MultiplicationTaskDao
 import com.helddertierwelt.mentalmath.data.dao.SubtractionTaskDao
-import com.helddertierwelt.mentalmath.ui.screen.MentalMath
-import com.helddertierwelt.mentalmath.ui.theme.MentalMathTheme
-import com.helddertierwelt.mentalmath.viewmodel.GameViewModel
-import com.helddertierwelt.mentalmath.viewmodel.GameViewModelFactory
-import com.helddertierwelt.mentalmath.viewmodel.SettingsViewModel
+import com.helddertierwelt.mentalmath.data.db.DbImporter
+import com.helddertierwelt.mentalmath.presentation.screen.MentalMath
+import com.helddertierwelt.mentalmath.presentation.theme.MentalMathTheme
+import com.helddertierwelt.mentalmath.presentation.viewmodel.GameViewModel
+import com.helddertierwelt.mentalmath.presentation.viewmodel.GameViewModelFactory
+import com.helddertierwelt.mentalmath.presentation.viewmodel.SettingsViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

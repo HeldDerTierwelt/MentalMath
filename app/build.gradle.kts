@@ -14,7 +14,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.ag.kopfrechner"
+        applicationId = "com.helddertierwelt.mentalmath"
         minSdk = 31
         targetSdk = 36
         versionCode = 1
