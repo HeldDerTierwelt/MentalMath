@@ -10,7 +10,7 @@ plugins {
 }
 
 android {
-    namespace = "com.ag.kopfrechner"
+    namespace = "com.helddertierwelt.mentalmath"
     compileSdk = 36
 
     defaultConfig {
