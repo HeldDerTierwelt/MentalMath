@@ -1,5 +1,12 @@
+/*
+ * Copyright (C) 2025 HeldDerTierwelt
+ * Licensed under the GNU General Public License v3.0
+ * See LICENSE.md for details.
+ */
+
 package com.ag.kopfrechner.ui.component.settings
 
+import android.content.Intent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -41,6 +48,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import com.ag.kopfrechner.R
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
 import kotlinx.coroutines.launch
@@ -180,7 +188,12 @@ fun SideSheet(
                         text = "Source Code",
                         fontSize = fontSize,
                         iconSize = iconSize,
-                        url = "https://www.example.com",
+                        intentProvider = {
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                "https://www.example.com".toUri()
+                            )
+                        },
                         context = context
                     )
 
@@ -191,7 +204,12 @@ fun SideSheet(
                         text = "License",
                         fontSize = fontSize,
                         iconSize = iconSize,
-                        url = "https://www.example.com",
+                        intentProvider = {
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                "https://www.example.com".toUri()
+                            )
+                        },
                         context = context
                     )
 
@@ -202,7 +220,12 @@ fun SideSheet(
                         text = "Privacy Policy",
                         fontSize = fontSize,
                         iconSize = iconSize,
-                        url = "https://www.example.com",
+                        intentProvider = {
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                "https://www.example.com".toUri()
+                            )
+                        },
                         context = context
                     )
 
@@ -213,7 +236,12 @@ fun SideSheet(
                         text = "Feed\u200Bback",
                         fontSize = fontSize,
                         iconSize = iconSize,
-                        url = "https://www.example.com",
+                        intentProvider = {
+                            Intent(Intent.ACTION_SENDTO).apply {
+                                data = "mailto:mental_math_feedback@pm.me".toUri()
+                                putExtra(Intent.EXTRA_SUBJECT, "Mental Math: Feedback")
+                            }
+                        },
                         context = context
                     )
 
@@ -224,7 +252,12 @@ fun SideSheet(
                         text = "Donate",
                         fontSize = fontSize,
                         iconSize = iconSize,
-                        url = "https://www.example.com",
+                        intentProvider = {
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                "https://ko-fi.com/mental_math".toUri()
+                            )
+                        },
                         context = context
                     )
 
@@ -235,7 +268,12 @@ fun SideSheet(
                         text = "Recom\u200Bmend",
                         fontSize = fontSize,
                         iconSize = iconSize,
-                        url = "https://www.example.com",
+                        intentProvider = {
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                "https://www.example.com".toUri()
+                            )
+                        },
                         context = context
                     )
                 }

@@ -1,5 +1,12 @@
+/*
+ * Copyright (C) 2025 HeldDerTierwelt
+ * Licensed under the GNU General Public License v3.0
+ * See LICENSE.md for details.
+ */
+
 package com.ag.kopfrechner.ui.component.settings
 
+import android.content.Context
 import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -15,26 +22,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 
 @Composable
 fun SideSheetLinkRow(
     iconResId: Int,
     contentDescription: String,
     text: String,
-    fontSize: androidx.compose.ui.unit.TextUnit,
+    fontSize: TextUnit,
     iconSize: Dp,
-    url: String,
-    context: android.content.Context
+    intentProvider: () -> Intent,
+    context: Context
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp, 8.dp)
             .clickable {
-                val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-                context.startActivity(intent)
+                context.startActivity(intentProvider())
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -50,4 +56,4 @@ fun SideSheetLinkRow(
             lineHeight = fontSize
         )
     }
-}
+    }
