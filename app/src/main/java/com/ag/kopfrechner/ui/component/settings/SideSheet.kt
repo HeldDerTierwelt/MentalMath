@@ -184,14 +184,14 @@ fun SideSheet(
                     // Source Code Link
                     SideSheetLinkRow(
                         iconResId = R.drawable.code_24dp,
-                        contentDescription = "Settings Icon",
+                        contentDescription = "Source Code Icon",
                         text = "Source Code",
                         fontSize = fontSize,
                         iconSize = iconSize,
                         intentProvider = {
                             Intent(
                                 Intent.ACTION_VIEW,
-                                "https://www.example.com".toUri()
+                                "https://github.com/HeldDerTierwelt/MentalMath".toUri()
                             )
                         },
                         context = context
@@ -207,7 +207,7 @@ fun SideSheet(
                         intentProvider = {
                             Intent(
                                 Intent.ACTION_VIEW,
-                                "https://www.example.com".toUri()
+                                "https://github.com/HeldDerTierwelt/MentalMath/blob/main/LICENSE.md".toUri()
                             )
                         },
                         context = context
