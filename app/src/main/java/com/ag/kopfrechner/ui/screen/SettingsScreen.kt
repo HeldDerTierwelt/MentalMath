@@ -74,8 +74,6 @@ fun SettingsScreen(
     val columnPadding = (0.028f * screenHeight.value).dp
     val infoIconSize = (0.038f * screenHeight.value).dp
     val appSymbolSizeTopBar = (0.024f * screenHeight.value).dp
-    val appSymbolSizeSideSheet = (0.2f * screenHeight.value).dp
-
 
     Scaffold(
         topBar = {
@@ -242,7 +240,6 @@ fun SettingsScreen(
                     screenWidth = screenWidth,
                     onDismissRequested = { settingsViewModel.toggleSheetOpen() },
                     screenHeight = screenHeight,
-                    appSymbolSize = appSymbolSizeSideSheet,
                     settingsViewModel = settingsViewModel
                 )
             }

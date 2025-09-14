@@ -59,7 +59,6 @@ fun SideSheet(
     screenWidth: Dp,
     onDismissRequested: () -> Unit,
     screenHeight: Dp,
-    appSymbolSize: Dp,
     settingsViewModel: SettingsViewModel
 ) {
     val overlayAlpha by animateFloatAsState(
@@ -78,7 +77,6 @@ fun SideSheet(
 
     val fontSize = (0.018f * screenHeight.value).sp
     val iconSize = (0.032f * screenHeight.value).dp
-    (0.028f * screenHeight.value).dp
     val themeMode = settingsViewModel.settingsState.value.themeMode
 
     // Handle side sheet open/close animation
@@ -184,7 +182,7 @@ fun SideSheet(
                     // Source Code Link
                     SideSheetLinkRow(
                         iconResId = R.drawable.code_24dp,
-                        contentDescription = "Source Code Icon",
+                        contentDescription = "Source Code",
                         text = "Source Code",
                         fontSize = fontSize,
                         iconSize = iconSize,
@@ -200,7 +198,7 @@ fun SideSheet(
                     // License Link
                     SideSheetLinkRow(
                         iconResId = R.drawable.contract_24dp,
-                        contentDescription = "License Icon",
+                        contentDescription = "License",
                         text = "License",
                         fontSize = fontSize,
                         iconSize = iconSize,
@@ -216,14 +214,14 @@ fun SideSheet(
                     // Privacy Policy Link
                     SideSheetLinkRow(
                         iconResId = R.drawable.domino_mask_24dp,
-                        contentDescription = "Privacy Policy Icon",
+                        contentDescription = "Privacy Policy",
                         text = "Privacy Policy",
                         fontSize = fontSize,
                         iconSize = iconSize,
                         intentProvider = {
                             Intent(
                                 Intent.ACTION_VIEW,
-                                "https://www.example.com".toUri()
+                                "https://github.com/HeldDerTierwelt/MentalMath/blob/main/PRIVACY_POLICY.md".toUri()
                             )
                         },
                         context = context
@@ -232,15 +230,20 @@ fun SideSheet(
                     // Feedback Link
                     SideSheetLinkRow(
                         iconResId = R.drawable.feedback_24dp,
-                        contentDescription = "Feedback Icon",
+                        contentDescription = "Feedback",
                         text = "Feed\u200Bback",
                         fontSize = fontSize,
                         iconSize = iconSize,
                         intentProvider = {
-                            Intent(Intent.ACTION_SENDTO).apply {
-                                data = "mailto:mental_math_feedback@pm.me".toUri()
-                                putExtra(Intent.EXTRA_SUBJECT, "Mental Math: Feedback")
-                            }
+                            Intent(Intent.ACTION_SEND)
+                                .apply {
+                                    selector = Intent(Intent.ACTION_SENDTO, "mailto:".toUri())
+                                    putExtra(
+                                        Intent.EXTRA_EMAIL,
+                                        arrayOf("mental_math_feedback@pm.me")
+                                    )
+                                    putExtra(Intent.EXTRA_SUBJECT, "Mental Math: Feedback")
+                                }
                         },
                         context = context
                     )
@@ -248,7 +251,7 @@ fun SideSheet(
                     // Donation Link
                     SideSheetLinkRow(
                         iconResId = R.drawable.volunteer_activism_24dp,
-                        contentDescription = "Donation Icon",
+                        contentDescription = "Donate",
                         text = "Donate",
                         fontSize = fontSize,
                         iconSize = iconSize,
@@ -262,7 +265,7 @@ fun SideSheet(
                     )
 
                     // Recommendation Link
-                    SideSheetLinkRow(
+                    /*SideSheetLinkRow(
                         iconResId = R.drawable.thumb_up_24dp,
                         contentDescription = "Recommend",
                         text = "Recom\u200Bmend",
@@ -275,7 +278,7 @@ fun SideSheet(
                             )
                         },
                         context = context
-                    )
+                    )*/
                 }
             }
         }
