@@ -15,7 +15,7 @@ import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
 
 @Composable
-fun MyApp(
+fun MentalMath(
     settingsViewModel: SettingsViewModel,
     gameViewModel: GameViewModel,
     navController: NavHostController

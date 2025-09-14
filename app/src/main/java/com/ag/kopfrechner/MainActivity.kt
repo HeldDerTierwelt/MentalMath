@@ -42,8 +42,8 @@ import com.ag.kopfrechner.data.dao.AdditionTaskDao
 import com.ag.kopfrechner.data.dao.DivisionTaskDao
 import com.ag.kopfrechner.data.dao.MultiplicationTaskDao
 import com.ag.kopfrechner.data.dao.SubtractionTaskDao
-import com.ag.kopfrechner.ui.screen.MyApp
-import com.ag.kopfrechner.ui.theme.MyApplicationTheme
+import com.ag.kopfrechner.ui.screen.MentalMath
+import com.ag.kopfrechner.ui.theme.MentalMathTheme
 import com.ag.kopfrechner.viewmodel.GameViewModel
 import com.ag.kopfrechner.viewmodel.GameViewModelFactory
 import com.ag.kopfrechner.viewmodel.SettingsViewModel
@@ -80,8 +80,8 @@ class MainActivity : ComponentActivity() {
                     )
                 )
                 lifecycle.addObserver(gameViewModel)
-                MyApplicationTheme(themeMode = settingsViewModel.settingsState.value.themeMode) {
-                    MyApp(
+                MentalMathTheme(themeMode = settingsViewModel.settingsState.value.themeMode) {
+                    MentalMath(
                         settingsViewModel = settingsViewModel,
                         gameViewModel = gameViewModel,
                         navController = navController

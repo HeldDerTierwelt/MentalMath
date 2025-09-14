@@ -52,7 +52,7 @@ val blue = Color(0xFF1976D2)
 val red = Color(0xFFD34747)
 
 @Composable
-fun MyApplicationTheme(
+fun MentalMathTheme(
     themeMode: ThemeMode = ThemeMode.SYSTEM,
     content: @Composable () -> Unit
 ) {
