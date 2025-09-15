@@ -127,7 +127,7 @@ fun GameScreen(
                         MathTaskDisplay(
                             operand1 = gameState.operand1,
                             operand2 = gameState.operand2,
-                            operator = gameState.operator,
+                            operator = gameState.operator.stringId,
                             input = gameState.input,
                             fontSize = taskFontSize,
                             width = resultLineWidth,

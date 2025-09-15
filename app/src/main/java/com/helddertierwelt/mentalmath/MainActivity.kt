@@ -29,21 +29,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.helddertierwelt.mentalmath.data.dao.AdditionTaskDao
 import com.helddertierwelt.mentalmath.data.dao.DivisionTaskDao
 import com.helddertierwelt.mentalmath.data.dao.MultiplicationTaskDao
 import com.helddertierwelt.mentalmath.data.dao.SubtractionTaskDao
 import com.helddertierwelt.mentalmath.data.db.DbImporter
-import com.helddertierwelt.mentalmath.presentation.screen.MentalMath
+import com.helddertierwelt.mentalmath.presentation.screen.Navigation
 import com.helddertierwelt.mentalmath.presentation.theme.MentalMathTheme
+import com.helddertierwelt.mentalmath.presentation.theme.ThemeMode
 import com.helddertierwelt.mentalmath.presentation.viewmodel.GameViewModel
 import com.helddertierwelt.mentalmath.presentation.viewmodel.GameViewModelFactory
 import com.helddertierwelt.mentalmath.presentation.viewmodel.SettingsViewModel
@@ -81,7 +87,26 @@ class MainActivity : ComponentActivity() {
                 )
                 lifecycle.addObserver(gameViewModel)
                 MentalMathTheme(themeMode = settingsViewModel.settingsState.value.themeMode) {
-                    MentalMath(
+                    val darkTheme = when (settingsViewModel.settingsState.value.themeMode) {
+                        ThemeMode.DARK -> true
+                        ThemeMode.LIGHT -> false
+                        ThemeMode.SYSTEM -> isSystemInDarkTheme()
+                    }
+                    val systemUiController = rememberSystemUiController()
+                    val navBarColor = MaterialTheme.colorScheme.background
+
+                    SideEffect {
+                        systemUiController.setNavigationBarColor(
+                            color = navBarColor,
+                            darkIcons = !darkTheme
+                        )
+                        systemUiController.setStatusBarColor(
+                            color = Color.Transparent,
+                            darkIcons = !darkTheme
+                        )
+                    }
+
+                    Navigation(
                         settingsViewModel = settingsViewModel,
                         gameViewModel = gameViewModel,
                         navController = navController

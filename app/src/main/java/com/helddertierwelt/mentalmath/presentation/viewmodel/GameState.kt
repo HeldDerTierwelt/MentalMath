@@ -7,17 +7,16 @@
 package com.helddertierwelt.mentalmath.presentation.viewmodel
 
 import android.os.Parcelable
-import com.helddertierwelt.mentalmath.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class GameState(
     val operand1: Int = 0,
     val operand2: Int = 0,
-    val operator: Int = R.string.add,
+    val operator: Operation = Operation.ADDITION,
     val input: String = "",
     val tasks: List<TaskResult> = emptyList(),
-    val enabledOperators: List<Pair<Int, Pair<Float, Float>>> = emptyList(),
+    val enabledOperators: Map<Operation, Pair<Float, Float>> = mutableMapOf(),
     val isCorrect: Boolean? = null,
 
     val correctAnswers: Int = 0,

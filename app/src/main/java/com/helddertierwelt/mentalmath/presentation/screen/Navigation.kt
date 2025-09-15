@@ -7,6 +7,7 @@
 package com.helddertierwelt.mentalmath.presentation.screen
 
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -15,7 +16,7 @@ import com.helddertierwelt.mentalmath.presentation.viewmodel.GameViewModel
 import com.helddertierwelt.mentalmath.presentation.viewmodel.SettingsViewModel
 
 @Composable
-fun MentalMath(
+fun Navigation(
     settingsViewModel: SettingsViewModel,
     gameViewModel: GameViewModel,
     navController: NavHostController
@@ -37,7 +38,7 @@ fun MentalMath(
 
         composable(
             route = "game",
-            enterTransition = { fadeIn() }
+            enterTransition = { slideInHorizontally(initialOffsetX = { it }) }
         ) {
             GameScreen(
                 gameViewModel = gameViewModel,
@@ -48,7 +49,7 @@ fun MentalMath(
 
         composable(
             route = "statistics",
-            enterTransition = { fadeIn() },
+            enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
         ) {
             StatisticsScreen(
                 settingsViewModel = settingsViewModel,

@@ -8,7 +8,7 @@ package com.helddertierwelt.mentalmath.presentation.component.settings
 
 import android.content.Intent
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -61,30 +61,32 @@ fun SideSheet(
     screenHeight: Dp,
     settingsViewModel: SettingsViewModel
 ) {
-    val overlayAlpha by animateFloatAsState(
-        targetValue = if (isSheetOpen) 0.4f else 0f,
-        animationSpec = tween(durationMillis = 300),
-        label = "OverlayAlpha"
-    )
-    val density = LocalDensity.current
-    val screenWidthPx = with(density) { screenWidth.toPx() }
-    val offsetX = remember { Animatable(screenWidthPx) }
-    val sheetWidthFactor = 0.6f
-    val coroutineScope = rememberCoroutineScope()
-    var isInteractionEnabled by remember { mutableStateOf(true) }
-
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+
+    val screenWidthPx = with(LocalDensity.current) { screenWidth.toPx() }
+    val sheetWidthFactor = 0.6f
+    val offsetX = remember { Animatable(screenWidthPx) }
+    val minOffset = screenWidthPx * (1f - sheetWidthFactor)
+    val maxOffset = screenWidthPx
+    val overlayAlpha = 0.4f * (1 - (offsetX.value - minOffset) / (maxOffset - minOffset))
 
     val fontSize = (0.018f * screenHeight.value).sp
     val iconSize = (0.032f * screenHeight.value).dp
-    val themeMode = settingsViewModel.settingsState.value.themeMode
+    var isInteractionEnabled by remember { mutableStateOf(true) }
 
     // Handle side sheet open/close animation
     LaunchedEffect(isSheetOpen) {
         isInteractionEnabled = false
         val target = if (isSheetOpen) screenWidthPx * (1f - sheetWidthFactor) else screenWidthPx
         if (offsetX.value != target) {
-            offsetX.animateTo(target)
+            offsetX.animateTo(
+                targetValue = target,
+                animationSpec = tween(
+                    durationMillis = 400,
+                    easing = FastOutSlowInEasing
+                )
+            )
         }
         isInteractionEnabled = true
     }
@@ -175,7 +177,7 @@ fun SideSheet(
                     DarkModeToggleRow(
                         fontSize = fontSize,
                         iconSize = iconSize,
-                        currentMode = themeMode,
+                        currentMode = settingsViewModel.settingsState.value.themeMode,
                         onModeChange = { settingsViewModel.setThemeMode(it) }
                     )
 

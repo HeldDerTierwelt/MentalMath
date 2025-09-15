@@ -88,7 +88,7 @@ fun TasksCard(
                         Locale.getDefault(),
                         "%d %s %d = %d",
                         task.operand1,
-                        stringResource(task.operator),
+                        stringResource(task.operator.stringId),
                         task.operand2,
                         task.correctResult
                     )

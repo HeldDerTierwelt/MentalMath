@@ -13,7 +13,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.helddertierwelt.mentalmath.R
 import com.helddertierwelt.mentalmath.data.dao.AdditionTaskDao
 import com.helddertierwelt.mentalmath.data.dao.DivisionTaskDao
 import com.helddertierwelt.mentalmath.data.dao.MultiplicationTaskDao
@@ -57,7 +56,6 @@ class GameViewModel(
         }
     }
 
-
     fun clearInput() {
         _gameState.value = _gameState.value.copy(input = "")
         saveState()
@@ -66,38 +64,34 @@ class GameViewModel(
     fun generateNewTask() {
         clearInput()
         viewModelScope.launch(Dispatchers.IO) {
-            val operatorSetting = _gameState.value.enabledOperators.random()
-            val operator = operatorSetting.first
-            val difficulty =
-                Random.nextInt(
-                    operatorSetting.second.first.toInt(),
-                    operatorSetting.second.second.toInt() + 1
-                )
+            val operationSetting = _gameState.value.enabledOperators.entries.random()
+            val operation = operationSetting.key
+            val difficulty = Random.nextInt(
+                    operationSetting.value.first.toInt(),
+                    operationSetting.value.second.toInt() + 1
+            )
 
-            val mathTask: MathTask? = when (operator) {
-                R.string.add -> additionTaskDao.getAdditionTasksByDifficulty(difficulty)
+            val mathTask: MathTask? = when (operation) {
+                Operation.ADDITION -> additionTaskDao.getAdditionTasksByDifficulty(difficulty)
                     .getOrNull(0)?.toMathTask()
 
-                R.string.subtract -> subtractionTaskDao.getSubtractionTasksByDifficulty(difficulty)
+                Operation.SUBTRACTION -> subtractionTaskDao.getSubtractionTasksByDifficulty(difficulty)
                     .getOrNull(0)?.toMathTask()
 
-                R.string.multiply -> multiplicationTaskDao.getMultiplicationTasksByDifficulty(
-                    difficulty
-                ).getOrNull(0)?.toMathTask()
-
-                R.string.divide -> divisionTaskDao.getDivisionTasksByDifficulty(difficulty)
+                Operation.MULTIPLICATION -> multiplicationTaskDao.getMultiplicationTasksByDifficulty(difficulty)
                     .getOrNull(0)?.toMathTask()
 
-                else -> null
+                Operation.DIVISION -> divisionTaskDao.getDivisionTasksByDifficulty(difficulty)
+                    .getOrNull(0)?.toMathTask()
             }
 
             if (mathTask != null) {
-                val operand1 = if (operator == R.string.divide) {
+                val operand1 = if (operation == Operation.DIVISION) {
                     mathTask.operand1 * mathTask.operand2
                 } else {
                     mathTask.operand1
                 }
-                val operand2 = if (operator == R.string.divide) {
+                val operand2 = if (operation == Operation.DIVISION) {
                     mathTask.operand1
                 } else {
                     mathTask.operand2
@@ -105,7 +99,7 @@ class GameViewModel(
                 _gameState.value = _gameState.value.copy(
                     operand1 = operand1,
                     operand2 = operand2,
-                    operator = operator,
+                    operator = operation,
                     input = "",
                     isCorrect = null
                 )
@@ -113,7 +107,7 @@ class GameViewModel(
                 _gameState.value = _gameState.value.copy(
                     operand1 = difficulty,
                     operand2 = difficulty,
-                    operator = operator,
+                    operator = operation,
                     input = "",
                     isCorrect = null
                 )
@@ -150,11 +144,10 @@ class GameViewModel(
 
     private fun calculateResult(): Int {
         return when (_gameState.value.operator) {
-            R.string.add -> _gameState.value.operand1 + _gameState.value.operand2
-            R.string.subtract -> _gameState.value.operand1 - _gameState.value.operand2
-            R.string.multiply -> _gameState.value.operand1 * _gameState.value.operand2
-            R.string.divide -> if (_gameState.value.operand2 != 0) _gameState.value.operand1 / _gameState.value.operand2 else 0
-            else -> 0
+            Operation.ADDITION -> _gameState.value.operand1 + _gameState.value.operand2
+            Operation.SUBTRACTION -> _gameState.value.operand1 - _gameState.value.operand2
+            Operation.MULTIPLICATION -> _gameState.value.operand1 * _gameState.value.operand2
+            Operation.DIVISION -> if (_gameState.value.operand2 != 0) _gameState.value.operand1 / _gameState.value.operand2 else 0
         }
     }
 
@@ -174,20 +167,20 @@ class GameViewModel(
     }
 
     fun setEnabledOperators(settingsViewModel: SettingsViewModel) {
-        val enabledOperators = mutableListOf<Pair<Int, Pair<Float, Float>>>()
+        val enabledOperators: MutableMap<Operation, Pair<Float, Float>> = mutableMapOf()
 
         val settingsState = settingsViewModel.settingsState.value
         if (settingsState.isPlusEnabled) {
-            enabledOperators.add(R.string.add to settingsViewModel.settingsState.value.plusRange)
+            enabledOperators.put(Operation.ADDITION, settingsViewModel.settingsState.value.plusRange)
         }
         if (settingsState.isMinusEnabled) {
-            enabledOperators.add(R.string.subtract to settingsViewModel.settingsState.value.minusRange)
+            enabledOperators.put(Operation.SUBTRACTION,settingsViewModel.settingsState.value.minusRange)
         }
         if (settingsState.isMultiplyEnabled) {
-            enabledOperators.add(R.string.multiply to settingsViewModel.settingsState.value.multiplyRange)
+            enabledOperators.put(Operation.MULTIPLICATION,settingsViewModel.settingsState.value.multiplyRange)
         }
         if (settingsState.isDivideEnabled) {
-            enabledOperators.add(R.string.divide to settingsViewModel.settingsState.value.divideRange)
+            enabledOperators.put(Operation.DIVISION,settingsViewModel.settingsState.value.divideRange)
         }
 
         _gameState.value = _gameState.value.copy(enabledOperators = enabledOperators)
@@ -268,7 +261,6 @@ class GameViewModel(
             startTimer()
         }
     }
-
 
     private fun saveState() {
         savedStateHandle["game_state"] = _gameState.value

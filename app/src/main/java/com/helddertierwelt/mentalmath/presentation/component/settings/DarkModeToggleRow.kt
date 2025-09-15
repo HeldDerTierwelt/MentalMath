@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.helddertierwelt.mentalmath.R
-import com.helddertierwelt.mentalmath.presentation.viewmodel.ThemeMode
+import com.helddertierwelt.mentalmath.presentation.theme.ThemeMode
 
 @Composable
 fun DarkModeToggleRow(

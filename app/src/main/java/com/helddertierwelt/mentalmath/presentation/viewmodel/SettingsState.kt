@@ -7,12 +7,8 @@
 package com.helddertierwelt.mentalmath.presentation.viewmodel
 
 import android.os.Parcelable
-import com.helddertierwelt.mentalmath.R
+import com.helddertierwelt.mentalmath.presentation.theme.ThemeMode
 import kotlinx.parcelize.Parcelize
-
-enum class ThemeMode {
-    SYSTEM, LIGHT, DARK
-}
 
 @Parcelize
 data class SettingsState(
@@ -29,14 +25,6 @@ data class SettingsState(
     val isMultiplyEnabled: Boolean = true,
     val isDivideEnabled: Boolean = true,
 
-    val enabledOperators: List<Int> = listOf(
-        R.string.add,
-        R.string.subtract,
-        R.string.multiply,
-        R.string.divide
-    ),
-
     val isSheetOpen: Boolean = false,
-
     val themeMode: ThemeMode = ThemeMode.SYSTEM
 ) : Parcelable
