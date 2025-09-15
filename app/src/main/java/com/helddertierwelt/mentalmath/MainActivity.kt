@@ -46,6 +46,7 @@ import com.helddertierwelt.mentalmath.data.dao.AdditionTaskDao
 import com.helddertierwelt.mentalmath.data.dao.DivisionTaskDao
 import com.helddertierwelt.mentalmath.data.dao.MultiplicationTaskDao
 import com.helddertierwelt.mentalmath.data.dao.SubtractionTaskDao
+import com.helddertierwelt.mentalmath.data.datastore.SettingsRepository
 import com.helddertierwelt.mentalmath.data.db.DbImporter
 import com.helddertierwelt.mentalmath.presentation.screen.Navigation
 import com.helddertierwelt.mentalmath.presentation.theme.MentalMathTheme
@@ -59,7 +60,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val settingsViewModel: SettingsViewModel = viewModel()
+            val settingsViewModel: SettingsViewModel = remember {
+                SettingsViewModel(SettingsRepository(applicationContext))
+            }
             val navController = rememberNavController()
             val context = applicationContext
             val dbImporter = DbImporter(context)

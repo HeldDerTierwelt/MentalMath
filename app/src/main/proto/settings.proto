@@ -1,0 +1,41 @@
+/*
+ * Copyright (C) 2025 HeldDerTierwelt
+ * Licensed under the GNU General Public License v3.0
+ * See LICENSE.md for details.
+ */
+
+syntax = "proto3";
+option java_package = "com.helddertierwelt.mentalmath";
+option java_multiple_files = true;
+
+message SettingsStateProto {
+  bool is_mode_enabled = 1;
+  float limit = 2;
+
+  float plus_min = 3;
+  float plus_max = 4;
+
+  float minus_min = 5;
+  float minus_max = 6;
+
+  float multiply_min = 7;
+  float multiply_max = 8;
+
+  float divide_min = 9;
+  float divide_max = 10;
+
+  bool is_plus_enabled = 11;
+  bool is_minus_enabled = 12;
+  bool is_multiply_enabled = 13;
+  bool is_divide_enabled = 14;
+
+  bool is_sheet_open = 15;
+
+  enum ThemeMode {
+    SYSTEM = 0;
+    LIGHT = 1;
+    DARK = 2;
+  }
+
+  ThemeMode theme_mode = 16;
+}

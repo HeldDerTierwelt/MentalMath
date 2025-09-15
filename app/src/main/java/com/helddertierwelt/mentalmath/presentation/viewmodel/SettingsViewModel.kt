@@ -8,18 +8,30 @@ package com.helddertierwelt.mentalmath.presentation.viewmodel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.helddertierwelt.mentalmath.data.datastore.SettingsRepository
 import com.helddertierwelt.mentalmath.presentation.theme.ThemeMode
+import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val savedStateHandle: SavedStateHandle
+    private val repository: SettingsRepository,
 ) : ViewModel() {
 
-    private val _settingsState = mutableStateOf(
-        savedStateHandle.get<SettingsState>("settings_state") ?: SettingsState()
-    )
+    private val _settingsState = mutableStateOf(SettingsState())
     val settingsState: State<SettingsState> = _settingsState
+
+    private val _isLoaded = mutableStateOf(false)
+    val isLoaded: State<Boolean> = _isLoaded
+
+    init {
+        viewModelScope.launch {
+            repository.settingsFlow.collect { loadedState ->
+                _settingsState.value = loadedState
+                _isLoaded.value = true
+            }
+        }
+    }
 
     fun updateLimit(value: Float) {
         _settingsState.value = _settingsState.value.copy(limit = value)
@@ -92,6 +104,8 @@ class SettingsViewModel(
     }
 
     private fun saveState() {
-        savedStateHandle["settings_state"] = _settingsState.value
+        viewModelScope.launch {
+            repository.saveSettings(_settingsState.value)
+        }
     }
 }

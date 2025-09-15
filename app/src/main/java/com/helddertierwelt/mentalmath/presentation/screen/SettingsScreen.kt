@@ -8,12 +8,14 @@ package com.helddertierwelt.mentalmath.presentation.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -54,6 +56,8 @@ fun SettingsScreen(
     val context = LocalContext.current
     val settingsState = settingsViewModel.settingsState.value
     val valueRangeOperators = 1f..9f
+    val isLoaded = settingsViewModel.isLoaded.value
+
 
     // Calculate sizes based on screen height
     val containerSizePx = LocalWindowInfo.current.containerSize // IntSize in px
@@ -73,6 +77,11 @@ fun SettingsScreen(
     val infoIconSize = (0.038f * screenHeight.value).dp
     val appSymbolSizeTopBar = (0.024f * screenHeight.value).dp
 
+    if (!isLoaded) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    } else {
     Scaffold(
         topBar = {
             SettingsTopBar(
@@ -240,7 +249,7 @@ fun SettingsScreen(
                 )
             }
         }
-    )
+    )}
 
     BackHandler {
         (context as? android.app.Activity)?.moveTaskToBack(true)

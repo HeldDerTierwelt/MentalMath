@@ -83,7 +83,7 @@ fun SideSheet(
             offsetX.animateTo(
                 targetValue = target,
                 animationSpec = tween(
-                    durationMillis = 400,
+                    durationMillis = 300,
                     easing = FastOutSlowInEasing
                 )
             )
