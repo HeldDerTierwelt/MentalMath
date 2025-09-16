@@ -48,10 +48,10 @@ fun SettingsModeColumn(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var iconId = R.drawable.tag
+        var iconId = R.drawable.tag_24dp
         var limitText = String.format("%s", (limit * 10).toString())
         if (!modeEnabled) {
-            iconId = R.drawable.round_hourglass_bottom_24
+            iconId = R.drawable.hourglass_bottom_24dp
             limitText =
                 String.format("%s:00", limit)
         }

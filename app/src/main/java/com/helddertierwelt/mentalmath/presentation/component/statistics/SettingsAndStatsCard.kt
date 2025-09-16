@@ -170,7 +170,7 @@ fun SettingsAndStatsCard(
                 StatsColumn(
                     fontSize = fontSize,
                     statsText = gameState.correctAnswers.toString(),
-                    iconId = R.drawable.round_check_24,
+                    iconId = R.drawable.check_24dp,
                     iconSize = iconSize,
                     iconColor = green
                 )
@@ -178,13 +178,13 @@ fun SettingsAndStatsCard(
                 StatsColumn(
                     fontSize = fontSize,
                     statsText = percentageString,
-                    iconId = R.drawable.round_percent_24,
+                    iconId = R.drawable.percent_24dp,
                     iconSize = iconSize,
                     iconColor = green
                 )
 
                 StatsCorrectPerMinuteColumn(
-                    iconId = R.drawable.round_check_24,
+                    iconId = R.drawable.check_24dp,
                     iconSize = iconSize,
                     iconColor = green,
                     iconText = "min",
@@ -196,7 +196,7 @@ fun SettingsAndStatsCard(
                 StatsColumn(
                     fontSize = fontSize,
                     statsText = formatTime(totalTime),
-                    iconId = R.drawable.round_access_time_24,
+                    iconId = R.drawable.access_time_24,
                     iconSize = iconSize,
                     iconColor = MaterialTheme.colorScheme.onPrimary
                 )
@@ -219,7 +219,7 @@ fun SettingsAndStatsCard(
                     modifier = modifier.padding(horizontal = 16.dp)
                 )
                 Icon(
-                    painter = painterResource(R.drawable.round_star_24),
+                    painter = painterResource(R.drawable.star_24dp),
                     contentDescription = "activeSoreIcon",
                     modifier = modifier.size(iconSize),
                     tint = yellow
@@ -238,7 +238,7 @@ fun SettingsAndStatsCard(
                     modifier = modifier.padding(horizontal = 16.dp)
                 )
                 Icon(
-                    painter = painterResource(R.drawable.round_star_24),
+                    painter = painterResource(R.drawable.star_24dp),
                     contentDescription = "totalScoreIcon",
                     modifier = modifier.size(iconSize),
                     tint = green

@@ -68,4 +68,4 @@ fun SideSheetLinkRow(
             lineHeight = fontSize
         )
     }
-    }
+}

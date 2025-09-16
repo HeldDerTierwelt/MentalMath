@@ -211,7 +211,7 @@ fun SideSheet(
 
                     // License Link
                     SideSheetLinkRow(
-                        iconResId = R.drawable.contract_24dp,
+                        iconResId = R.drawable.balance_24dp,
                         contentDescription = "License",
                         text = "License",
                         fontSize = fontSize,

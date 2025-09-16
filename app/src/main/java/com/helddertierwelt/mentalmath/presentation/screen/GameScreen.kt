@@ -224,8 +224,8 @@ fun GameScreen(
                             },
                             isToggled = gameState.input.isEmpty(),
                             size = roundButtonSize,
-                            iconId1 = R.drawable.round_keyboard_double_arrow_right_24,
-                            iconId2 = R.drawable.round_keyboard_tab_24,
+                            iconId1 = R.drawable.keyboard_double_arrow_right_24dp,
+                            iconId2 = R.drawable.keyboard_tab_24dp,
                             iconSize = iconSizeDoubleArrow
                         )
                     }

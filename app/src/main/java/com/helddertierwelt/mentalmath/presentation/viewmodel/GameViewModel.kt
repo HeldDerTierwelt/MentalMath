@@ -79,18 +79,22 @@ class GameViewModel(
             val operationSetting = _gameState.value.enabledOperators.entries.random()
             val operation = operationSetting.key
             val difficulty = Random.nextInt(
-                    operationSetting.value.first.toInt(),
-                    operationSetting.value.second.toInt() + 1
+                operationSetting.value.first.toInt(),
+                operationSetting.value.second.toInt() + 1
             )
 
             val mathTask: MathTask? = when (operation) {
                 Operation.ADDITION -> additionTaskDao.getAdditionTasksByDifficulty(difficulty)
                     .getOrNull(0)?.toMathTask()
 
-                Operation.SUBTRACTION -> subtractionTaskDao.getSubtractionTasksByDifficulty(difficulty)
+                Operation.SUBTRACTION -> subtractionTaskDao.getSubtractionTasksByDifficulty(
+                    difficulty
+                )
                     .getOrNull(0)?.toMathTask()
 
-                Operation.MULTIPLICATION -> multiplicationTaskDao.getMultiplicationTasksByDifficulty(difficulty)
+                Operation.MULTIPLICATION -> multiplicationTaskDao.getMultiplicationTasksByDifficulty(
+                    difficulty
+                )
                     .getOrNull(0)?.toMathTask()
 
                 Operation.DIVISION -> divisionTaskDao.getDivisionTasksByDifficulty(difficulty)
@@ -183,16 +187,28 @@ class GameViewModel(
 
         val settingsState = settingsViewModel.settingsState.value
         if (settingsState.isPlusEnabled) {
-            enabledOperators.put(Operation.ADDITION, settingsViewModel.settingsState.value.plusRange)
+            enabledOperators.put(
+                Operation.ADDITION,
+                settingsViewModel.settingsState.value.plusRange
+            )
         }
         if (settingsState.isMinusEnabled) {
-            enabledOperators.put(Operation.SUBTRACTION,settingsViewModel.settingsState.value.minusRange)
+            enabledOperators.put(
+                Operation.SUBTRACTION,
+                settingsViewModel.settingsState.value.minusRange
+            )
         }
         if (settingsState.isMultiplyEnabled) {
-            enabledOperators.put(Operation.MULTIPLICATION,settingsViewModel.settingsState.value.multiplyRange)
+            enabledOperators.put(
+                Operation.MULTIPLICATION,
+                settingsViewModel.settingsState.value.multiplyRange
+            )
         }
         if (settingsState.isDivideEnabled) {
-            enabledOperators.put(Operation.DIVISION,settingsViewModel.settingsState.value.divideRange)
+            enabledOperators.put(
+                Operation.DIVISION,
+                settingsViewModel.settingsState.value.divideRange
+            )
         }
 
         _gameState.value = _gameState.value.copy(enabledOperators = enabledOperators)

@@ -49,10 +49,10 @@ fun StatsProgressColumn(
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var iconId = R.drawable.rounded_timer_24
+        var iconId = R.drawable.timer_24
         var progressText = formatTime(activeTime)
         if (!modeEnabled) {
-            iconId = R.drawable.tag
+            iconId = R.drawable.tag_24dp
             progressText = String.format("%sex", totalAnswers.toString())
         }
         Spacer(modifier = Modifier.height(8.dp))

@@ -81,7 +81,7 @@ fun TasksCard(
                 fontSize = resultFontSize
             )
             Icon(
-                painter = painterResource(if (isExpanded) R.drawable.round_expand_less_24 else R.drawable.round_expand_more_24),
+                painter = painterResource(if (isExpanded) R.drawable.expand_less_24dp else R.drawable.expand_more_24dp),
                 contentDescription = "Expand",
                 modifier = Modifier
                     .size(iconSize)
@@ -114,7 +114,7 @@ fun TasksCard(
                     when (isCorrect) {
 
                         true -> Icon(
-                            painter = painterResource(R.drawable.round_check_circle_24),
+                            painter = painterResource(R.drawable.check_circle_24dp),
                             contentDescription = "Correct",
                             modifier = Modifier
                                 .size(iconSize)
@@ -132,7 +132,7 @@ fun TasksCard(
                             )
                             Spacer(modifier = Modifier.width(4.dp))
                             Icon(
-                                painter = painterResource(R.drawable.round_cancel_24),
+                                painter = painterResource(R.drawable.cancel_24),
                                 contentDescription = "Skipped",
                                 modifier = Modifier
                                     .size(iconSize)
@@ -143,7 +143,7 @@ fun TasksCard(
 
 
                         null -> Icon(
-                            painter = painterResource(R.drawable.round_cancel_24),
+                            painter = painterResource(R.drawable.cancel_24),
                             contentDescription = "Skipped",
                             modifier = Modifier
                                 .size(iconSize)
