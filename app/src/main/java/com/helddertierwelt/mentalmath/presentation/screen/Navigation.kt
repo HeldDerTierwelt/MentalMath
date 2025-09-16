@@ -20,7 +20,12 @@ package com.helddertierwelt.mentalmath.presentation.screen
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,41 +38,47 @@ fun Navigation(
     gameViewModel: GameViewModel,
     navController: NavHostController
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = "settings",
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
-        composable(
-            route = "settings",
-            enterTransition = { fadeIn() },
+        NavHost(
+            navController = navController,
+            startDestination = "settings",
         ) {
-            SettingsScreen(
-                settingsViewModel = settingsViewModel,
-                gameViewModel = gameViewModel,
-                navController = navController
-            )
-        }
+            composable(
+                route = "settings",
+                enterTransition = { fadeIn() },
+            ) {
+                SettingsScreen(
+                    settingsViewModel = settingsViewModel,
+                    gameViewModel = gameViewModel,
+                    navController = navController
+                )
+            }
 
-        composable(
-            route = "game",
-            enterTransition = { slideInHorizontally(initialOffsetX = { it }) }
-        ) {
-            GameScreen(
-                gameViewModel = gameViewModel,
-                settingsViewModel = settingsViewModel,
-                navController = navController
-            )
-        }
+            composable(
+                route = "game",
+                enterTransition = { slideInHorizontally(initialOffsetX = { it }) }
+            ) {
+                GameScreen(
+                    gameViewModel = gameViewModel,
+                    settingsViewModel = settingsViewModel,
+                    navController = navController
+                )
+            }
 
-        composable(
-            route = "statistics",
-            enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
-        ) {
-            StatisticsScreen(
-                settingsViewModel = settingsViewModel,
-                gameViewModel = gameViewModel,
-                navController = navController
-            )
+            composable(
+                route = "statistics",
+                enterTransition = { slideInHorizontally(initialOffsetX = { it }) },
+            ) {
+                StatisticsScreen(
+                    settingsViewModel = settingsViewModel,
+                    gameViewModel = gameViewModel,
+                    navController = navController
+                )
+            }
         }
     }
 }

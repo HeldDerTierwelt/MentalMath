@@ -42,7 +42,7 @@ fun SettingsState.toProto(): SettingsStateProto {
         .setIsMinusEnabled(isMinusEnabled)
         .setIsMultiplyEnabled(isMultiplyEnabled)
         .setIsDivideEnabled(isDivideEnabled)
-        .setIsSheetOpen(isSheetOpen)
+        .setIsSheetOpen(false)
         .setThemeMode(
             when (themeMode) {
                 ThemeMode.SYSTEM -> SYSTEM
@@ -65,7 +65,7 @@ fun SettingsStateProto.toSettingsState(): SettingsState {
         isMinusEnabled = isMinusEnabled,
         isMultiplyEnabled = isMultiplyEnabled,
         isDivideEnabled = isDivideEnabled,
-        isSheetOpen = isSheetOpen,
+        isSheetOpen = false,
         themeMode = when (themeMode) {
             LIGHT -> ThemeMode.LIGHT
             DARK -> ThemeMode.DARK
