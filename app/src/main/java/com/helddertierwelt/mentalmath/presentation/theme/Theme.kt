@@ -26,7 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Color(0xFF3C3F41), // button and topBar
+    primary = Color(0xFF3C3F41),
     secondary = Color(0xFF9B9B9B),
     tertiary = Color(0xFF5A5A5A),
 

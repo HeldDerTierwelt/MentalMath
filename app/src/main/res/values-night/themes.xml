@@ -3,7 +3,7 @@
     <style name="Theme.MentalMath" parent="android:Theme.Material.Light.NoActionBar" />
 
     <style name="Theme.MentalMath.SplashScreen" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/primaryLight</item>
+        <item name="windowSplashScreenBackground">@color/primary</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/mental_math_icon</item>
         <item name="postSplashScreenTheme">@style/Theme.MentalMath</item>
         <item name="android:windowNoTitle">true</item>

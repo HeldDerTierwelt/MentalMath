@@ -51,6 +51,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -74,6 +75,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             val settingsViewModel: SettingsViewModel = remember {
                 SettingsViewModel(SettingsRepository(applicationContext))
+            }
+            installSplashScreen().apply {
+                setKeepOnScreenCondition {
+                    !settingsViewModel.isLoaded.value
+                }
             }
             val navController = rememberNavController()
             val context = applicationContext

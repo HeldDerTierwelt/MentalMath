@@ -20,14 +20,12 @@ package com.helddertierwelt.mentalmath.presentation.screen
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -68,8 +66,6 @@ fun SettingsScreen(
     val context = LocalContext.current
     val settingsState = settingsViewModel.settingsState.value
     val valueRangeOperators = 1f..9f
-    val isLoaded = settingsViewModel.isLoaded.value
-
 
     // Calculate sizes based on screen height
     val containerSizePx = LocalWindowInfo.current.containerSize // IntSize in px
@@ -89,180 +85,174 @@ fun SettingsScreen(
     val infoIconSize = (0.038f * screenHeight.value).dp
     val appSymbolSizeTopBar = (0.024f * screenHeight.value).dp
 
-    if (!isLoaded) {
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            CircularProgressIndicator()
-        }
-    } else {
-        Scaffold(
-            topBar = {
-                SettingsTopBar(
-                    R.string.app_name,
-                    titleFontSize,
-                    onInfoClick = { settingsViewModel.toggleSheetOpen() },
-                    infoIconSize,
-                    appSymbolSizeTopBar
-                )
-            },
-            content = { padding ->
-                Surface(
-                    modifier = Modifier
+    Scaffold(
+        topBar = {
+            SettingsTopBar(
+                R.string.app_name,
+                titleFontSize,
+                onInfoClick = { settingsViewModel.toggleSheetOpen() },
+                infoIconSize,
+                appSymbolSizeTopBar
+            )
+        },
+        content = { padding ->
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                color = MaterialTheme.colorScheme.background
+            ) {
+                Column(
+                    modifier = modifier
                         .fillMaxSize()
-                        .padding(padding),
-                    color = MaterialTheme.colorScheme.background
+                        .padding(columnPadding, columnPadding),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.Start
                 ) {
-                    Column(
-                        modifier = modifier
-                            .fillMaxSize()
-                            .padding(columnPadding, columnPadding),
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.Start
+                    TextLabel(
+                        text = stringResource(R.string.mode_instruction),
+                        fontSize = textLabelFontSize,
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        TextLabel(
-                            text = stringResource(R.string.mode_instruction),
-                            fontSize = textLabelFontSize,
+                        ModeButton(
+                            iconId1 = R.drawable.tag_24dp,
+                            iconId2 = R.drawable.hourglass_bottom_24dp,
+                            isToggled = settingsState.isModeEnabled,
+                            onClick = { settingsViewModel.toggleMode() },
+                            iconSize = modeIconSize,
+                            size = roundButtonSize
                         )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            ModeButton(
-                                iconId1 = R.drawable.tag_24dp,
-                                iconId2 = R.drawable.hourglass_bottom_24dp,
-                                isToggled = settingsState.isModeEnabled,
-                                onClick = { settingsViewModel.toggleMode() },
-                                iconSize = modeIconSize,
-                                size = roundButtonSize
-                            )
-                            Spacer(Modifier.padding(8.dp))
-                            CustomSlider(
-                                value = settingsState.limit,
-                                onValueChange = { settingsViewModel.updateLimit(it) },
-                                valueRange = 1f..5f,
-                                isToggled = settingsState.isModeEnabled,
-                                size = sliderSize,
-                                activeTrackColor = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-                        TextLabel(
-                            text = stringResource(R.string.operator_instruction),
-                            fontSize = textLabelFontSize
-                        )
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            OperatorButton(
-                                buttonTextId = R.string.add,
-                                textColor = green,
-                                isSelected = settingsState.isPlusEnabled,
-                                onClick = { settingsViewModel.togglePlus() },
-                                size = roundButtonSize,
-                                fontSize = operatorButtonFontSize,
-                            )
-                            Spacer(Modifier.padding(8.dp))
-                            CustomRangeSlider(
-                                valueRange = valueRangeOperators,
-                                value = settingsState.plusRange,
-                                activeTrackColor = green,
-                                isEnabled = settingsState.isPlusEnabled,
-                                onValueChange = { settingsViewModel.updatePlusRange(it) },
-                                size = sliderSize
-                            )
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            OperatorButton(
-                                buttonTextId = R.string.subtract,
-                                textColor = red,
-                                isSelected = settingsState.isMinusEnabled,
-                                onClick = { settingsViewModel.toggleMinus() },
-                                size = roundButtonSize,
-                                fontSize = operatorButtonFontSize
-                            )
-                            Spacer(Modifier.padding(8.dp))
-                            CustomRangeSlider(
-                                valueRange = valueRangeOperators,
-                                value = settingsState.minusRange,
-                                activeTrackColor = red,
-                                isEnabled = settingsState.isMinusEnabled,
-                                onValueChange = { settingsViewModel.updateMinusRange(it) },
-                                size = sliderSize
-                            )
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            OperatorButton(
-                                buttonTextId = R.string.multiply,
-                                textColor = yellow,
-                                isSelected = settingsState.isMultiplyEnabled,
-                                onClick = { settingsViewModel.toggleMultiply() },
-                                size = roundButtonSize,
-                                fontSize = operatorButtonFontSize
-                            )
-                            Spacer(Modifier.padding(8.dp))
-                            CustomRangeSlider(
-                                valueRange = valueRangeOperators,
-                                value = settingsState.multiplyRange,
-                                activeTrackColor = yellow,
-                                isEnabled = settingsState.isMultiplyEnabled,
-                                onValueChange = { settingsViewModel.updateMultiplyRange(it) },
-                                size = sliderSize
-                            )
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            OperatorButton(
-                                buttonTextId = R.string.divide,
-                                textColor = blue,
-                                isSelected = settingsState.isDivideEnabled,
-                                onClick = { settingsViewModel.toggleDivide() },
-                                size = roundButtonSize,
-                                fontSize = operatorButtonFontSize
-                            )
-                            Spacer(Modifier.padding(8.dp))
-                            CustomRangeSlider(
-                                valueRange = valueRangeOperators,
-                                value = settingsState.divideRange,
-                                activeTrackColor = blue,
-                                isEnabled = settingsState.isDivideEnabled,
-                                onValueChange = { settingsViewModel.updateDivideRange(it) },
-                                size = sliderSize
-                            )
-                        }
-                        StartButton(
-                            settingsViewModel = settingsViewModel,
-                            onClick = {
-                                gameViewModel.resetGame()
-                                gameViewModel.setEnabledOperators(settingsViewModel)
-                                navController.navigate("game") {
-                                    popUpTo(0) { inclusive = true }
-                                    launchSingleTop = true
-                                }
-                                gameViewModel.startGame()
-                            },
-                            size = roundButtonSize,
-                            fontSize = startButtonFontSize,
-                            iconSize = startIconSize
+                        Spacer(Modifier.padding(8.dp))
+                        CustomSlider(
+                            value = settingsState.limit,
+                            onValueChange = { settingsViewModel.updateLimit(it) },
+                            valueRange = 1f..5f,
+                            isToggled = settingsState.isModeEnabled,
+                            size = sliderSize,
+                            activeTrackColor = MaterialTheme.colorScheme.onSurface
                         )
                     }
-                    SideSheet(
-                        isSheetOpen = settingsState.isSheetOpen,
-                        screenWidth = screenWidth,
-                        onDismissRequested = { settingsViewModel.toggleSheetOpen() },
-                        screenHeight = screenHeight,
-                        settingsViewModel = settingsViewModel
+                    TextLabel(
+                        text = stringResource(R.string.operator_instruction),
+                        fontSize = textLabelFontSize
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        OperatorButton(
+                            buttonTextId = R.string.add,
+                            textColor = green,
+                            isSelected = settingsState.isPlusEnabled,
+                            onClick = { settingsViewModel.togglePlus() },
+                            size = roundButtonSize,
+                            fontSize = operatorButtonFontSize,
+                        )
+                        Spacer(Modifier.padding(8.dp))
+                        CustomRangeSlider(
+                            valueRange = valueRangeOperators,
+                            value = settingsState.plusRange,
+                            activeTrackColor = green,
+                            isEnabled = settingsState.isPlusEnabled,
+                            onValueChange = { settingsViewModel.updatePlusRange(it) },
+                            size = sliderSize
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        OperatorButton(
+                            buttonTextId = R.string.subtract,
+                            textColor = red,
+                            isSelected = settingsState.isMinusEnabled,
+                            onClick = { settingsViewModel.toggleMinus() },
+                            size = roundButtonSize,
+                            fontSize = operatorButtonFontSize
+                        )
+                        Spacer(Modifier.padding(8.dp))
+                        CustomRangeSlider(
+                            valueRange = valueRangeOperators,
+                            value = settingsState.minusRange,
+                            activeTrackColor = red,
+                            isEnabled = settingsState.isMinusEnabled,
+                            onValueChange = { settingsViewModel.updateMinusRange(it) },
+                            size = sliderSize
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        OperatorButton(
+                            buttonTextId = R.string.multiply,
+                            textColor = yellow,
+                            isSelected = settingsState.isMultiplyEnabled,
+                            onClick = { settingsViewModel.toggleMultiply() },
+                            size = roundButtonSize,
+                            fontSize = operatorButtonFontSize
+                        )
+                        Spacer(Modifier.padding(8.dp))
+                        CustomRangeSlider(
+                            valueRange = valueRangeOperators,
+                            value = settingsState.multiplyRange,
+                            activeTrackColor = yellow,
+                            isEnabled = settingsState.isMultiplyEnabled,
+                            onValueChange = { settingsViewModel.updateMultiplyRange(it) },
+                            size = sliderSize
+                        )
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        OperatorButton(
+                            buttonTextId = R.string.divide,
+                            textColor = blue,
+                            isSelected = settingsState.isDivideEnabled,
+                            onClick = { settingsViewModel.toggleDivide() },
+                            size = roundButtonSize,
+                            fontSize = operatorButtonFontSize
+                        )
+                        Spacer(Modifier.padding(8.dp))
+                        CustomRangeSlider(
+                            valueRange = valueRangeOperators,
+                            value = settingsState.divideRange,
+                            activeTrackColor = blue,
+                            isEnabled = settingsState.isDivideEnabled,
+                            onValueChange = { settingsViewModel.updateDivideRange(it) },
+                            size = sliderSize
+                        )
+                    }
+                    StartButton(
+                        settingsViewModel = settingsViewModel,
+                        onClick = {
+                            gameViewModel.resetGame()
+                            gameViewModel.setEnabledOperators(settingsViewModel)
+                            navController.navigate("game") {
+                                popUpTo(0) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                            gameViewModel.startGame()
+                        },
+                        size = roundButtonSize,
+                        fontSize = startButtonFontSize,
+                        iconSize = startIconSize
                     )
                 }
+                SideSheet(
+                    isSheetOpen = settingsState.isSheetOpen,
+                    screenWidth = screenWidth,
+                    onDismissRequested = { settingsViewModel.toggleSheetOpen() },
+                    screenHeight = screenHeight,
+                    settingsViewModel = settingsViewModel
+                )
             }
-        )
-    }
+        }
+    )
 
     BackHandler {
         (context as? android.app.Activity)?.moveTaskToBack(true)
