@@ -244,7 +244,7 @@ fun SettingsScreen(
                     )
                 }
                 SideSheet(
-                    isSheetOpen = settingsState.isSheetOpen,
+                    isSheetOpen = settingsViewModel.isSheetOpen.value,
                     screenWidth = screenWidth,
                     onDismissRequested = { settingsViewModel.toggleSheetOpen() },
                     screenHeight = screenHeight,

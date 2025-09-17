@@ -37,6 +37,5 @@ data class SettingsState(
     val isMultiplyEnabled: Boolean = true,
     val isDivideEnabled: Boolean = true,
 
-    val isSheetOpen: Boolean = false,
     val themeMode: ThemeMode = ThemeMode.SYSTEM
 ) : Parcelable

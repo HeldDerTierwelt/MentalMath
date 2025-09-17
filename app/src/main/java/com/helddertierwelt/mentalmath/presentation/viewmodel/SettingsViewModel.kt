@@ -36,6 +36,9 @@ class SettingsViewModel(
     private val _isLoaded = mutableStateOf(false)
     val isLoaded: State<Boolean> = _isLoaded
 
+    private val _isSheetOpen = mutableStateOf(false)
+    val isSheetOpen: State<Boolean> = _isSheetOpen
+
     init {
         viewModelScope.launch {
             repository.settingsFlow.collect { loadedState ->
@@ -105,9 +108,7 @@ class SettingsViewModel(
     }
 
     fun toggleSheetOpen() {
-        _settingsState.value =
-            _settingsState.value.copy(isSheetOpen = !_settingsState.value.isSheetOpen)
-        saveState()
+        _isSheetOpen.value=!_isSheetOpen.value
     }
 
     fun setThemeMode(mode: ThemeMode) {
